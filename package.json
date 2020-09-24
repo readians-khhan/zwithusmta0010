@@ -1,0 +1,34 @@
+{
+  "name": "zwithusmta0010",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^4",
+    "email-templates": "^7.1.1",
+    "express": "^4",
+    "lodash": "^4.17.20",
+    "nodemailer": "^6.4.11",
+    "object-path": "^0.11.4",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "sqlite3": "^5"
+  },
+  "scripts": {
+    "start": "npx cds run",
+    "db": "cds deploy --to sqlite:scimonitoring.db"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "database": "scimonitoring.db"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "zwithusmta0010",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^4",
+    "express": "^4"
+  },
+  "devDependencies": {
+    "sqlite3": "^5"
+  },
+  "scripts": {
+    "postinstall": "npm dedupe && node .build.js",
+    "start": "node ./node_modules/@sap/cds/bin/cds.js serve gen/csn.json",
+    "watch": "nodemon -w . -i node_modules/**,.git/** -e cds -x npm run build"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sql"
+      }
+    }
+  }
+}

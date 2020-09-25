@@ -22,24 +22,31 @@ annotate TP_INTERFACELIST with @title : 'Interface List Table' {};
 
 annotate MST_CODE with @title : 'Code Mater Service' {};
 annotate VH_COMPANY with @(
+  readonly,
   title : 'Code Company Mater ValueHelp'
 );
 annotate VH_SUBSIDARY with @(
+  readonly,
   title : 'Code Subsidary Mater ValueHelp'
 );
 annotate VH_APPLTYPE with @(
+  readonly,
   title : 'Code Application Type Mater ValueHelp'
 );
 annotate VH_IFSTATUS with @(
+  readonly,
   title : 'Code Mater Interface Status ValueHelp'
 );
 annotate VH_IFPROTOCAL with @(
+  readonly,
   title : 'Code Mater Interface Protocol ValueHelp'
 );
 annotate VH_IFEXECUTION with @(
+  readonly,
   title : 'Code Mater Interface Execution ValueHelp'
 );
 annotate VH_IFCYCLE with @(
+  readonly,
   title : 'Code Mater Interface Cycle ValueHelp'
 );
 
@@ -47,4 +54,4 @@ annotate MST_SYSTEMLIST with @title : 'System Mater Table' {};
 annotate VH_SYSTEMLIST with @(
   title : 'System Mater ValueHelp',
   readonly
-) {};
+);

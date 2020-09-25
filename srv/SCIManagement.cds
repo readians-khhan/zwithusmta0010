@@ -25,14 +25,14 @@ service SCIManagementService {
     DELETED_TF,
     HISTORY
   } where DELETED_TF = false
-      and CAT01 = 'COMAPNY'
+      and CAT01 = 'COMPANY'
       and (CAT02 = '' or CAT02 IS NULL);
 
   view SCI_VH_CODE_SUBSIDARY_SRV as select from MST0010 excluding {
     DELETED_TF,
     HISTORY
   } where DELETED_TF = false 
-      and CAT01 = 'COMAPNY'
+      and CAT01 = 'COMPANY'
       and CAT02 = 'SUBSIDARY'
       and (CAT03 = '' or CAT03 IS NULL);
 

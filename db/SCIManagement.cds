@@ -14,7 +14,6 @@ define entity SCI_TP0010 : cuid, managed {
     IF_ASIS              : String(20);
     IF_ASIS_NM           : String(50);
     IF_ASIS_DESC         : String(100);
-    IF_DIRECTION_CD      : Association to SCI_MST0010 not null;
     SC_SYS_FK            : Association to SCI_MST0020 not null;
     SC_IFTYPE_CD         : Association to SCI_MST0010 not null;
     TG_SYS_FK            : Association to SCI_MST0020 not null;

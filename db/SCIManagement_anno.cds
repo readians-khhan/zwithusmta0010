@@ -10,6 +10,7 @@ using {
 
 annotate SCI_TP0010 with @(
     assert.unique : {
+        IF_NO   : [IF_NO],
         IF_NM   : [IF_NM],
         ASIS_NM : [IF_ASIS],
         PI_NM   : [PI_NM]
@@ -21,7 +22,7 @@ annotate SCI_TP0010 with @(
     IF_NO                @(
         description    : 'Interface Number',
         Core.Immutable : true,
-    //        readonly
+        readonly
     );
     IF_NM                @description : 'Interface Name';
     IF_DESC              @description : 'Interface Description';
@@ -32,7 +33,6 @@ annotate SCI_TP0010 with @(
     IF_ASIS              @description : 'As-Is Interface Number';
     IF_ASIS_NM           @description : 'As-Is Interface Name';
     IF_ASIS_DESC         @description : 'As-Is Interface Desription';
-    IF_DIRECTION_CD      @description : 'Interface Direction (C or P)';
     SC_SYS_FK            @description : 'System''s Key that calls the interface';
     SC_IFTYPE_CD         @description : 'Source Interface Type';
     TG_SYS_FK            @description : 'System''s Key being called by the interface';
@@ -79,17 +79,11 @@ annotate SCI_TP0010_HIST with @(
     BATCHCYCLE_CD        @description : 'Batch check code (Real Time or Batch)';
     BATCH_TIME           @description : 'Batch Time';
     DELEDTED_TF          @description : 'Is Deleted';
-    modifiedAt           @odata.etag
 };
 
 
 annotate SCI_MST0010 with @(
-    assert.unique : {CATEGORY : [
-    CAT01,
-    CAT02,
-    CAT03,
-    CODE
-    ]},
+    assert.unique : {CATEGORY : [CAT01,CAT02,CAT03,CODE]},
     Capabilities  : {Deletable : false},
     title         : 'Code Mater Table'
 ) {
@@ -101,6 +95,7 @@ annotate SCI_MST0010 with @(
     DESC01     @description : 'Code Description1';
     DESC02     @description : 'Code Description2';
     DELETED_TF @description : 'Is Deleted';
+    modifiedAt 
 }
 
 
@@ -139,6 +134,7 @@ annotate SCI_MST0020 with @(
     APPL_NM      @description : 'Application Name';
     APPPLTYPE_CD @description : 'Application Type Code';
     DELETED_TF   @description : 'Is Deleted';
+    modifiedAt   
 }
 
 

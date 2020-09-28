@@ -1,5 +1,7 @@
+const _ = require("lodash");
+
 module.exports = class SequenceHelper {
-	constructor (options) {
+	constructor(options) {
 		this.db = options.db;
 		this.sequence = options.sequence;
 		this.table = options.table;
@@ -26,6 +28,9 @@ module.exports = class SequenceHelper {
 					this.db.run(`SELECT MAX("${this.field}") FROM "${this.table}"`)
 						.then(result => {
 							nextNumber = parseInt(result[0][`MAX("${this.field}")`]) + 1;
+							if (_.isNaN(nextNumber)) {
+								nextNumber = 1;
+							}
 							resolve(nextNumber);
 						})
 						.catch(error => {

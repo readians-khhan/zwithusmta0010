@@ -61,7 +61,7 @@ define entity SCI_MST0010 : cuid, managed {
     CAT01      : String(20) not null;
     CAT02      : String(20);
     CAT03      : String(20);
-    CODE       : String(20) not null;
+    CODE       : String(50) not null;
     DESC01     : String(100) not null;
     DESC02     : String(100);
     DELETED_TF : Boolean not null default false;

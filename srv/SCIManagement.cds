@@ -18,7 +18,6 @@ service SCIManagementService {
     BATCHCYCLE_CD : redirected to SCI_MST_CODE_SRV
   };
 
-
   entity SCI_MST_CODE_SRV         as projection on MST0010;
 
   view SCI_VH_CODE_COMPANY_SRV as
@@ -29,10 +28,7 @@ service SCIManagementService {
     }
     where DELETED_TF = false
       and CAT01      = 'COMPANY'
-      and (
-           CAT02 =  ''
-        or CAT02 is null
-      );
+      and (CAT02 =  '' or CAT02 is null);
 
   view SCI_VH_CODE_SUBSIDARY_SRV as
     select from MST0010
@@ -43,10 +39,7 @@ service SCIManagementService {
     where DELETED_TF = false
       and CAT01      = 'COMPANY'
       and CAT02      = 'SUBSIDARY'
-      and (
-           CAT03 =  ''
-        or CAT03 is null
-      );
+      and (CAT03 =  '' or CAT03 is null);
 
   view SCI_VH_CODE_APPLICATIONTYPE_SRV as
     select from MST0010
@@ -57,10 +50,7 @@ service SCIManagementService {
     where DELETED_TF = false
       and CAT01      = 'APPLICATION'
       and CAT02      = 'TYPE'
-      and (
-           CAT03 =  ''
-        or CAT03 is null
-      );
+      and (CAT03 =  '' or CAT03 is null);
 
 
   view SCI_VH_CODE_IFSTATUS_SRV as
@@ -72,7 +62,7 @@ service SCIManagementService {
     where DELETED_TF = false
       and CAT01      = 'INTERFACE'
       and CAT02      = 'STATUS'
-      and ( CAT03 =  '' or CAT03 is null );
+      and (CAT03 =  '' or CAT03 is null);
 
   view SCI_VH_CODE_IFPROTOCOL_SRV as
     select from MST0010
@@ -83,7 +73,7 @@ service SCIManagementService {
     where DELETED_TF = false
       and CAT01      = 'INTERFACE'
       and CAT02      = 'PROTOCOL'
-      and ( CAT03 =  '' or CAT03 is null );
+      and (CAT03 =  '' or CAT03 is null);
 
   view SCI_VH_CODE_IFEXECUTION_SRV as
     select from MST0010
@@ -94,7 +84,7 @@ service SCIManagementService {
     where DELETED_TF = false
       and CAT01      = 'INTERFACE'
       and CAT02      = 'EXECUTION'
-      and ( CAT03 =  '' or CAT03 is null );
+      and (CAT03 =  '' or CAT03 is null);
 
   view SCI_VH_CODE_IFCYCLE_SRV as
     select from MST0010
@@ -105,13 +95,13 @@ service SCIManagementService {
     where DELETED_TF = false
       and CAT01      = 'INTERFACE'
       and CAT02      = 'CYCLE'
-      and ( CAT03 =  '' or CAT03 is null );
+      and (CAT03 =  '' or CAT03 is null);
 
   entity SCI_MST_SYSTEMLIST_SRV   as projection on MST0020 {
-    * , 
-    COMPANY_CD : redirected to SCI_MST_CODE_SRV, 
-    SUBSIDARY_CD : redirected to SCI_MST_CODE_SRV, 
-    APPPLTYPE_CD : redirected to SCI_MST_CODE_SRV
+      * , 
+      COMPANY_CD : redirected to SCI_MST_CODE_SRV, 
+      SUBSIDARY_CD : redirected to SCI_MST_CODE_SRV, 
+      APPPLTYPE_CD : redirected to SCI_MST_CODE_SRV
   };
 
 
@@ -119,17 +109,16 @@ service SCIManagementService {
       *,
       COMPANY_CD.CODE AS COMPANY_NM,
       SUBSIDARY_CD.CODE AS SUBSIDARY_NM,
-      APPPLTYPE_CD.CODE AS APPPLTYPE_NM,
-      COMPANY_CD : redirected to SCI_MST_CODE_SRV,
-      SUBSIDARY_CD    : redirected to SCI_MST_CODE_SRV,
-      APPPLTYPE_CD    : redirected to SCI_MST_CODE_SRV
+      APPPLTYPE_CD.CODE AS APPPLTYPE_NM
     }
   excluding {
     DELETED_TF,
-    HISTORY
+    HISTORY,
+    COMPANY_CD,
+    SUBSIDARY_CD,
+    APPPLTYPE_CD
   }
-  where
-    DELETED_TF = false;
+  where DELETED_TF = false;
 
   @requires : 'authenticated-user'
   action sendErrorEmail();

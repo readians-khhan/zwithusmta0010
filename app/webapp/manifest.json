@@ -1,7 +1,7 @@
 {
 	"_version": "1.12.0",
 	"sap.app": {
-		"id": "sci.withus.SCIManagement",
+		"id": "withus.sci.management.SCIManagement",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"applicationVersion": {
@@ -35,10 +35,10 @@
 	"sap.ui5": {
 		"flexEnabled": false,
 		"rootView": {
-			"viewName": "sci.withus.SCIManagement.view.View1",
+			"viewName": "withus.sci.management.SCIManagement.view.Main",
 			"type": "XML",
 			"async": true,
-			"id": "View1"
+			"id": "Main"
 		},
 		"dependencies": {
 			"minUI5Version": "1.65.6",
@@ -56,7 +56,7 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "sci.withus.SCIManagement.i18n.i18n"
+					"bundleName": "withus.sci.management.SCIManagement.i18n.i18n"
 				}
 			}
 		},
@@ -70,23 +70,23 @@
 				"routerClass": "sap.m.routing.Router",
 				"viewType": "XML",
 				"async": true,
-				"viewPath": "sci.withus.SCIManagement.view",
+				"viewPath": "withus.sci.management.SCIManagement.view",
 				"controlAggregation": "pages",
 				"controlId": "app",
 				"clearControlAggregation": false
 			},
 			"routes": [{
-				"name": "RouteView1",
-				"pattern": "RouteView1",
-				"target": ["TargetView1"]
+				"name": "RouteMain",
+				"pattern": "RouteMain",
+				"target": ["TargetMain"]
 			}],
 			"targets": {
-				"TargetView1": {
+				"TargetMain": {
 					"viewType": "XML",
 					"transition": "slide",
 					"clearControlAggregation": false,
-					"viewId": "View1",
-					"viewName": "View1"
+					"viewId": "Main",
+					"viewName": "Main"
 				}
 			}
 		}

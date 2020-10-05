@@ -1,5 +1,5 @@
 sap.ui.define([
-	"sci/withus/SCIManagement/test/unit/controller/View1.controller"
+	"withus/sci/management/SCIManagement/test/unit/controller/Main.controller"
 ], function () {
 	"use strict";
 });

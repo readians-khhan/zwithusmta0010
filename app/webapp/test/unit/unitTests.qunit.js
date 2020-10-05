@@ -5,7 +5,7 @@ sap.ui.getCore().attachInit(function () {
 	"use strict";
 
 	sap.ui.require([
-		"sci/withus/SCIManagement/test/unit/AllTests"
+		"withus/sci/management/SCIManagement/test/unit/AllTests"
 	], function () {
 		QUnit.start();
 	});

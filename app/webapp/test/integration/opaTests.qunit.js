@@ -5,7 +5,7 @@ sap.ui.getCore().attachInit(function () {
 	"use strict";
 
 	sap.ui.require([
-		"sci/withus/SCIManagement/test/integration/AllJourneys"
+		"withus/sci/management/SCIManagement/test/integration/AllJourneys"
 	], function () {
 		QUnit.start();
 	});

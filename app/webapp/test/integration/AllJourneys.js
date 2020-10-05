@@ -7,7 +7,7 @@ sap.ui.define([
 
 	Opa5.extendConfig({
 		arrangements: new Startup(),
-		viewNamespace: "sci.withus.SCIManagement.view.",
+		viewNamespace: "withus.sci.management.SCIManagement.view.",
 		autoWait: true
 	});
 });

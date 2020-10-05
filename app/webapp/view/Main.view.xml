@@ -1,0 +1,90 @@
+<mvc:View controllerName="withus.sci.management.SCIManagement.controller.Main"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns:layout1="sap.ui.commons.layout">
+	<Page showHeader="false" title="Page Title" showFooter="false" showNavButton="false" enableScrolling="false">
+		<content>
+			<form:Form width="450px" editable="true" visible="true" class="sapUiSmallMargin">
+				<form:title>
+					<core:Title text="시스템 수정 삭제" level="Auto"/>
+				</form:title>
+				<form:formContainers>
+					<form:FormContainer visible="true">
+						<form:formElements>
+							<form:FormElement visible="true">
+								<form:label>
+									<Label text="회사" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+								</form:label>
+								<form:fields>
+									<ComboBox placeholder="구분" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+										<items>
+											<core:Item text="Item" enabled="true" key="Item"/>
+											<core:Item text="Item" enabled="true" key="Item"/>
+											<core:Item text="Item" enabled="true" key="Item"/>
+										</items>
+									</ComboBox>
+								</form:fields>
+							</form:FormElement>
+							<form:FormElement visible="true">
+								<form:label>
+									<Label text="자회사" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+								</form:label>
+								<form:fields>
+									<ComboBox placeholder="상세구분" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+										<items>
+											<core:Item text="Item" enabled="true" key="Item"/>
+											<core:Item text="Item" enabled="true" key="Item"/>
+											<core:Item text="Item" enabled="true" key="Item"/>
+										</items>
+									</ComboBox>
+								</form:fields>
+							</form:FormElement>
+							<form:FormElement visible="true">
+								<form:label>
+									<Label text="시스템명" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+								</form:label>
+								<form:fields>
+									<Text text="SKC-KSKC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+								</form:fields>
+							</form:FormElement>
+							<form:FormElement visible="true">
+								<form:label>
+									<Label text="어플리케이션명" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+								</form:label>
+								<form:fields>
+									<Text text="SKC-KSKC-설명" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+								</form:fields>
+							</form:FormElement>
+							<form:FormElement visible="true">
+								<form:label>
+									<Label text="자회사" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
+								</form:label>
+								<form:fields>
+									<ComboBox placeholder="상세구분" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+										<items>
+											<core:Item text="Item" enabled="true" key="Item"/>
+											<core:Item text="Item" enabled="true" key="Item"/>
+											<core:Item text="Item" enabled="true" key="Item"/>
+										</items>
+									</ComboBox>
+									<SegmentedButton width="427px" enabled="true" visible="true">
+										<items>
+											<SegmentedButtonItem text="수정" width="auto" enabled="true" press="_onSegmentedButtonItemPress"/>
+											<SegmentedButtonItem text="삭제" width="auto" enabled="true" press="_onSegmentedButtonItemPress1"/>
+										</items>
+									</SegmentedButton>
+								</form:fields>
+							</form:FormElement>
+						</form:formElements>
+						<form:title/>
+					</form:FormContainer>
+				</form:formContainers>
+				<form:layout>
+					<form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
+				</form:layout>
+			</form:Form>
+		</content>
+	</Page>
+</mvc:View>

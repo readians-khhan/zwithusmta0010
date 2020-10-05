@@ -3,7 +3,7 @@ sap.ui.define([
 ], function (Opa5) {
 	"use strict";
 
-	return Opa5.extend("sci.withus.SCIManagement.test.integration.arrangements.Startup", {
+	return Opa5.extend("withus.sci.management.SCIManagement.test.integration.arrangements.Startup", {
 
 		iStartMyApp: function (oOptionsParameter) {
 			var oOptions = oOptionsParameter || {};
@@ -14,7 +14,7 @@ sap.ui.define([
 			// start the app UI component
 			this.iStartMyUIComponent({
 				componentConfig: {
-					name: "sci.withus.SCIManagement",
+					name: "withus.sci.management.SCIManagement",
 					async: true
 				},
 				hash: oOptions.hash,

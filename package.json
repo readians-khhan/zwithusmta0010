@@ -9,12 +9,12 @@
     "@sap/cds": "^4",
     "email-templates": "^7.1.1",
     "express": "^4",
-    "lodash": "^4.17.20",
     "nodemailer": "^6.4.11",
     "object-path": "^0.11.4",
     "path": "^0.12.7"
   },
   "devDependencies": {
+    "@sap/approuter": "^8.5.2",
     "sqlite3": "^5"
   },
   "scripts": {
@@ -27,6 +27,18 @@
         "kind": "sqlite",
         "credentials": {
           "database": "scimonitoring.db"
+        }
+      },
+      "SCIDEV.sap.hci.api": {
+        "kind": "rest",
+        "credentials": {
+          "url": "https://sk-dev.it-cpi006.cfapps.jp10.hana.ondemand.com/api/v1",
+          "username": "astro@sk.com",
+          "password": "dhftksfl99*"
+        },
+        "pool": {
+          "min": 1,
+          "max": 10
         }
       }
     }

@@ -1,0 +1,2222 @@
+{
+  "definitions": {
+    "SCIDEV.sap.hci.api": {
+      "kind": "service"
+    },
+    "SCIDEV.sap.hci.api.IntegrationArtifact": {
+      "kind": "type",
+      "elements": {
+        "Id": {
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Type": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.SecurityArtifactDescriptor": {
+      "kind": "type",
+      "elements": {
+        "Type": {
+          "type": "cds.LargeString"
+        },
+        "DeployedBy": {
+          "type": "cds.LargeString"
+        },
+        "DeployedOn": {
+          "type": "cds.Timestamp"
+        },
+        "Status": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.Value": {
+      "kind": "type",
+      "elements": {
+        "SrcValue": {
+          "type": "cds.LargeString"
+        },
+        "TgtValue": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageProcessingLogRuns": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "RunStart": {
+          "type": "cds.Timestamp"
+        },
+        "RunStop": {
+          "type": "cds.Timestamp"
+        },
+        "LogLevel": {
+          "type": "cds.LargeString"
+        },
+        "OverallState": {
+          "type": "cds.LargeString"
+        },
+        "ProcessId": {
+          "type": "cds.LargeString"
+        },
+        "RunSteps": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogRunSteps",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageStoreEntries": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "MessageGuid": {
+          "type": "cds.LargeString"
+        },
+        "MessageStoreId": {
+          "type": "cds.LargeString"
+        },
+        "TimeStamp": {
+          "type": "cds.Timestamp"
+        },
+        "HasAttachments": {
+          "type": "cds.Boolean"
+        },
+        "Attachments": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageStoreEntryAttachments",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "Properties": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageStoreEntryProperties",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.AccessPolicies": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.Integer64"
+        },
+        "RoleName": {
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "ArtifactReferences": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.ArtifactReferences",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageProcessingLogAdapterAttributes": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "AdapterId": {
+          "type": "cds.LargeString"
+        },
+        "AdapterMessageId": {
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "cds.LargeString"
+        },
+        "MessageProcessingLog": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogs"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.TraceMessageExchangeProperties": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "TraceId": {
+          "key": true,
+          "type": "cds.Integer64"
+        },
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageProcessingLogRunStepProperties": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "RunId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "ChildCount": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageProcessingLogCustomHeaderProperties": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "cds.LargeString"
+        },
+        "Log": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogs"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.AuditLogs": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "ChangeId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Action": {
+          "type": "cds.LargeString"
+        },
+        "Timestamp": {
+          "type": "cds.Timestamp"
+        },
+        "UserName": {
+          "type": "cds.LargeString"
+        },
+        "ObjName": {
+          "type": "cds.LargeString"
+        },
+        "ObjType": {
+          "type": "cds.LargeString"
+        },
+        "Source": {
+          "type": "cds.LargeString"
+        },
+        "NodeType": {
+          "type": "cds.LargeString"
+        },
+        "UserType": {
+          "type": "cds.LargeString"
+        },
+        "CustomerVisible": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageProcessingLogErrorInformations": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "MessageGuid": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Type": {
+          "type": "cds.LargeString"
+        },
+        "LastErrorModelStepId": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageProcessingLogRunSteps": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "RunId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "ChildCount": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "StepStart": {
+          "type": "cds.Timestamp"
+        },
+        "StepStop": {
+          "type": "cds.Timestamp"
+        },
+        "StepId": {
+          "type": "cds.LargeString"
+        },
+        "ModelStepId": {
+          "type": "cds.LargeString"
+        },
+        "BranchId": {
+          "type": "cds.LargeString"
+        },
+        "Status": {
+          "type": "cds.LargeString"
+        },
+        "Error": {
+          "type": "cds.LargeString"
+        },
+        "Activity": {
+          "type": "cds.LargeString"
+        },
+        "RunStepProperties": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogRunStepProperties",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "TraceMessages": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.TraceMessages",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageProcessingLogAttachments": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "MessageGuid": {
+          "type": "cds.LargeString"
+        },
+        "TimeStamp": {
+          "type": "cds.Timestamp"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "ContentType": {
+          "type": "cds.LargeString"
+        },
+        "PayloadSize": {
+          "type": "cds.Integer64"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageProcessingLogs": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "MessageGuid": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "CorrelationId": {
+          "type": "cds.LargeString"
+        },
+        "ApplicationMessageId": {
+          "type": "cds.LargeString"
+        },
+        "ApplicationMessageType": {
+          "type": "cds.LargeString"
+        },
+        "LogStart": {
+          "type": "cds.Timestamp"
+        },
+        "LogEnd": {
+          "type": "cds.Timestamp"
+        },
+        "Sender": {
+          "type": "cds.LargeString"
+        },
+        "Receiver": {
+          "type": "cds.LargeString"
+        },
+        "IntegrationFlowName": {
+          "type": "cds.LargeString"
+        },
+        "Status": {
+          "type": "cds.LargeString"
+        },
+        "AlternateWebLink": {
+          "type": "cds.LargeString"
+        },
+        "IntegrationArtifact": {
+          "type": "SCIDEV.sap.hci.api.IntegrationArtifact"
+        },
+        "LogLevel": {
+          "type": "cds.LargeString"
+        },
+        "CustomStatus": {
+          "type": "cds.LargeString"
+        },
+        "TransactionId": {
+          "type": "cds.LargeString"
+        },
+        "PreviousComponentName": {
+          "type": "cds.LargeString"
+        },
+        "LocalComponentName": {
+          "type": "cds.LargeString"
+        },
+        "OriginComponentName": {
+          "type": "cds.LargeString"
+        },
+        "CustomHeaderProperties": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogCustomHeaderProperties",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "MessageStoreEntries": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageStoreEntries",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "ErrorInformation": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogErrorInformations"
+        },
+        "AdapterAttributes": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogAdapterAttributes",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "Attachments": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogAttachments",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "Runs": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageProcessingLogRuns",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.TraceMessages": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "TraceId": {
+          "key": true,
+          "type": "cds.Integer64"
+        },
+        "MplId": {
+          "type": "cds.LargeString"
+        },
+        "RunId": {
+          "type": "cds.LargeString"
+        },
+        "ModelStepId": {
+          "type": "cds.LargeString"
+        },
+        "PayloadSize": {
+          "type": "cds.Integer64"
+        },
+        "MimeType": {
+          "type": "cds.LargeString"
+        },
+        "Properties": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.TraceMessageProperties",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "ExchangeProperties": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.TraceMessageExchangeProperties",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageStoreEntryAttachments": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "ContentType": {
+          "type": "cds.LargeString"
+        },
+        "Properties": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.MessageStoreEntryAttachmentProperties",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageStoreEntryAttachmentProperties": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "AttachmentId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.TraceMessageProperties": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "TraceId": {
+          "key": true,
+          "type": "cds.Integer64"
+        },
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.ArtifactReferences": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.Integer64"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "Type": {
+          "type": "cds.LargeString"
+        },
+        "ConditionAttribute": {
+          "type": "cds.LargeString"
+        },
+        "ConditionValue": {
+          "type": "cds.LargeString"
+        },
+        "ConditionType": {
+          "type": "cds.LargeString"
+        },
+        "AccessPolicy": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.AccessPolicies"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.MessageStoreEntryProperties": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "MessageId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.KeystoreEntries": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Hexalias" : {
+          "key": true,
+          "type": "cds.String",
+          "length": 2000
+        },
+        "Type": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "Owner": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "LastModifiedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "LastModifiedTime": {
+          "type": "cds.Timestamp"
+        },
+        "CreatedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "CreatedTime": {
+          "type": "cds.Timestamp"
+        },
+        "Status": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "ChainCertificates": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.ChainCertificates",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "Certificate": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.CertificateResources"
+        },
+        "Sshkey": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.SSHKeyResources"
+        },
+        "Keystore": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.Keystores"
+        },
+        "ChainResource": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.CertificateChainResources"
+        },
+        "SigningRequest": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.CertificateSigningRequests"
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.KeystoreEntryCertificatePart"
+      ]
+    },
+    "SCIDEV.sap.hci.api.KeystoreEntryCertificatePart" : {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Validity": {
+          "type": "cds.String",
+          "length": 1000
+        },
+         "SubjectDN": {
+          "type": "cds.String",
+          "length": 50000
+        },
+         "IssuerDN": {
+          "type": "cds.String",
+          "length": 50000
+        },
+         "Version": {
+          "type": "cds.Integer"
+        },
+         "FingerprintSha1": {
+          "type": "cds.String",
+          "length": 200
+        },
+         "FingerprintSha256": {
+          "type": "cds.String",
+          "length": 200
+        },
+        "FingerprintSha256": {
+          "type": "cds.String",
+          "length": 150
+        }
+      }
+    },
+
+    "SCIDEV.sap.hci.api.KeystoreEntryCertificatePartBase" : {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "KeyType": {
+          "type": "cds.String",
+          "length": 30
+        },
+         "KeySize": {
+          "type": "cds.Integer"
+        },
+         "ValidNotBefore": {
+          "type": "cds.Timestamp"
+        },
+         "ValidNotAfter": {
+          "type": "cds.Timestamp"
+        },
+         "SerialNumber": {
+          "type": "cds.String",
+          "length": 256
+        },
+         "SignatureAlgorithm": {
+          "type": "cds.String",
+          "length": 60
+        },
+        "EllipticCurve": {
+          "type": "cds.String",
+          "length": 80
+        }
+      }
+    },
+
+    "SCIDEV.sap.hci.api.HistoryKeystoreEntries": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "ActivatedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "ActiveFrom": {
+          "type": "cds.Timestamp"
+        },
+        "DeactivatedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "ActiveUntil": {
+          "type": "cds.Timestamp"
+        },
+        "ActivationSequenceNumber": {
+          "type": "cds.Integer"
+        },
+        "OriginalAlias": {
+          "type": "cds.String",
+          "length": 250
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.KeystoreEntry"
+      ]
+    },
+
+    "SCIDEV.sap.hci.api.KeystoreEntry" : {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Type": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "Owner": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "LastModifiedBy": {
+          "type": "cds.Timestamp"
+        },
+        "LastModifiedTime": {
+          "type": "cds.Timestamp"
+        },
+        "CreatedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "CreatedTime": {
+          "type": "cds.Timestamp"
+        },
+        "Status": {
+          "type": "cds.String",
+          "length": 500
+        }
+      }
+    },
+
+    "SCIDEV.sap.hci.api.KeyPairResources": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Resource": {
+          "type": "cds.Binary",
+          "length": 5000
+        },
+        "Password": {
+          "type": "cds.String",
+          "length": 500
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.KeystoreEntryAlias"
+      ]
+    },
+    "SCIDEV.sap.hci.api.KeystoreEntryAlias": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Hexalias": {
+          "key": true,
+          "type": "cds.String",
+          "length": 2000
+        },
+        "Alias": {
+          "type": "cds.String",
+          "length": 250
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.ChainCertificates": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Hexalias": {
+          "key": true,
+          "type": "cds.String",
+          "length": 2000
+        },
+        "Index_T": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "Alias": {
+          "type": "cds.String",
+          "length": 250
+        },
+        "Validity": {
+          "type": "cds.String",
+          "length": 1000
+        },
+        "KeyType": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "KeySize": {
+          "type": "cds.Integer"
+        },
+        "ValidNotBefore": {
+          "type": "cds.Timestamp"
+        },
+        "ValidNotAfter": {
+          "type": "cds.Timestamp"
+        },
+        "SubjectDN": {
+          "type": "cds.String",
+          "length": 50000
+        },
+        "IssuerDN": {
+          "type": "cds.String",
+          "length": 50000
+        },
+        "SerialNumber": {
+          "type": "cds.String",
+          "length": 66
+        },
+        "SignatureAlgorithm": {
+          "type": "cds.String",
+          "length": 60
+        },
+        "Version": {
+          "type": "cds.Integer"
+        },
+        "FingerprintSha1": {
+          "type": "cds.String",
+          "length": 200
+        },
+        "FingerprintSha256": {
+          "type": "cds.String",
+          "length": 200
+        },
+        "FingerprintSha512": {
+          "type": "cds.String",
+          "length": 200
+        },
+        "KeystoreEntry": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.KeystoreEntries"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.SSHKeyResources": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "KeystoreEntry": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.KeystoreEntries"
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.KeystoreEntryAlias"
+      ]
+    },
+    "SCIDEV.sap.hci.api.KeyPairGenerationRequests": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "KeyAlgorithmParameter": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "CommonName": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "OrganizationUnit": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "Organization": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "Locality": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "State": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "Country": {
+          "type": "cds.String",
+          "length": 2
+        },
+        "Email": {
+          "type": "cds.String",
+          "length": 500
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.KeystoreEntryCertificatePartBase"
+      ]
+    },
+    "SCIDEV.sap.hci.api.CertificateSigningRequests": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Hexalias": {
+          "key": true,
+          "type": "cds.String",
+          "length": 2000
+        },
+        "KeystoreEntry": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.KeystoreEntries"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.CertificateResources": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "KeystoreEntry": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.KeystoreEntries"
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.KeystoreEntryAlias"
+      ]
+    },
+    "SCIDEV.sap.hci.api.CertificateChainResources": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "KeystoreEntry": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.KeystoreEntries"
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.KeystoreEntryAlias"
+      ]
+    },
+    "SCIDEV.sap.hci.api.KeystoreResources": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "Resource": {
+          "type": "cds.Binary",
+          "length": 5000
+        },
+        "Password": {
+          "type": "cds.String",
+          "length": 300
+        },
+        "Aliases": {
+          "type": "cds.String",
+          "length": 2097152
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.Keystores": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.String",
+          "length": 100
+        },
+        "LastModifiedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "LastModifiedTime": {
+          "type": "cds.Timestamp"
+        },
+        "Size": {
+          "type": "cds.Integer"
+        },
+        "Entries": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.KeystoreEntries",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.SecurityArtifacts": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.SSHKeyGenerationRequests": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "SSHFile": {
+          "type": "cds.String",
+          "length": 10000
+        },
+        "Password": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "KeyAlgorithmParameter": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "CommonName": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "OrganizationUnit": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "Organization": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "Locality": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "State": {
+          "type": "cds.String",
+          "length": 500
+        },
+        "Country": {
+          "type": "cds.String",
+          "length": 2
+        },
+        "Email": {
+          "type": "cds.String",
+          "length": 500
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.KeystoreEntryCertificatePartBase"
+      ]
+    },
+    "SCIDEV.sap.hci.api.UserCredentialParameters": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "User": {
+          "type": "cds.String",
+          "length": 200
+        },
+        "Password": {
+          "type": "cds.String",
+          "length": 200
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.Parameter"
+      ]
+    },
+    "SCIDEV.sap.hci.api.Parameter" : {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Pid": {
+          "key": true,
+          "type": "cds.String",
+          "length": 60
+        },
+         "Id": {
+          "key": true,
+          "type": "cds.String",
+          "length": 1500
+        },
+         "LastModifiedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+         "LastModifiedTime": {
+          "type": "cds.Timestamp"
+        },
+         "CreatedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+         "CreatedTime": {
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+
+    "SCIDEV.sap.hci.api.UserCredentials": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Kind": {
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "User": {
+          "type": "cds.LargeString"
+        },
+        "Password": {
+          "type": "cds.LargeString"
+        },
+        "CompanyId": {
+          "type": "cds.LargeString"
+        },
+        "SecurityArtifactDescriptor": {
+          "type": "SCIDEV.sap.hci.api.SecurityArtifactDescriptor"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.OAuth2ClientCredentials": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "TokenServiceUrl": {
+          "type": "cds.LargeString"
+        },
+        "ClientId": {
+          "type": "cds.LargeString"
+        },
+        "ClientSecret": {
+          "type": "cds.LargeString"
+        },
+        "ClientAuthentication": {
+          "type": "cds.LargeString"
+        },
+        "Scope": {
+          "type": "cds.LargeString"
+        },
+        "ScopeContentType": {
+          "type": "cds.LargeString"
+        },
+        "SecurityArtifactDescriptor": {
+          "type": "SCIDEV.sap.hci.api.SecurityArtifactDescriptor"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.OAuth2AuthorizationCodes": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.String",
+          "length": 150
+        },
+        "Type": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "Description": {
+          "type": "cds.String",
+          "length": 200
+        },
+        "Provider": {
+          "type": "cds.String",
+          "length": 50
+        },
+        "TokenUrl": {
+          "type": "cds.String",
+          "length": 2000
+        },
+        "AuthUrl": {
+          "type": "cds.String",
+          "length": 2000
+        },
+        "ClientId": {
+          "type": "cds.String",
+          "length": 200
+        },
+        "ClientSecret": {
+          "type": "cds.String",
+          "length": 1000
+        },
+        "ClientAuthentication": {
+          "type": "cds.String",
+          "length": 200
+        },
+        "Scope": {
+          "type": "cds.String",
+          "length": 4000
+        },
+        "UserName": {
+          "type": "cds.String",
+          "length": 1000
+        },
+        "RefreshToken": {
+          "type": "cds.String",
+          "length": 20000
+        },
+        "RefreshTokenCreationTime": {
+          "type": "cds.Integer64"
+        },
+        "RefreshTokenExisting": {
+          "type": "cds.Boolean"
+        },
+        "RefreshTokenExpiryPeriod": {
+          "type": "cds.Integer64"
+        },
+        "LastModifiedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "LastModifiedTime": {
+          "type": "cds.Integer64"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.CustomTags": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.IntegrationPackages": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "ShortText": {
+          "type": "cds.LargeString"
+        },
+        "Version": {
+          "type": "cds.LargeString"
+        },
+        "Vendor": {
+          "type": "cds.LargeString"
+        },
+        "Mode": {
+          "type": "cds.LargeString"
+        },
+        "SupportedPlatform": {
+          "type": "cds.LargeString"
+        },
+        "ModifiedBy": {
+          "type": "cds.LargeString"
+        },
+        "CreationDate": {
+          "type": "cds.LargeString"
+        },
+        "ModifiedDate": {
+          "type": "cds.LargeString"
+        },
+        "CreatedBy": {
+          "type": "cds.LargeString"
+        },
+        "Products": {
+          "type": "cds.LargeString"
+        },
+        "Keywords": {
+          "type": "cds.LargeString"
+        },
+        "Countries": {
+          "type": "cds.LargeString"
+        },
+        "Industries": {
+          "type": "cds.LargeString"
+        },
+        "LineOfBusiness": {
+          "type": "cds.LargeString"
+        },
+        "PackageContent": {
+          "type": "cds.LargeBinary"
+        },
+        "IntegrationDesigntimeArtifacts": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.IntegrationDesigntimeArtifacts",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "ValueMappingDesigntimeArtifacts": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.ValueMappingDesigntimeArtifacts",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "CustomTags": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.CustomTags",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.Resources": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "ResourceType": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "ReferencedResourceType": {
+          "type": "cds.LargeString"
+        },
+        "ResourceContent": {
+          "type": "cds.LargeBinary"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.IntegrationDesigntimeArtifacts": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Version": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "PackageId": {
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "ArtifactContent": {
+          "type": "cds.LargeBinary"
+        },
+        "Configurations": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.Configurations",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "Resources": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.Resources",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.ValMaps": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "SCIDEV.sap.hci.api.Value"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.EntryPoints": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Url": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Type": {
+          "type": "cds.LargeString"
+        },
+        "AdditionalInformation": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.ValMapSchema": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "SrcAgency": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "SrcId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "TgtAgency": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "TgtId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "State": {
+          "type": "cds.LargeString"
+        },
+        "ValMaps": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.ValMaps",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "DefaultValMaps": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.DefaultValMaps",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.ValueMappingDesigntimeArtifacts": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Version": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "PackageId": {
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "ArtifactContent": {
+          "type": "cds.LargeBinary"
+        },
+        "ValMapSchema": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.ValMapSchema",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.ServiceEndpoints": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "Title": {
+          "type": "cds.LargeString"
+        },
+        "Version": {
+          "type": "cds.LargeString"
+        },
+        "Summary": {
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "LastUpdated": {
+          "type": "cds.Timestamp"
+        },
+        "Protocol": {
+          "type": "cds.LargeString"
+        },
+        "EntryPoints": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.EntryPoints",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "ApiDefinitions": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.APIDefinitions",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.NumberRanges": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Description": {
+          "type": "cds.LargeString"
+        },
+        "MaxValue": {
+          "type": "cds.LargeString"
+        },
+        "MinValue": {
+          "type": "cds.LargeString"
+        },
+        "Rotate": {
+          "type": "cds.LargeString"
+        },
+        "CurrentValue": {
+          "type": "cds.LargeString"
+        },
+        "FieldLength": {
+          "type": "cds.LargeString"
+        },
+        "DeployedBy": {
+          "type": "cds.LargeString"
+        },
+        "DeployedOn": {
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.IntegrationFlows": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "SenderHostType": {
+          "type": "cds.LargeString"
+        },
+        "ReceiverHostType": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.IntegrationConnections": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.Integer"
+        },
+        "ResolvedConnection": {
+          "type": "cds.Boolean"
+        },
+        "SenderHost": {
+          "type": "cds.LargeString"
+        },
+        "ReceiverHost": {
+          "type": "cds.LargeString"
+        },
+        "IntegrationFlows": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.IntegrationFlows",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.Configurations": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "ParameterKey": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "ParameterValue": {
+          "type": "cds.LargeString"
+        },
+        "DataType": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.APIDefinitions": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Url": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.DefaultValMaps": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Value": {
+          "type": "SCIDEV.sap.hci.api.Value"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.IdempotentRepositoryEntries": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "HexSource": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "HexEntry": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Source": {
+          "type": "cds.LargeString"
+        },
+        "Entry": {
+          "type": "cds.LargeString"
+        },
+        "Component": {
+          "type": "cds.LargeString"
+        },
+        "CreationTime": {
+          "type": "cds.Integer64"
+        },
+        "ExpirationTime": {
+          "type": "cds.Integer64"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.IdMapFromIds": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "FromId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "ToIds": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.IdMapToIds",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.IdMapToIds": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "ToId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "FromId_": {
+          "type": "cds.LargeString"
+        },
+        "Mapper": {
+          "type": "cds.LargeString"
+        },
+        "ExpirationTime": {
+          "type": "cds.Timestamp"
+        },
+        "FromId": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.IdMapFromIds"
+        },
+        "FromId2s": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.IdMapFromId2s",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.IdMapFromId2s": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "FromId": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "ToId2": {
+          "type": "cds.LargeString"
+        },
+        "Mapper": {
+          "type": "cds.LargeString"
+        },
+        "ExpirationTime": {
+          "type": "cds.Timestamp"
+        },
+        "ToId": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.IdMapToIds"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.Locks": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Component": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "HexSource": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "HexEntry": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Source": {
+          "type": "cds.LargeString"
+        },
+        "Entry": {
+          "type": "cds.LargeString"
+        },
+        "CreationTime": {
+          "type": "cds.Integer64"
+        },
+        "ExpirationTime": {
+          "type": "cds.Integer64"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.JmsMessages": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Msgid": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Failed": {
+          "key": true,
+          "type": "cds.Boolean"
+        },
+        "Mplid": {
+          "type": "cds.LargeString"
+        },
+        "CreatedAt": {
+          "type": "cds.Integer64"
+        },
+        "RetryCount": {
+          "type": "cds.Integer64"
+        },
+        "NextRetry": {
+          "type": "cds.Integer64"
+        },
+        "MimeMsgid": {
+          "type": "cds.LargeString"
+        },
+        "ContentType": {
+          "type": "cds.LargeString"
+        },
+        "MimeVersion": {
+          "type": "cds.LargeString"
+        },
+        "OverdueAt": {
+          "type": "cds.Integer64"
+        },
+        "ExpirationDate": {
+          "type": "cds.Integer64"
+        },
+        "Queue": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.Queues"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.Queues": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "NumbOfMsgs": {
+          "type": "cds.Integer64"
+        },
+        "Size": {
+          "type": "cds.Integer64"
+        },
+        "Type": {
+          "type": "cds.Integer64"
+        },
+        "State": {
+          "type": "cds.Integer64"
+        },
+        "FillGrade": {
+          "type": "cds.Integer64"
+        },
+        "Messages": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.JmsMessages",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "Artifacts": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.JmsArtifacts",
+          "cardinality": {
+            "max": "*"
+          }
+        },
+        "JmsQueues": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.JmsQueues",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.JmsQueues": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "MaxQueueSize": {
+          "type": "cds.Integer64"
+        },
+        "QueueSize": {
+          "type": "cds.Integer64"
+        },
+        "State": {
+          "type": "cds.Integer64"
+        },
+        "Queue": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.Queues"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.JmsBrokers": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Key": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Capacity": {
+          "type": "cds.Integer64"
+        },
+        "MaxCapacity": {
+          "type": "cds.Integer64"
+        },
+        "IsTransactedSessionsHigh": {
+          "type": "cds.Integer"
+        },
+        "IsConsumersHigh": {
+          "type": "cds.Integer"
+        },
+        "IsProducersHigh": {
+          "type": "cds.Integer"
+        },
+        "MaxQueueNumber": {
+          "type": "cds.Integer64"
+        },
+        "QueueNumber": {
+          "type": "cds.Integer64"
+        },
+        "CapacityOk": {
+          "type": "cds.Integer64"
+        },
+        "CapacityWarning": {
+          "type": "cds.Integer64"
+        },
+        "CapacityError": {
+          "type": "cds.Integer64"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.JmsArtifacts": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Id": {
+          "type": "cds.LargeString"
+        },
+        "Direction": {
+          "type": "cds.Integer64"
+        },
+        "Queue": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.Queues"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.WNNodes": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Type": {
+          "key": true,
+          "type": "cds.LargeString"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.StringParameters": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Value": {
+          "type": "cds.String",
+          "length": 4000
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.Parameter"
+      ]
+    },
+    "SCIDEV.sap.hci.api.BinaryParameters": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "ContentType": {
+          "type": "cds.String",
+          "length": 300
+        },
+        "Value": {
+          "type": "cds.Binary",
+          "length": 5000
+        }
+      },
+      "includes": [
+        "SCIDEV.sap.hci.api.Parameter"
+      ]
+    },
+    "SCIDEV.sap.hci.api.AlternativePartners": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Hexagency": {
+          "key": true,
+          "type": "cds.String",
+          "length": 480
+        },
+        "Hexscheme": {
+          "key": true,
+          "type": "cds.String",
+          "length": 480
+        },
+        "Hexid": {
+          "key": true,
+          "type": "cds.String",
+          "length": 240
+        },
+        "Agency": {
+          "type": "cds.String",
+          "length": 120
+        },
+        "Scheme": {
+          "type": "cds.String",
+          "length": 120
+        },
+        "Id": {
+          "type": "cds.String",
+          "length": 60
+        },
+        "Pid": {
+          "type": "cds.String",
+          "length": 60
+        },
+        "LastModifiedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "LastModifiedTime": {
+          "type": "cds.Timestamp"
+        },
+        "CreatedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "CreatedTime": {
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.AuthorizedUsers": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "User": {
+          "key": true,
+          "type": "cds.String",
+          "length": 150
+        },
+        "Pid": {
+          "type": "cds.String",
+          "length": 60
+        },
+        "LastModifiedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "LastModifiedTime": {
+          "type": "cds.Timestamp"
+        },
+        "CreatedBy": {
+          "type": "cds.String",
+          "length": 150
+        },
+        "CreatedTime": {
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.Partners": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Pid": {
+          "key": true,
+          "type": "cds.String",
+          "length": 60
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.NodeProfiles": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Roles": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.Roles",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.Roles": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "NodeProfile": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.NodeProfiles"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.XiDataStores": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Name": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Qualifier": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Participant": {
+          "type": "cds.LargeString"
+        },
+        "Channel": {
+          "type": "cds.LargeString"
+        },
+        "Artifact": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.XiDataStoreArtifacts"
+        }
+      }
+    },
+    "SCIDEV.sap.hci.api.XiDataStoreArtifacts": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.LargeString"
+        },
+        "Name": {
+          "type": "cds.LargeString"
+        },
+        "DataStores": {
+          "type": "cds.Association",
+          "target": "SCIDEV.sap.hci.api.XiDataStores",
+          "cardinality": {
+            "max": "*"
+          }
+        }
+      }
+    }
+  }
+}

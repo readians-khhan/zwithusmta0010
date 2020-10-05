@@ -1,0 +1,17 @@
+{
+    "authenticationMethod": "none",
+    "welcomeFile": "/test/mockServer.html",
+    "routes": [
+        {
+            "source": "^/backend/(.*)$",
+            "destination": "backend",
+            "target": "$1"
+        },
+        {
+            "source": "^/(.*)",
+            "target": "$1",
+            "localDir": "./app/webapp/",
+            "cacheControl": "no-cache, no-store, must-revalidate"
+        }
+    ]
+}

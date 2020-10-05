@@ -1,0 +1,14 @@
+{
+  "welcomeFile": "/SCIManagement/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/SCIManagement/(.*)$",
+      "target": "$1",
+      "localDir": "webapp"
+    }
+  ]
+}

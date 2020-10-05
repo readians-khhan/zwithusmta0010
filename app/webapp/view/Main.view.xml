@@ -1,90 +1,349 @@
 <mvc:View controllerName="withus.sci.management.SCIManagement.controller.Main"
 	xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m"
-	xmlns:form="sap.ui.layout.form"
+	displayBlock="true"
 	xmlns:core="sap.ui.core"
-	xmlns:layout1="sap.ui.commons.layout">
-	<Page showHeader="false" title="Page Title" showFooter="false" showNavButton="false" enableScrolling="false">
+	xmlns:t="sap.ui.table"
+	xmlns:f="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:tnt="sap.tnt"
+	xmlns:l="sap.ui.layout"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+	<Page id="pageMain">
+		<customHeader>
+			<Toolbar>
+				<Label text="{i18n>title}"
+					design="Bold"/>
+				<ToolbarSpacer />
+				<tnt:InfoLabel colorScheme="10"
+					text="{mainView>/userId}"
+					class="sapUiTinyMarginEnd"/>
+				<Button visible="false"
+					class="sapUiTinyMarginEnd"
+					type="Default"
+					text="{i18n>btnLogout}"
+					press="onPAI"
+					app:fcCode="fcLogout"/>
+			</Toolbar>
+		</customHeader>
 		<content>
-			<form:Form width="450px" editable="true" visible="true" class="sapUiSmallMargin">
-				<form:title>
-					<core:Title text="시스템 수정 삭제" level="Auto"/>
-				</form:title>
-				<form:formContainers>
-					<form:FormContainer visible="true">
-						<form:formElements>
-							<form:FormElement visible="true">
-								<form:label>
-									<Label text="회사" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-								</form:label>
-								<form:fields>
-									<ComboBox placeholder="구분" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
+			<l:FixFlex class="fixFlexVertical">
+				<l:fixContent>
+					<IconTabBar id="idIconTabBar"
+						select="onPAI"
+						class="sapUiNoContentPadding"
+						stretchContentHeight="ture"
+						backgroundDesign="Translucent"
+						expandable="false"
+						expanded="true"
+						selectedKey="{mainView>/condition/iconKey}"
+						app:fcCode="fcIconFilter">
+						<items>
+							<IconTabFilter showAll="true"
+								count="{mainView>/statusCount/total}"
+								text="{i18n>iconAll}"
+								key="T" />
+							<IconTabSeparator />
+							<IconTabFilter icon="sap-icon://write-new-document"
+								iconColor="Neutral"
+								count="{mainView>/statusCount/draft}"
+								text="{i18n>iconDraft}"
+								key="D" />
+							<IconTabFilter icon="sap-icon://request"
+								iconColor="Positive"
+								count="{mainView>/statusCount/request}"
+								text="{i18n>iconRequest}"
+								key="R" />
+							<IconTabFilter icon="sap-icon://employee-rejections"
+								iconColor="Negative"
+								count="{mainView>/statusCount/reject}"
+								text="{i18n>iconReject}"
+								key="J" />
+							<IconTabFilter icon="sap-icon://accept"
+								count="{mainView>/statusCount/approval}"
+								text="{i18n>iconApprove}"
+								key="A" />
+							<IconTabFilter icon="sap-icon://cancel"
+								iconColor="Critical"
+								count="{mainView>/statusCount/cancel}"
+								text="{i18n>iconCancel}"
+								key="C" />
+						</items>
+						<content>
+							<Toolbar>
+								<content>
+									<Label text="Created:"
+										labelFor="DRS01"/>
+									<DateRangeSelection id="DRS01"
+										width="20rem"
+										dateValue="{mainView>/condition/fromDate}"
+										secondDateValue="{mainView>/condition/toDate}"
+										displayFormat="MM.dd.yyyy"
+										required="true"
+										change="onPAI"
+										app:fcCode="fcSearchBPRegistration"/>
+									<SegmentedButton id="sbtn_searchBPRegistration"
+										selectionChange="onPAI"
+										app:fcCode="fcSearchBPRegistration">
 										<items>
-											<core:Item text="Item" enabled="true" key="Item"/>
-											<core:Item text="Item" enabled="true" key="Item"/>
-											<core:Item text="Item" enabled="true" key="Item"/>
-										</items>
-									</ComboBox>
-								</form:fields>
-							</form:FormElement>
-							<form:FormElement visible="true">
-								<form:label>
-									<Label text="자회사" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-								</form:label>
-								<form:fields>
-									<ComboBox placeholder="상세구분" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
-										<items>
-											<core:Item text="Item" enabled="true" key="Item"/>
-											<core:Item text="Item" enabled="true" key="Item"/>
-											<core:Item text="Item" enabled="true" key="Item"/>
-										</items>
-									</ComboBox>
-								</form:fields>
-							</form:FormElement>
-							<form:FormElement visible="true">
-								<form:label>
-									<Label text="시스템명" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-								</form:label>
-								<form:fields>
-									<Text text="SKC-KSKC" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-								</form:fields>
-							</form:FormElement>
-							<form:FormElement visible="true">
-								<form:label>
-									<Label text="어플리케이션명" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-								</form:label>
-								<form:fields>
-									<Text text="SKC-KSKC-설명" width="auto" maxLines="1" wrapping="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-								</form:fields>
-							</form:FormElement>
-							<form:FormElement visible="true">
-								<form:label>
-									<Label text="자회사" design="Standard" width="100%" required="false" textAlign="Begin" textDirection="Inherit" visible="true"/>
-								</form:label>
-								<form:fields>
-									<ComboBox placeholder="상세구분" editable="true" enabled="true" visible="true" width="auto" valueState="None" maxWidth="100%">
-										<items>
-											<core:Item text="Item" enabled="true" key="Item"/>
-											<core:Item text="Item" enabled="true" key="Item"/>
-											<core:Item text="Item" enabled="true" key="Item"/>
-										</items>
-									</ComboBox>
-									<SegmentedButton width="427px" enabled="true" visible="true">
-										<items>
-											<SegmentedButtonItem text="수정" width="auto" enabled="true" press="_onSegmentedButtonItemPress"/>
-											<SegmentedButtonItem text="삭제" width="auto" enabled="true" press="_onSegmentedButtonItemPress1"/>
+											<SegmentedButtonItem text="All"
+												key=""/>
+											<SegmentedButtonItem text="supplier"
+												key="vendor" />
+											<SegmentedButtonItem text="customer"
+												key="customer" />
 										</items>
 									</SegmentedButton>
-								</form:fields>
-							</form:FormElement>
-						</form:formElements>
-						<form:title/>
-					</form:FormContainer>
-				</form:formContainers>
-				<form:layout>
-					<form:ResponsiveGridLayout adjustLabelSpan="false" columnsL="2" labelSpanL="3" columnsM="1" labelSpanM="2" labelSpanS="12"/>
-				</form:layout>
-			</form:Form>
+									<SearchField width="30rem"
+										value="{mainView>/search}"
+										showSearchButton="true"
+										search="onPAI"
+										app:fcCode="fcSearchBPRegistration"/>
+									<ToolbarSpacer />
+									<Button text="{i18n>btnFindChangeBP}"
+										type="Accept"
+										press="onPAI"
+										app:fcCode="fcPopSelectBPTypeSearch"/>
+								</content>
+							</Toolbar>
+						</content>
+					</IconTabBar>
+				</l:fixContent>
+				<l:flexContent>
+					<t:Table id="tabBPRegistration"
+						selectionMode="None"
+						alternateRowColors="true"
+						visibleRowCountMode="Auto"
+						enableBusyIndicator="true"
+						rows="{
+								path: 'bpWorkflow>/BPWorkflows_SRV',
+								parameters: {
+									$count: true,
+									$select: [
+										'invertStatus',
+										'requestHistory',
+										'createdBy',
+										'apiLog/apiMessage',
+										'LogId'
+									],
+									$orderby: 'createdAt desc',
+									$$updateGroupId: 'bpworkflowsGroup'
+								}
+							}">
+						<t:extension>
+						</t:extension>
+						<t:columns>
+							<t:Column hAlign="Center"
+								width="6rem">
+								<Label text="{i18n>fldStatus}"/>
+								<t:template>
+									<ObjectStatus state="{ 
+											path: 'bpWorkflow>status'
+										}"
+										text="{
+												path: 'bpWorkflow>status'
+										}"
+										inverted="{bpWorkflow>invertStatus}"/>
+								</t:template>
+							</t:Column>
+							<t:Column hAlign="Center"
+								width="5rem">
+								<Label text="{i18n>fldAction}"/>
+								<t:template>
+									<HBox justifyContent="Center">
+										<Button icon="sap-icon://detail-view"
+											type="Default"
+											class="sapUiTinyMarginBeginEnd"
+											press="onPAI"
+											app:fcCode="fcDetail"
+											app:ID="{bpWorkflow>ID}"/>
+										<Button icon="sap-icon://message-popup"
+											class="sapUiTinyMarginEnd"
+											type="Attention"
+											press="onPAI"
+											app:fcCode="fcHistory"
+											app:ID="{bpWorkflow>ID}"/>
+									</HBox>
+								</t:template>
+							</t:Column>
+							<t:Column width="11rem"
+								sortProperty="createdAt"
+								filterProperty="createdAt"
+								hAlign="Center">
+								<Label text="{i18n>fldCreatedDate}"
+									textAlign="Center"
+									width="100%"/>
+								<t:template>
+									<Text text="{
+									parts: [{
+										path: 'bpWorkflow>createdAt',
+										type: 'sap.ui.model.type.String'
+									}]
+								}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="7rem"
+								hAlign="Center">
+								<Label text="{i18n>fldNeedApprove}"
+									textAlign="Center"
+									width="100%"/>
+							</t:Column>
+							<t:Column hAlign="Center"
+								sortProperty="requestType"
+								filterProperty="requestType"
+								width="8rem">
+								<Label text="{i18n>fldRequestType}"/>
+								<t:template>
+									<ObjectStatus text="{= ${bpWorkflow>requestType} === 'vendor' ? 'supplier' : 'customer' }"
+										icon="{= ${bpWorkflow>requestType} === 'vendor' ? 'sap-icon://supplier' : 'sap-icon://customer' }"
+										state="{= ${bpWorkflow>requestType} === 'vendor' ? 'Indication04' : 'Indication05' }" />
+								</t:template>
+							</t:Column>
+							<t:Column hAlign="Center"
+								sortProperty="BusinessPartner"
+								filterProperty="BusinessPartner"
+								width="8rem">
+								<Label text="{i18n>fldBusinessPartner}"/>
+								<t:template>
+									<Link text="{bpWorkflow>BusinessPartner}"
+										press="onPAI"
+										app:fcCode="fcMoveToBP" />
+								</t:template>
+							</t:Column>
+							<t:Column hAlign="Begin"
+								sortProperty="OrganizationBPName1"
+								filterProperty="OrganizationBPName1"
+								width="20rem">
+								<Label text="{i18n>fldBPName}"/>
+								<t:template>
+									<Text text="{bpWorkflow>OrganizationBPName1}" />
+								</t:template>
+							</t:Column>
+							<t:Column hAlign="Center"
+								sortProperty="CorrespondenceLanguage"
+								filterProperty="CorrespondenceLanguage"
+								width="5rem"
+								visible="false">
+								<Label text="{i18n>fldLanguage}"/>
+								<t:template>
+									<Text text="{bpWorkflow>CorrespondenceLanguage}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="8rem"
+								sortProperty="requestedAt"
+								filterProperty="requestedAt"
+								hAlign="Center">
+								<Label text="{i18n>fldRequestDate}"
+									textAlign="Center"
+									width="100%"/>
+								<t:template>
+									<Text text="{
+									parts: [{
+										path: 'bpWorkflow>requestedAt',
+										type: 'sap.ui.model.type.String'
+									}]
+								}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="10rem"
+								sortProperty="requestedName"
+								filterProperty="requestedName"
+								hAlign="Center">
+								<Label text="{i18n>fldRequestUserId}"
+									textAlign="Center"
+									width="100%"/>
+								<t:template>
+									<Text text="{bpWorkflow>requestedName}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="10rem"
+								sortProperty="approver_ID"
+								filterProperty="approver_ID"
+								hAlign="Center">
+								<Label text="{i18n>fldApprover}"
+									textAlign="Center"
+									width="100%"/>
+								<t:template>
+									<Text text="{bpWorkflow>approver/name}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="8rem"
+								sortProperty="rejectedAt"
+								filterProperty="rejectedAt"
+								hAlign="Center">
+								<Label text="{i18n>fldRejectedDate}"
+									textAlign="Center"
+									width="100%"/>
+								<t:template>
+									<Text text="{
+										parts: [{
+											path: 'bpWorkflow>rejectedAt',
+											type: 'sap.ui.model.type.String'
+										}]
+									}"/>
+								</t:template>
+							</t:Column>
+							<t:Column width="8rem"
+								sortProperty="approvedAt"
+								filterProperty="approvedAt"
+								hAlign="Center">
+								<Label text="{i18n>fldApprovedDate}"
+									textAlign="Center"
+									width="100%"/>
+								<t:template>
+									<Text text="{
+										parts: [{
+											path: 'bpWorkflow>approvedAt',
+											type: 'sap.ui.model.type.String'
+										}]
+									}"/>
+								</t:template>
+							</t:Column>
+							<t:Column hAlign="Center"
+								width="7rem"
+								visible="{= ${mainView>/isApprover} || ${mainView>/isAdmin} ? true : false }">
+								<Label text="{i18n>fldExecutionLog}"/>
+								<t:template>
+									<HBox justifyContent="Center">
+										<Button icon="sap-icon://history"
+											type="Default"
+											press="onPAI"
+											app:fcCode="fcExecutionLog"/>
+									</HBox>
+								</t:template>
+							</t:Column>
+						</t:columns>
+						<t:footer>
+						</t:footer>
+					</t:Table>
+				</l:flexContent>
+			</l:FixFlex>
 		</content>
+		<footer>
+			<OverflowToolbar>
+				<Button text="{i18n>btnCreate}"
+					width="5rem"
+					type="Accept"
+					press="onPAI"
+					app:fcCode="fcPopSelectBPType"/>
+				<Button text="{i18n>btnCreateWithTemplate}"
+					type="Accept"
+					press="onPAI"
+					app:fcCode="fcPopCreatewithTemplateSelectBPType"/>
+				<ToolbarSpacer />
+				<Button text="{i18n>btnAdmin}"
+					visible="{mainView>/isAdmin}"
+					type="Accept"
+					press="onPAI"
+					app:fcCode="fcSettingsForAdmin"/>
+				<Button icon="sap-icon://alert"
+					text="{i18n>btnMessage} : {= ${message>/}.length }"
+					visible="true"
+					type="Critical"
+					enabled="{= ${message>/}.length === 0 ? false : true }"
+					press="onPAI"
+					app:fcCode="fcMessage"/>
+			</OverflowToolbar>
+		</footer>
 	</Page>
 </mvc:View>

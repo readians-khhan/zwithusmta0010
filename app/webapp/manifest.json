@@ -35,10 +35,10 @@
 	"sap.ui5": {
 		"flexEnabled": false,
 		"rootView": {
-			"viewName": "withus.sci.management.SCIManagement.view.Main",
+			"viewName": "withus.sci.management.SCIManagement.view.App",
 			"type": "XML",
 			"async": true,
-			"id": "Main"
+			"id": "app"
 		},
 		"dependencies": {
 			"minUI5Version": "1.65.6",
@@ -73,20 +73,17 @@
 				"viewPath": "withus.sci.management.SCIManagement.view",
 				"controlAggregation": "pages",
 				"controlId": "app",
-				"clearControlAggregation": false
+				"clearControlAggregation": true
 			},
 			"routes": [{
-				"name": "RouteMain",
-				"pattern": "RouteMain",
-				"target": ["TargetMain"]
-			}],
+				"pattern": "",
+				"name": "main",
+				"target": "main"
+			}	],
 			"targets": {
-				"TargetMain": {
-					"viewType": "XML",
-					"transition": "slide",
-					"clearControlAggregation": false,
-					"viewId": "Main",
-					"viewName": "Main"
+				"main": {
+					"viewName": "Main",
+					"viewLevel": 1
 				}
 			}
 		}

@@ -9,20 +9,15 @@
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<tnt:ToolPage class="sapUiDemoToolPage" id="idToolPageMain" sideExpanded="{mainView>/sideExpanded}">
-	<tnt:header>
-      <tnt:ToolHeader>
-        <html:div class="sk_siltron_logo" />
-        <Text text="{i18n>pageHeadTitle}"/>
-        <ToolbarSpacer />
-        <Button visible="false"
-          class="sapUiTinyMarginEnd"
-          type="Default"
-          text="{i18n>btnLogout}"
-          press="onPAI"
-          app:fcCode="fcLogout"/>
-      </tnt:ToolHeader>
-    </tnt:header>
-
-
+		<tnt:header>
+			<!--페이지 헤더 -->
+			<tnt:ToolHeader>
+				<!--화면 로고 -->
+				<html:div class="sk_siltron_logo" />
+				<Text text="{i18n>tlMainHeadTitle}"/>
+				<ToolbarSpacer />
+				<Button visible="true" class="sapUiTinyMarginEnd" type="Default" text="{i18n>btnLogout}" press="onPAI" app:fcCode="fcLogout"/>
+			</tnt:ToolHeader>
+		</tnt:header>
 	</tnt:ToolPage>
 </mvc:View>

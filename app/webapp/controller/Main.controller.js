@@ -12,6 +12,16 @@ sap.ui.define([
 	return BaseController.extend("withus.sci.management.SCIManagement/controller.Main", {
 		onInit: function () {
 
-		}
+		},
+
+		// side Navigation 컨트롤
+		onCollapseExpandPress: function () {
+			var oSideNavigation = this.byId("sideNavigation");
+			var bExpanded = oSideNavigation.getExpanded();
+
+			oSideNavigation.setExpanded(!bExpanded);
+		},
+
 	});
+	
 });

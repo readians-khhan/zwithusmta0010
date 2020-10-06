@@ -15,6 +15,18 @@
 		}
 	},
 
+	"config": {
+		"sample": {
+			"stretch": true,
+			"files": [
+				"Main.view.xml",
+				"Main.controller.js",
+				"css/style.css",
+				"manifest.json"
+			]
+		}
+	},
+
 	"sap.ui": {
 		"technology": "UI5",
 		"icons": {
@@ -45,7 +57,8 @@
 			"libs": {
 				"sap.ui.core": {},
 				"sap.m": {},
-				"sap.ui.layout": {}
+				"sap.ui.layout": {},
+				"sap.tnt" : {}
 			}
 		},
 		"contentDensities": {

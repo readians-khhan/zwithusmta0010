@@ -4,7 +4,8 @@ using {
     SCI_MST0010,
     SCI_MST0010_HIST,
     SCI_MST0020,
-    SCI_MST0020_HIST
+    SCI_MST0020_HIST,
+    SCI_TP0020
 } from '../db/SCIManagement';
 
 
@@ -45,7 +46,6 @@ annotate SCI_TP0010 with @(
     BATCHCYCLE_CD        @description : 'Batch check code (Real Time or Batch)';
     BATCH_TIME           @description : 'Batch Time';
     DELEDTED_TF          @description : 'Is Deleted';
-    modifiedAt           @odata.etag
 };
 
 
@@ -83,7 +83,12 @@ annotate SCI_TP0010_HIST with @(
 
 
 annotate SCI_MST0010 with @(
-    assert.unique : {CATEGORY : [CAT01,CAT02,CAT03,CODE]},
+    assert.unique : {CATEGORY : [
+    CAT01,
+    CAT02,
+    CAT03,
+    CODE
+    ]},
     Capabilities  : {Deletable : false},
     title         : 'Code Mater Table'
 ) {
@@ -95,17 +100,17 @@ annotate SCI_MST0010 with @(
     DESC01     @description : 'Code Description1';
     DESC02     @description : 'Code Description2';
     DELETED_TF @description : 'Is Deleted';
-    modifiedAt 
+    modifiedAt
 }
 
 
 annotate SCI_MST0010_HIST with @(
     readonly,
     cds.autoexpose,
-    title         : 'Code Mater History Table'
+    title : 'Code Mater History Table'
 ) {
     ID         @description : 'Code History Key';
-    MST0010    @description : 'Referenced Code Key'; 
+    MST0010    @description : 'Referenced Code Key';
     CAT01      @description : 'Main Category';
     CAT02      @description : 'Middle Category';
     CAT03      @description : 'SubCategory';
@@ -134,14 +139,14 @@ annotate SCI_MST0020 with @(
     APPL_NM      @description : 'Application Name';
     APPPLTYPE_CD @description : 'Application Type Code';
     DELETED_TF   @description : 'Is Deleted';
-    modifiedAt   
+    modifiedAt
 }
 
 
 annotate SCI_MST0020_HIST with @(
     readonly,
     cds.autoexpose,
-    title         : 'System Mater History Table'
+    title : 'System Mater History Table'
 ) {
     ID           @description : 'System History Key';
     MST0020      @description : 'Referenced System Key';
@@ -152,3 +157,35 @@ annotate SCI_MST0020_HIST with @(
     APPPLTYPE_CD @description : 'Application Type Code';
     DELETED_TF   @description : 'Is Deleted';
 }
+
+annotate SCI_TP0020 with @(
+    title : 'SCI BATCH LIST TABLE',
+    cds.autoexpose
+) {
+    TP0010          @description : 'REFERENCED TP0010 KEY';
+    EXECUTION_CD    @description : '특정일 지정/주기 반복';
+    CYCLE_CD        @description : '특정시간 지정/반복 주기 지정';
+    RECUR_CD        @description : '매일/매주/매년';
+    ONTIME_T        @description : '지정 시간';
+    TIMEINTERVAL_CD @description : '시간 간격';
+    ONFRDATE        @description : '지정 시작시간';
+    ONTODATE        @description : '지정 멈춤시간';
+    TIMEZONE        @description : '타임존(디폴트 값: 한국)';
+}
+
+annotate SCI_TP0020_HIST with @(
+    title : 'SCI BATCH LIST History Table',
+    cds.autoexpose
+) {
+    TP0020          @description : 'REFERENCED TP0020 KEY';
+    TP0010          @description : 'REFERENCED TP0010 KEY';
+    EXECUTION_CD    @description : '특정일 지정/주기 반복';
+    CYCLE_CD        @description : '특정시간 지정/반복 주기 지정';
+    RECUR_CD        @description : '매일/매주/매년';
+    ONTIME_T        @description : '지정 시간';
+    TIMEINTERVAL_CD @description : '시간 간격';
+    ONFRDATE        @description : '지정 시작시간';
+    ONTODATE        @description : '지정 멈춤시간';
+    TIMEZONE        @description : '타임존(디폴트 값: 한국)';
+}
+

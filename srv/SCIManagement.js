@@ -5,23 +5,36 @@ const Email = require('email-templates');
 const objectPath = require('object-path');
 const _ = require('lodash');
 const path = require('path');
-
-
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = cds.service.impl(async function () {
-  
-  this.before("CREATE","SCI_TP_INTERFACELIST_SRV", async req=>{ 
+
+
+
+  this.before("CREATE", "SCI_TP_INTERFACELIST_SRV", async req => {
     const cInterfaceID = new SequenceHelper({
-			db: cds.db,
-			sequence: "INTERFACE_ID",
-			table: "SCI_TP0010",
-			field: "IF_NO"
+      db: cds.db,
+      sequence: "INTERFACE_ID",
+      table: "SCI_TP0010",
+      field: "IF_NO"
     });
-    
     req.data.IF_NO = await cInterfaceID.getNextNumber();
   });
-  
-  
+
+  this.after("CREATE", "SCI_TP_INTERFACELIST_SRV", async data => {
+    this.emit("LogInterfaceList", data);
+    console.log(data);
+  });
+
+  this.on("LogInterfaceList", async (req) => {
+    
+    let oLoggingData = req.data;
+    oLoggingData.TP0010 = req.data.ID;
+    oLoggingData.ID = uuidv4();
+    INSERT.into('SCI_TP0010_HIST').entries(oLoggingData);
+  })
+
+
   this.on("sendErrorEmail", async (req, next) => {
     sendErrorEmail(req, `File Aleready Exist - ${req.data.fileName}`, sOriginalData);
   });

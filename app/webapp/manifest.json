@@ -92,7 +92,7 @@
 				"pattern": "",
 				"name": "main",
 				"target": "main"
-			}	],
+			}],
 			"targets": {
 				"main": {
 					"viewName": "Main",

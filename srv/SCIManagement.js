@@ -7,11 +7,32 @@ const _ = require('lodash');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-module.exports = cds.service.impl(async function () {
+module.exports = cds.service.impl(async (srv) => {
 
+  srv.after("CREATE", "SCI_MST_SYSTEMLIST_SRV", ExceptionHandler((data, req) => {
+    const tx = srv.transaction(req);
+    tx.emit("LogSystemList", _.cloneDeep(data));
 
+  }));
 
-  this.before("CREATE", "SCI_TP_INTERFACELIST_SRV", async req => {
+  srv.after("UPDATE", "SCI_MST_SYSTEMLIST_SRV", ExceptionHandler((data, req) => {
+    const tx = srv.transaction(req);
+    tx.emit("LogSystemList", _.cloneDeep(data));
+
+  }));
+
+  srv.after("CREATE", "SCI_MST_CODE_SRV", ExceptionHandler((data, req) => {
+    const tx = srv.transaction(req);
+    tx.emit("LogCodeList", _.cloneDeep(data));
+  }));
+
+  srv.after("UPDATE", "SCI_MST_CODE_SRV", ExceptionHandler((data, req) => {
+    const tx = srv.transaction(req);
+    tx.emit("LogCodeList", _.cloneDeep(data));
+
+  }));
+
+  srv.before("CREATE", "SCI_TP_INTERFACELIST_SRV", ExceptionHandler(async (req) => {
     const cInterfaceID = new SequenceHelper({
       db: cds.db,
       sequence: "INTERFACE_ID",
@@ -19,25 +40,96 @@ module.exports = cds.service.impl(async function () {
       field: "IF_NO"
     });
     req.data.IF_NO = await cInterfaceID.getNextNumber();
-  });
 
-  this.after("CREATE", "SCI_TP_INTERFACELIST_SRV", async data => {
-    this.emit("LogInterfaceList", data);
-    console.log(data);
-  });
+  }));
 
-  this.on("LogInterfaceList", async (req) => {
-    
+  srv.after("CREATE", "SCI_TP_INTERFACELIST_SRV", ExceptionHandler((data, req) => {
+    const tx = srv.transaction(req);
+    tx.emit("LogInterfaceList", _.cloneDeep(data));
+    if (data.BATCH.length > 0) {
+      tx.emit("LogBatchList", _.cloneDeep(data.BATCH));
+    }
+
+  }));
+
+  srv.after("UPDATE", "SCI_TP_INTERFACELIST_SRV", ExceptionHandler((data, req) => {
+    const tx = srv.transaction(req);
+    tx.emit("LogInterfaceList", _.cloneDeep(data));
+    if (data.BATCH.length > 0) {
+      tx.emit("ChangeExistBatchFlag", _.cloneDeep(data));
+      tx.emit("LogBatchList", _.cloneDeep(data.BATCH));
+    }
+
+  }));
+
+  srv.on("LogSystemList", ExceptionHandler(async (req) => {
+
     let oLoggingData = req.data;
-    oLoggingData.TP0010 = req.data.ID;
+    oLoggingData.MST0020_ID = req.data.ID;
     oLoggingData.ID = uuidv4();
-    INSERT.into('SCI_TP0010_HIST').entries(oLoggingData);
-  })
+    await INSERT.into('SCI_MST0020_HIST').entries(oLoggingData);
+
+  }));
+
+  srv.on("LogCodeList", ExceptionHandler(async (req) => {
+
+    let oLoggingData = req.data;
+    oLoggingData.MST0010_ID = req.data.ID;
+    oLoggingData.ID = uuidv4();
+    await INSERT.into('SCI_MST0010_HIST').entries(oLoggingData);
+  }));
+
+  srv.on("LogInterfaceList", ExceptionHandler(async (req) => {
+
+    let oLoggingData = await SELECT.one('SCI_TP0010').where({ Id: req.data.ID });
+    oLoggingData.TP0010_ID = req.data.ID;
+    oLoggingData.ID = uuidv4();
+    delete oLoggingData.BATCH;
+    await INSERT.into('SCI_TP0010_HIST').entries(oLoggingData);
+  }));
+
+  srv.on("LogBatchList", ExceptionHandler(async (req) => {
+
+    let oLoggingData = req.data;
+
+    _.forEach(oLoggingData, (oData) => {
+      oData.TP0020_ID = oData.ID;
+      oData.ID = uuidv4();
+    })
+
+    await INSERT.into('SCI_TP0020_HIST').entries(oLoggingData);
+  }));
+
+  srv.on("ChangeExistBatchFlag", ExceptionHandler(async (req) => {
+
+    let oLoggingData = await SELECT.from('SCI_TP0020').where({ TP0010_ID: req.data.ID });
+
+    _.forEach(oLoggingData, (oData) => {
+      oData.DELETED_TF = true;
+    })
+
+    await INSERT.into('SCI_TP0020_HIST').entries(oLoggingData);
+  }));
+
+  function ExceptionHandler(handler) {
+    return async (data, req) => {
+      try {
+        await handler(data, req);
+      } catch (error) {
+        console.error(objectPath.get(error, 'details', objectPath.get(error, 'message', 'Unknown Error!')));
+        throw ({
+          code: 500,
+          message: JSON.stringify(objectPath.get(error, 'message', 'Unknown Error!')),
+          target: 'unkonwn'
+        });
+      }
+    };
+  }
 
 
-  this.on("sendErrorEmail", async (req, next) => {
+  srv.on("sendErrorEmail", ExceptionHandler((req, next) => {
     sendErrorEmail(req, `File Aleready Exist - ${req.data.fileName}`, sOriginalData);
-  });
+  }));
 
   const sendErrorEmail = async (req, soApiMessage, sOriginalData) => {
 

@@ -11,6 +11,7 @@
     "express": "^4",
     "nodemailer": "^6.4.11",
     "object-path": "^0.11.4",
+    "passport": "^0.4.1",
     "path": "^0.12.7"
   },
   "devDependencies": {
@@ -22,6 +23,23 @@
     "db": "cds deploy --to sqlite:scimonitoring.db"
   },
   "cds": {
+    "auth": {
+      "passport": {
+        "strategy": "mock",
+        "users": {
+          "alice": {
+            "roles": [
+              "admin"
+            ],
+            "ID": "db.im@readians.com",
+            "password": "secret",
+            "userAttributes": {
+              "country": "US"
+            }
+          }
+        }
+      }
+    },
     "requires": {
       "db": {
         "kind": "sqlite",

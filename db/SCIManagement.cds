@@ -25,7 +25,7 @@ define entity SCI_TP0010 : cuid, managed {
     WEBBINDING_NM        : String(50);
     EXECUTION_CD         : Association to one SCI_MST0010 not null;
     DELEDTED_TF          : Boolean not null default false;
-    BATCH                : Association to many SCI_TP0020 on BATCH.TP0010 = $self;
+    BATCH                : Composition of many SCI_TP0020 on BATCH.TP0010 = $self;
     HISTORY              : Association to many SCI_TP0010_HIST
                                on HISTORY.TP0010 = $self;
 }
@@ -42,7 +42,6 @@ define entity SCI_TP0010_HIST : cuid, managed {
     IF_ASIS              : String(20);
     IF_ASIS_NM           : String(50);
     IF_ASIS_DESC         : String(100);
-    IF_DIRECTION_CD      : Association to one SCI_MST0010 not null;
     SC_SYS_FK            : Association to SCI_MST0020 not null;
     SC_IFTYPE_CD         : Association to one SCI_MST0010 not null;
     TG_SYS_FK            : Association to SCI_MST0020 not null;
@@ -52,8 +51,6 @@ define entity SCI_TP0010_HIST : cuid, managed {
     WEBSERVICE_NM        : String(50);
     WEBBINDING_NM        : String(50);
     EXECUTION_CD         : Association to one SCI_MST0010 not null;
-    BATCHCYCLE_CD        : Association to one SCI_MST0010;
-    BATCH_TIME           : String(10);
     DELEDTED_TF          : Boolean not null default false;
 }
 
@@ -113,6 +110,7 @@ define entity SCI_TP0020 : cuid, managed {
     TIMEINTERVAL_CD : Association to one SCI_MST0010;
     ONFRDATE : Date;
     ONTODATE : Date;
+    DELETED_TF : Boolean not null default false;
     TIMEZONE : String default '한국/서울 +9:00';
 }
 
@@ -127,5 +125,6 @@ define entity SCI_TP0020_HIST : cuid, managed {
     TIMEINTERVAL_CD : Association to one SCI_MST0010;
     ONFRDATE : Date;
     ONTODATE : Date;
+    DELETED_TF : Boolean not null default false;
     TIMEZONE : String default '한국/서울 +9:00';
 }

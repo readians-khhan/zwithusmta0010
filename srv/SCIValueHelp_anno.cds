@@ -51,19 +51,19 @@ annotate VH_IFCYCLE with @(
 );
 annotate VH_BATCHEXEC with @(
   readonly,
-  title : 'Code Mater Interface Batch Execution ValueHelp'
+  title : 'Code Mater Batch Execution ValueHelp'
 );
 annotate VH_BATCHCYCLE with @(
   readonly,
-  title : 'Code Mater Interface Batch Cycle ValueHelp'
+  title : 'Code Mater Batch Cycle ValueHelp'
 );
 annotate VH_BATCHTIMEINTERVAL with @(
   readonly,
-  title : 'Code Mater Interface Batch Time Interval ValueHelp'
+  title : 'Code Mater Batch Time Interval ValueHelp'
 );
 annotate VH_BATCHRECUR with @(
   readonly,
-  title : 'Code Mater Interface Batch Recursive ValueHelp'
+  title : 'Code Mater Batch Recursive ValueHelp'
 );
 
 

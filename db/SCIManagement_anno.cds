@@ -50,9 +50,7 @@ annotate SCI_TP0010 with @(
 
 
 annotate SCI_TP0010_HIST with @(
-    readonly,
     title : 'Interface List Table History',
-    cds.autoexpose
 ) {
     ID                   @description : 'Interface List History Key';
     TP0010               @description : 'Referenced Interface Key';
@@ -105,8 +103,6 @@ annotate SCI_MST0010 with @(
 
 
 annotate SCI_MST0010_HIST with @(
-    readonly,
-    cds.autoexpose,
     title : 'Code Mater History Table'
 ) {
     ID         @description : 'Code History Key';
@@ -144,8 +140,6 @@ annotate SCI_MST0020 with @(
 
 
 annotate SCI_MST0020_HIST with @(
-    readonly,
-    cds.autoexpose,
     title : 'System Mater History Table'
 ) {
     ID           @description : 'System History Key';
@@ -160,7 +154,6 @@ annotate SCI_MST0020_HIST with @(
 
 annotate SCI_TP0020 with @(
     title : 'SCI BATCH LIST TABLE',
-    cds.autoexpose
 ) {
     TP0010          @description : 'REFERENCED TP0010 KEY';
     EXECUTION_CD    @description : '특정일 지정/주기 반복';
@@ -175,7 +168,6 @@ annotate SCI_TP0020 with @(
 
 annotate SCI_TP0020_HIST with @(
     title : 'SCI BATCH LIST History Table',
-    cds.autoexpose
 ) {
     TP0020          @description : 'REFERENCED TP0020 KEY';
     TP0010          @description : 'REFERENCED TP0010 KEY';

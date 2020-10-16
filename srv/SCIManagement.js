@@ -6,13 +6,71 @@ const objectPath = require('object-path');
 const _ = require('lodash');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const bf = require("./lib/BaseFunction");
 
 module.exports = cds.service.impl(async (srv) => {
 
   srv.before("CREATE", "SCI_MST_SYSTEMLIST_SRV", async (req) => {
     if ((req.params.length > 0)) {
-      req.reject({
+      req.error({
         message: `The ID does not exist in the database. : ${req.data.ID}`,
+        target: 'SCI_MST_SYSTEMLIST_SRV'
+      });
+    }
+
+    // ▶ Data Check Logic
+    // * Not Null
+    // -> COMPANY_CD
+    if(bf.IsNotValid(req.data.APPPLTYPE_CD_ID)){
+      req.error({
+        message: `APPPLTYPE_CD_ID value is mandatory. APPPLTYPE_CD_ID : ${req.data.APPPLTYPE_CD_ID}`,
+        target: 'SCI_MST_SYSTEMLIST_SRV'
+      });
+    }
+
+    // -> COMPANY_CD_ID	
+    if(bf.IsNotValid(req.data.COMPANY_CD_ID)){
+      req.error({
+        message: `COMPANY_CD_ID value is mandatory. COMPANY_CD_ID : ${req.data.SUBSIDARY_CD_ID}`,
+        target: 'SCI_MST_SYSTEMLIST_SRV'
+      });
+    }
+
+    // -> APPL_NM	
+    if(bf.IsNotValid(req.data.APPL_NM)){
+      req.error({
+        message: `APPL_NM value is mandatory. APPL_NM : ${req.data.APPL_NM}`,
+        target: 'SCI_MST_SYSTEMLIST_SRV'
+      });
+    }
+
+    // -> SYSTEM_NM
+    if(bf.IsNotValid(req.data.SYSTEM_NM)){
+      req.error({
+        message: `SYSTEM_NM value is mandatory. SYSTEM_NM : ${req.data.SYSTEM_NM}`,
+        target: 'SCI_MST_SYSTEMLIST_SRV'
+      });
+    }
+
+    // * Data UNIQUE
+    let aSelect = await SELECT.from('SCI_MST0020').where({
+      APPPLTYPE_CD_ID: req.data.APPPLTYPE_CD_ID,
+      COMPANY_CD_ID: req.data.COMPANY_CD_ID,
+      SUBSIDARY_CD_ID: req.data.SUBSIDARY_CD_ID,
+      APPL_NM: req.data.APPL_NM,
+      SYSTEM_NM: req.data.SYSTEM_NM
+    });
+
+    if (aSelect.length > 0) {
+      req.reject({
+        message: JSON.stringify({
+          description: "Aleready Exist Data",
+          APPPLTYPE_CD_ID: req.data.APPPLTYPE_CD_ID,
+          COMPANY_CD_ID: req.data.COMPANY_CD_ID,
+          SUBSIDARY_CD_ID: req.data.SUBSIDARY_CD_ID,
+          APPL_NM: req.data.APPL_NM,
+          SYSTEM_NM: req.data.SYSTEM_NM
+        }),
         target: 'SCI_MST_SYSTEMLIST_SRV'
       });
     }
@@ -83,7 +141,7 @@ module.exports = cds.service.impl(async (srv) => {
 
   srv.on("LogSystemList", ExceptionHandler(async (req) => {
 
-    let oLoggingData = await SELECT.one('SCI_MST0020').where({ Id: req.data.ID });
+    let oLoggingData = await SELECT.one('SCI_MST0020').where({ ID: req.data.ID });
     oLoggingData.MST0020_ID = req.data.ID;
     oLoggingData.ID = uuidv4();
     await INSERT.into('SCI_MST0020_HIST').entries(oLoggingData);
@@ -91,7 +149,7 @@ module.exports = cds.service.impl(async (srv) => {
 
   srv.on("LogCodeList", ExceptionHandler(async (req) => {
 
-    let oLoggingData = await SELECT.one('SCI_MST0010').where({ Id: req.data.ID });
+    let oLoggingData = await SELECT.one('SCI_MST0010').where({ ID: req.data.ID });
     oLoggingData.MST0010_ID = req.data.ID;
     oLoggingData.ID = uuidv4();
     await INSERT.into('SCI_MST0010_HIST').entries(oLoggingData);
@@ -99,7 +157,7 @@ module.exports = cds.service.impl(async (srv) => {
 
   srv.on("LogInterfaceList", ExceptionHandler(async (req) => {
 
-    let oLoggingData = await SELECT.one('SCI_TP0010').where({ Id: req.data.ID });
+    let oLoggingData = await SELECT.one('SCI_TP0010').where({ ID: req.data.ID });
     oLoggingData.TP0010_ID = req.data.ID;
     oLoggingData.ID = uuidv4();
     delete oLoggingData.BATCH;

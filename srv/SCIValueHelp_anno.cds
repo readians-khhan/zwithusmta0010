@@ -21,6 +21,7 @@ annotate Service with @(
 annotate TP_INTERFACELIST with @title : 'Interface List Table' {};
 
 annotate MST_CODE with @title : 'Code Mater Service' {};
+
 annotate VH_COMPANY with @(
   readonly,
   title : 'Code Company Mater ValueHelp'
@@ -65,7 +66,6 @@ annotate VH_BATCHRECUR with @(
   readonly,
   title : 'Code Mater Batch Recursive ValueHelp'
 );
-
 
 annotate VH_SYSTEMLIST with @(
   title : 'System Mater ValueHelp',

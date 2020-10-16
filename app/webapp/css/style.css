@@ -23,3 +23,11 @@
 
 	max-width: 15rem;
 }
+
+.sapUiFormResGridCont {
+    padding-bottom: 0 !important;
+}
+
+.sapFDynamicPageHeaderWithContent {
+    padding: 0 !important;
+}

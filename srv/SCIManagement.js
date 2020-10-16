@@ -9,17 +9,33 @@ const { v4: uuidv4 } = require('uuid');
 
 module.exports = cds.service.impl(async (srv) => {
 
+  srv.before("CREATE", "SCI_MST_SYSTEMLIST_SRV", async (req) => {
+    if ((req.params.length > 0)) {
+      req.reject({
+        message: `The ID does not exist in the database. : ${req.data.ID}`,
+        target: 'SCI_MST_SYSTEMLIST_SRV'
+      });
+    }
+  });
+
   srv.after("CREATE", "SCI_MST_SYSTEMLIST_SRV", ExceptionHandler((data, req) => {
     const tx = srv.transaction(req);
     tx.emit("LogSystemList", _.cloneDeep(data));
-
   }));
 
   srv.after("UPDATE", "SCI_MST_SYSTEMLIST_SRV", ExceptionHandler((data, req) => {
     const tx = srv.transaction(req);
     tx.emit("LogSystemList", _.cloneDeep(data));
-
   }));
+
+  srv.before("CREATE", "SCI_MST_CODE_SRV", async (req) => {
+    if ((req.params.length > 0)) {
+      req.reject({
+        message: `The ID does not exist in the database. : ${req.data.ID}`,
+        target: 'SCI_MST_CODE_SRV'
+      });
+    }
+  });
 
   srv.after("CREATE", "SCI_MST_CODE_SRV", ExceptionHandler((data, req) => {
     const tx = srv.transaction(req);
@@ -29,10 +45,16 @@ module.exports = cds.service.impl(async (srv) => {
   srv.after("UPDATE", "SCI_MST_CODE_SRV", ExceptionHandler((data, req) => {
     const tx = srv.transaction(req);
     tx.emit("LogCodeList", _.cloneDeep(data));
-
   }));
 
-  srv.before("CREATE", "SCI_TP_INTERFACELIST_SRV", ExceptionHandler(async (req) => {
+  srv.before("CREATE", "SCI_TP_INTERFACELIST_SRV", async (req) => {
+    if ((req.params.length > 0)) {
+      req.reject({
+        message: `The ID does not exist in the database. : ${req.data.ID}`,
+        target: 'SCI_TP_INTERFACELIST_SRV'
+      });
+    }
+
     const cInterfaceID = new SequenceHelper({
       db: cds.db,
       sequence: "INTERFACE_ID",
@@ -40,8 +62,7 @@ module.exports = cds.service.impl(async (srv) => {
       field: "IF_NO"
     });
     req.data.IF_NO = await cInterfaceID.getNextNumber();
-
-  }));
+  });
 
   srv.after("CREATE", "SCI_TP_INTERFACELIST_SRV", ExceptionHandler((data, req) => {
     const tx = srv.transaction(req);
@@ -56,24 +77,21 @@ module.exports = cds.service.impl(async (srv) => {
     const tx = srv.transaction(req);
     tx.emit("LogInterfaceList", _.cloneDeep(data));
     if (data.BATCH.length > 0) {
-      tx.emit("ChangeExistBatchFlag", _.cloneDeep(data));
       tx.emit("LogBatchList", _.cloneDeep(data.BATCH));
     }
-
   }));
 
   srv.on("LogSystemList", ExceptionHandler(async (req) => {
 
-    let oLoggingData = req.data;
+    let oLoggingData = await SELECT.one('SCI_MST0020').where({ Id: req.data.ID });
     oLoggingData.MST0020_ID = req.data.ID;
     oLoggingData.ID = uuidv4();
     await INSERT.into('SCI_MST0020_HIST').entries(oLoggingData);
-
   }));
 
   srv.on("LogCodeList", ExceptionHandler(async (req) => {
 
-    let oLoggingData = req.data;
+    let oLoggingData = await SELECT.one('SCI_MST0010').where({ Id: req.data.ID });
     oLoggingData.MST0010_ID = req.data.ID;
     oLoggingData.ID = uuidv4();
     await INSERT.into('SCI_MST0010_HIST').entries(oLoggingData);
@@ -91,23 +109,10 @@ module.exports = cds.service.impl(async (srv) => {
   srv.on("LogBatchList", ExceptionHandler(async (req) => {
 
     let oLoggingData = req.data;
-
     _.forEach(oLoggingData, (oData) => {
       oData.TP0020_ID = oData.ID;
       oData.ID = uuidv4();
     })
-
-    await INSERT.into('SCI_TP0020_HIST').entries(oLoggingData);
-  }));
-
-  srv.on("ChangeExistBatchFlag", ExceptionHandler(async (req) => {
-
-    let oLoggingData = await SELECT.from('SCI_TP0020').where({ TP0010_ID: req.data.ID });
-
-    _.forEach(oLoggingData, (oData) => {
-      oData.DELETED_TF = true;
-    })
-
     await INSERT.into('SCI_TP0020_HIST').entries(oLoggingData);
   }));
 

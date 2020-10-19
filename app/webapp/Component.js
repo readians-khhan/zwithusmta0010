@@ -19,6 +19,7 @@ sap.ui.define([
 		 * @override
 		 */
 		init: function () {
+			
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
 
@@ -27,6 +28,7 @@ sap.ui.define([
 
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
+
 			this._h = new DataHub();
 			this._h.manifest = this.getManifest();
 			this._h.device = this.makeDeviceModel();
@@ -41,6 +43,9 @@ sap.ui.define([
 				.setCloseDialogs(false);
 			this.getRouter().initialize();
 			this._h.router = this.getRouter();
+
+			this._h.management = this.getModel('management');
+			this._h.management.getMetaModel().fetchData();
 		},
 		getContentDensityClass: function () {
 

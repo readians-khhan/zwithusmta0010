@@ -1,109 +1,136 @@
 {
-	"_version": "1.12.0",
-	"sap.app": {
-		"id": "withus.sci.management.SCIManagement",
-		"type": "application",
-		"i18n": "i18n/i18n.properties",
-		"applicationVersion": {
-			"version": "1.0.0"
-		},
-		"title": "{{appTitle}}",
-		"description": "{{appDescription}}",
-		"sourceTemplate": {
-			"id": "html5moduletemplates.basicSAPUI5ApplicationProjectModule",
-			"version": "1.40.12"
-		}
-	},
+  "_version": "1.12.0",
+  "sap.app": {
+    "id": "withus.sci.management.SCIManagement",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "sourceTemplate": {
+      "id": "html5moduletemplates.basicSAPUI5ApplicationProjectModule",
+      "version": "1.40.12"
+    },
+    "dataSources": {
+      "management": {
+        "uri": "/backend/management/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
 
-	"config": {
-		"sample": {
-			"stretch": true,
-			"files": [
-				"Main.view.xml",
-				"Main.controller.js",
-				"css/style.css",
-				"manifest.json"
-			]
-		}
-	},
+  "config": {
+    "sample": {
+      "stretch": true,
+      "files": [
+        "Main.view.xml",
+        "Main.controller.js",
+        "css/style.css",
+        "manifest.json"
+      ]
+    }
+  },
 
-	"sap.ui": {
-		"technology": "UI5",
-		"icons": {
-			"icon": "",
-			"favIcon": "",
-			"phone": "",
-			"phone@2": "",
-			"tablet": "",
-			"tablet@2": ""
-		},
-		"deviceTypes": {
-			"desktop": true,
-			"tablet": true,
-			"phone": true
-		}
-	},
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
 
-	"sap.ui5": {
-		"flexEnabled": false,
-		"rootView": {
-			"viewName": "withus.sci.management.SCIManagement.view.App",
-			"type": "XML",
-			"async": true,
-			"id": "app"
-		},
-		"dependencies": {
-			"minUI5Version": "1.65.6",
-			"libs": {
-				"sap.ui.core": {},
-				"sap.m": {},
-				"sap.ui.layout": {},
-				"sap.tnt" : {}
-			}
-		},
-		"contentDensities": {
-			"compact": true,
-			"cozy": true
-		},
-		"models": {
-			"i18n": {
-				"type": "sap.ui.model.resource.ResourceModel",
-				"settings": {
-					"bundleName": "withus.sci.management.SCIManagement.i18n.i18n"
-				}
-			}
-		},
-		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}],
-			"js": [{
-				"uri": "/js/partial.js"
-			}, {
-				"uri": "/js/lodash.js"
-			}]
-		},
-		"routing": {
-			"config": {
-				"routerClass": "sap.m.routing.Router",
-				"viewType": "XML",
-				"async": true,
-				"viewPath": "withus.sci.management.SCIManagement.view",
-				"controlAggregation": "pages",
-				"controlId": "app",
-				"clearControlAggregation": true
-			},
-			"routes": [{
-				"pattern": "",
-				"name": "main",
-				"target": "main"
-			}],
-			"targets": {
-				"main": {
-					"viewName": "Main",
-					"viewLevel": 1
-				}
-			}
-		}
-	}
+  "sap.ui5": {
+    "flexEnabled": false,
+    "rootView": {
+      "viewName": "withus.sci.management.SCIManagement.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+    "dependencies": {
+      "minUI5Version": "1.65.6",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.ui.layout": {},
+        "sap.tnt": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "withus.sci.management.SCIManagement.i18n.i18n"
+        }
+      },
+      "management": {
+        "dataSource": "management",
+        "preload": true,
+        "settings": {
+          "earlyRequests": true,
+          "autoExpandSelect": false,
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "groupId": "$auto"
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ],
+      "js": [
+        {
+          "uri": "/js/partial.js"
+        },
+        {
+          "uri": "/js/lodash.js"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "withus.sci.management.SCIManagement.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": true
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "main",
+          "target": "main"
+        }
+      ],
+      "targets": {
+        "main": {
+          "viewName": "Main",
+          "viewLevel": 1
+        }
+      }
+    }
+  }
 }

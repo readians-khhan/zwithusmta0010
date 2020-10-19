@@ -10,8 +10,48 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("withus.sci.management.SCIManagement/controller.Main", {
+
+		MESSAGE_TYPE: {
+			CREATE: 'Create',
+			UPDATE: 'Update',
+			DELETE: 'Delete',
+			REFRESH: 'Refresh',
+			SEARCH: 'Search'
+		},
+
+
+		/* 
+		========================================================== */
+		/* Lifecyle
+		/* ========================================================== */
+		// Initialization 
 		onInit: function () {
 
+		},
+
+
+		// Before Rendering
+		onBeforeRendering: function () {
+
+		},
+
+		// After Rendering
+		onAfterRendering: function (oEvent) {
+
+		},
+
+		// Destory Program
+		onExit: function () {
+
+		},
+
+
+		/* ========================================================== */
+		/* Events
+		/* ========================================================== */
+		// Data Received Event Hander=
+		onDR_InterfaceList: function (oEvent) {
+			this.showMessageByType(oEvent);
 		},
 
 		// side Navigation 컨트롤
@@ -20,6 +60,11 @@ sap.ui.define([
 			var bExpanded = oSideNavigation.getExpanded();
 
 			oSideNavigation.setExpanded(!bExpanded);
+		},
+
+		// URL Route Event Handler
+		onPatternMatched: function (oEvent) {
+
 		},
 
 		// Event Handler
@@ -184,5 +229,5 @@ sap.ui.define([
 		}
 
 	});
-	
+
 });

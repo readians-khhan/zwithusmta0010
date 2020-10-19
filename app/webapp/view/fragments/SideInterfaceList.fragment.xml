@@ -12,36 +12,13 @@
         visibleRowCountMode="Auto" 
         enableBusyIndicator="true" 
         rows="{
-            path: 'mesData>/MesMaterial',
+            path: 'management>/SCI_TP_INTERFACELIST_SRV',
             parameters: {
                 $count: true,
-                $select: [
-                    'isDeleted',
-                    'canDelete',
-                    'lastExecutedDate'
-                    ,'documentDate'
-                    ,'items/material'
-                    ,'items/plant'
-                    ,'items/storageLocationOrigin'
-                    ,'items/batch'
-                    ,'items/orderID'
-                    ,'items/moveType'
-                    ,'items/movetypeIndicator'
-                    ,'items/entryQuantity'
-                    ,'items/entryUnitOrigin'
-                    ,'items/productionDate'
-                    ,'items/expiryDate'
-                    ,'items/specifyStockIndicator'
-                    ,'items/vendor'
-                    ,'items/costCenter'
-                    ,'items/moveMaterial'
-                    ,'items/movePlant'
-                    ,'items/moveStorageLocation'
-                    ,'items/moveBatch'],
                 $$updateGroupId: 'filesDataGroup'
             },
             events: {
-                dataReceived : '.onDR_Files'
+                dataReceived : '.onDR_InterfaceList'
             }
         }" 
         rowSelectionChange="onPAI" 
@@ -73,14 +50,14 @@
             <!-- File Name -->
             <t:Column width="20rem" 
                 autoResizable="true" 
-                sortProperty="fileName" 
-                filterProperty="fileName" 
+                sortProperty="IF_NM" 
+                filterProperty="IF_NM" 
                 hAlign="Center">
-                <Label text="{i18n>fldFileName}" 
+                <Label text="{i18n>fldInterfaceName}" 
                     textAlign="Center" 
                     width="100%"/>
                 <t:template>
-                	<Text text="{mesData>fileName}" textAlign="Begin" width="100%" wrapping="false"/>
+                	<Text text="{management>IF_NM}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
 

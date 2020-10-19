@@ -46,7 +46,6 @@ annotate SCI_TP0010 with @(
     BATCHCYCLE_CD        @description : 'Batch check code (Real Time or Batch)';
     BATCH_TIME           @description : 'Batch Time';
     DELEDTED_TF          @description : 'Is Deleted';
-    modifiedAt           @odata.etag;
 };
 
 
@@ -96,7 +95,6 @@ annotate SCI_MST0010 with @(
     DESC01     @description : 'Code Description1';
     DESC02     @description : 'Code Description2';
     DELETED_TF @description : 'Is Deleted';
-    modifiedAt @odata.etag;
 }
 
 
@@ -131,7 +129,6 @@ annotate SCI_MST0020 with @(
     APPL_NM      @description : 'Application Name';
     APPPLTYPE_CD @description : 'Application Type Code';
     DELETED_TF   @description : 'Is Deleted';
-    modifiedAt   @odata.etag
 }
 
 
@@ -156,7 +153,6 @@ annotate SCI_TP0020 with @(title : 'SCI BATCH LIST TABLE', ) {
     ONFRDATE        @description : '지정 시작시간';
     ONTODATE        @description : '지정 멈춤시간';
     TIMEZONE        @description : '타임존(디폴트 값: 한국)';
-    modifiedAt @odata.etag;
 }
 
 annotate SCI_TP0020_HIST with @(title : 'SCI BATCH LIST History Table', ) {

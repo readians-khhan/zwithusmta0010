@@ -29,7 +29,7 @@ sap.ui.define(
   ) {
     'use strict';
 
-    return Controller.extend('sk.siltron.mes.cockpit.controller.common.BaseController', {
+    return Controller.extend('withus.sci.management.SCIManagement.common.BaseController', {
       formatter: formatter,
       types: types,
       grouper: grouper,
@@ -1229,6 +1229,42 @@ sap.ui.define(
         });
 
         return deferred.promise;
+      },
+
+      makeNoCaseFilter: function (aFields, sValue, bAnd) {
+
+        var self = this;
+
+        if (_.isEmpty(sValue)) {
+          return null;
+        }
+
+        var aValues = [];
+        aValues.push(sValue);
+        aValues.push(_.toLower(sValue));
+        aValues.push(_.toUpper(sValue));
+        aValues.push(_.capitalize(sValue));
+        aValues.push(_.snakeCase(sValue));
+        aValues = _.uniq(aValues);
+
+        var aFilter = [];
+        var aFilter = _.reduce(aFields, function (aResult, sField) {
+          _.forEach(aValues, function (oValue) {
+            aResult.push(new Filter({
+              path: sField,
+              operator: self.OP.CONTAINS,
+              value1: oValue
+            }));
+          });
+
+          return aResult;
+        }, []);
+
+        if (_.isEmpty(aFilter)) {
+          return null;
+        } else {
+          return new Filter(aFilter, bAnd);
+        }
       }
     });
   }

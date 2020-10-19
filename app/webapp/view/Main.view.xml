@@ -21,7 +21,7 @@
 		</tnt:header>
 		<!-- Side Menu -->
 		<tnt:sideContent class="side-navigation">
-			<tnt:SideNavigation id="sideNavigation" selectedKey="subItem3">
+			<tnt:SideNavigation id="sideNavigation" selectedKey="subItem3" itemSelect="onPAI" app:fcCode="fcItemSelect">
 				<tnt:NavigationList>
 					<!-- 메뉴 버튼 열고 닫기 -->
 					<tnt:NavigationListItem key="menu" text="{i18n>sideExpand}" icon="sap-icon://collapse" />
@@ -43,7 +43,7 @@
 			</tnt:SideNavigation>
 		</tnt:sideContent>
 		<tnt:mainContents>
-			<NavContainer>
+			<NavContainer id="navConMain">
 				<!-- 인터페이스 리스트 -->
 				<f:DynamicPage id="dp-interface" class="sapUiNoContentPadding" fitContent="true" headerExpanded="true" showFooter="true">
 					<f:title>
@@ -59,18 +59,18 @@
 					<f:header>
 						<f:DynamicPageHeader pinnable="false">
 							<f:content>
-								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderFile" type="XML"/>
+								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderInterfaceList" type="XML"/>
 							</f:content>
 						</f:DynamicPageHeader>
 					</f:header>
 					<f:content>
-						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideFiles" type="XML" />
+						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideInterfaceList" type="XML" />
 					</f:content>
 					<f:footer>
 						<OverflowToolbar>
 							<Button icon="sap-icon://alert" text="{i18n>btnMessage} : {= ${message>/}.length }" visible="true" type="Critical" enabled="{= ${message>/}.length === 0 ? false : true }" press="onPAI" app:fcCode="fcMessage"/>
 							<ToolbarSpacer/>
-							<Button icon="sap-icon://download" text="{i18n>btnDownload}" type="Emphasized" press="onPAI" app:fcCode="fcDownloadFiles" busy="{mainView>/iconBusy}"/>
+							<Button icon="sap-icon://download" text="{i18n>btnDownload}" type="Emphasized" press="onPAI" app:fcCode="fcDownloadIntefaceList" busy="{mainView>/iconBusy}"/>
 						</OverflowToolbar>
 					</f:footer>
 				</f:DynamicPage>
@@ -123,8 +123,9 @@
 					</f:content>
 				</f:DynamicPage>
 -->
-				<!-- 코드리스트 -->
-				<!--			<f:DynamicPage id="dp-code" class="sapUiNoContentPadding">
+
+				<!--코드리스트 -->
+				<f:DynamicPage id="dp-code" class="sapUiNoContentPadding">
 					<f:title>
 						<f:DynamicPageTitle backgroundDesign="Transparent">
 							<f:heading>
@@ -146,9 +147,9 @@
 						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideCodes" type="XML" />
 					</f:content>
 				</f:DynamicPage>
--->
-				<!-- 시스템 리스트 -->
-				<!--			<f:DynamicPage id="dp-system" class="sapUiNoContentPadding">
+
+				<!--시스템 리스트-->
+				<f:DynamicPage id="dp-system" class="sapUiNoContentPadding">
 					<f:title>
 						<f:DynamicPageTitle backgroundDesign="Transparent">
 							<f:heading>
@@ -170,7 +171,6 @@
 						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideSystem" type="XML" />
 					</f:content>
 				</f:DynamicPage>
--->
 			</NavContainer>
 		</tnt:mainContents>
 	</tnt:ToolPage>

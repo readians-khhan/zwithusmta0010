@@ -41,14 +41,14 @@ sap.ui.define([
 					this._h.mainView.getProperty('/sideExpanded') ? this._h.mainView.setProperty('/sideExpanded', false) : this._h.mainView.setProperty(
 						'/sideExpanded', true);
 					break;
-				case 'interface':
+				case 'interfaceList':
 					this.getView().byId('tabFileList__bDelete').setEnabled(false);
 					oNavConMain.to(this.getControl('dp-interface'), 'slide');
 					break;
-				case 'code':
+				case 'codeList':
 					oNavConMain.to(this.getControl('dp-code'), 'slide');
 					break;
-				case 'system':
+				case 'systemList':
 					oNavConMain.to(this.getControl('dp-system'), 'slide');
 					break;
 				case 'exception':
@@ -71,7 +71,7 @@ sap.ui.define([
 			var oCondition = this._h.mainView.getProperty('/Files/condition');
 			var oControl = this.getControl(this.CONTROL_ID.tabFileList);
 
-			var aFileNameTokens = _.map(this.getView().byId("MIFilesFileName").getTokens(), oData => {
+			var aFileNameTokens = _.map(this.getView().byId("MIInterfaceName").getTokens(), oData => {
 				return oData.getKey();
 			});
 

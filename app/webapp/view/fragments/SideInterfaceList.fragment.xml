@@ -5,7 +5,7 @@
     xmlns:l="sap.ui.layout" 
     xmlns:f="sap.ui.layout.form" 
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <t:Table id="tabFileList" 
+    <t:Table id="InterfaceList" 
         selectionMode="Single" 
         enableSelectAll="false" 
         alternateRowColors="true" 
@@ -125,7 +125,7 @@
             
             <!-- File Created Date -->
             <t:Column
-                id="tabFileList__CreatedDate" 
+                 
                 sortProperty="fileCreatedDate" 
                 filterProperty="fileCreatedDate" 
                 hAlign="Center" 

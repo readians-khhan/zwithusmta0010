@@ -1,0 +1,229 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns="sap.m" 
+    xmlns:t="sap.ui.table" 
+    xmlns:l="sap.ui.layout" 
+    xmlns:f="sap.ui.layout.form" 
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <t:Table id="SystemList" 
+        selectionMode="Single" 
+        enableSelectAll="false" 
+        alternateRowColors="true" 
+        visibleRowCountMode="Auto" 
+        enableBusyIndicator="true" 
+        rows="{
+            path: 'mesData>/MesMaterial',
+            parameters: {
+                $count: true,
+                $select: [
+                    'isDeleted',
+                    'canDelete',
+                    'lastExecutedDate'
+                    ,'documentDate'
+                    ,'items/material'
+                    ,'items/plant'
+                    ,'items/storageLocationOrigin'
+                    ,'items/batch'
+                    ,'items/orderID'
+                    ,'items/moveType'
+                    ,'items/movetypeIndicator'
+                    ,'items/entryQuantity'
+                    ,'items/entryUnitOrigin'
+                    ,'items/productionDate'
+                    ,'items/expiryDate'
+                    ,'items/specifyStockIndicator'
+                    ,'items/vendor'
+                    ,'items/costCenter'
+                    ,'items/moveMaterial'
+                    ,'items/movePlant'
+                    ,'items/moveStorageLocation'
+                    ,'items/moveBatch'],
+                $$updateGroupId: 'filesDataGroup'
+            },
+            events: {
+                dataReceived : '.onDR_Files'
+            }
+        }" 
+        rowSelectionChange="onPAI" 
+        app:fcCode="fcFileSelectionChange">
+        <t:extension>
+            <OverflowToolbar>
+                <Title text="{i18n>tlTotalCount} { 
+                    path: 'mainView>/Files/totalCount',
+                    type: 'sap.ui.model.odata.type.Int32'}" 
+                    wrapping="false" />
+                <Button type="Transparent" 
+                    icon="sap-icon://refresh" 
+                    press="onPAI" 
+                    app:fcCode="fcFilesRefresh" />
+                <ToolbarSpacer/>
+                <Button text="{i18n>btnCreate}" 
+                    icon="sap-icon://create" 
+                    press="onPAI" 
+                    app:fcCode="fcCreateInterface"/>
+                <Button text="{i18n>btnDelete}" 
+                    icon="sap-icon://delete" 
+                    type="Reject" 
+                    enabled="{= ${mainView>/Files/selectedCount} > 0 ? true : false}"
+                    press="onPAI" 
+                    app:fcCode="fcDeleteInterface"/>
+            </OverflowToolbar>
+        </t:extension>
+        <t:columns>
+            <!-- File Name -->
+            <t:Column width="20rem" 
+                autoResizable="true" 
+                sortProperty="fileName" 
+                filterProperty="fileName" 
+                hAlign="Center">
+                <Label text="{i18n>fldFileName}" 
+                    textAlign="Center" 
+                    width="100%"/>
+                <t:template>
+                	<Text text="{mesData>fileName}" textAlign="Begin" width="100%" wrapping="false"/>
+                </t:template>
+            </t:Column>
+
+            <!-- File Status -->
+            <t:Column width="8rem" 
+                autoResizable="true" 
+                sortProperty="fileStatusText" 
+                filterProperty="fileStatusText" 
+                hAlign="Center">
+                <Label text="{i18n>fldStatus}" 
+                    textAlign="Center" 
+                    width="100%"/>
+                <t:template>
+                    <ObjectStatus text="{mesData>fileStatusText}" 
+                        icon="{mesData>fileStatusIcon}" 
+                        state="{
+                                    parts: [{
+                                        path: 'mesData>fileStatus'
+                                    }],
+                                    formatter: '.getFileStatusColor'
+                                }"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Action -->
+            <t:Column hAlign="Center" 
+                width="5rem">
+                <Label text="{i18n>fldAction}"/>
+                <t:template>
+                    <HBox justifyContent="Center">
+                        <Button icon="sap-icon://history" 
+                            press="onPAI" 
+                            app:fcCode="fcViewHistoryFile" 
+                            app:keyData="{mesData>ID}" />
+                        <Button icon="sap-icon://document-text" 
+                            press="onPAI" 
+                            app:fcCode="fcFileContentsLog" 
+                            app:keyData="{mesData>ID}" />
+                    </HBox>
+                </t:template>
+            </t:Column>
+            
+            <!-- File Created Date -->
+            <t:Column
+                 
+                sortProperty="fileCreatedDate" 
+                filterProperty="fileCreatedDate" 
+                hAlign="Center" 
+                width="12rem">
+                <Label text="{i18n>fldCreatedDate}"/>
+                <t:template>
+                    <Text text="{mesData>fileCreatedDate}"/>
+                </t:template>
+            </t:Column>
+            
+            <!-- Posting Date -->
+            <t:Column 
+                sortProperty="postingDate" 
+                filterProperty="postingDate" 
+                hAlign="Center" 
+                width="12rem">
+                <Label text="{i18n>fldPostingDate}"/>
+                <t:template>
+                    <Text text="{mesData>postingDate}"/>
+                </t:template>
+            </t:Column>
+            
+            <!-- Movement Status -->
+            <t:Column sortProperty="movementStatus" 
+                filterProperty="movementStatus" 
+                hAlign="Center" 
+                width="10rem">
+                <Label text="{i18n>fldStatusMovement}"/>
+                <t:template>
+                    <Text text="{
+                                parts: [{
+                                    path: 'mesData>movementStatus'
+                                }],
+                                formatter: '.getStatusText'
+                            }"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Confirmation Status -->
+            <t:Column sortProperty="confirmationStatus" 
+                filterProperty="confirmationStatus" 
+                hAlign="Center" 
+                width="10rem">
+                <Label text="{i18n>fldStatusConfirmation}"/>
+                <t:template>
+                    <Text text="{
+                                parts: [{
+                                    path: 'mesData>confirmationStatus'
+                                }],
+                                formatter: '.getStatusText'
+                            }"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Item Count -->
+            <t:Column sortProperty="itemCount" 
+                filterProperty="itemCount" 
+                hAlign="Center" 
+                width="10rem">
+                <Label text="{i18n>fldCountItem}"/>
+                <t:template>
+                    <Text text="{mesData>itemCount}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Material Movement Count -->
+            <t:Column sortProperty="movementCount" 
+                filterProperty="movementCount" 
+                hAlign="Center" 
+                width="10rem">
+                <Label text="{i18n>fldCountMovement}"/>
+                <t:template>
+                    <Text text="{mesData>movementCount}"/>
+                </t:template>
+            </t:Column>
+            <!-- Production Confirmation Count -->
+            <t:Column sortProperty="confirmationCount" 
+                filterProperty="confirmationCount" 
+                hAlign="Center" 
+                width="10rem">
+                <Label text="{i18n>fldCountConfirmation}"/>
+                <t:template>
+                    <Text text="{mesData>confirmationCount}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Executed Date -->
+            <t:Column sortProperty="modifiedAt" 
+                filterProperty="modifiedAt" 
+                hAlign="Center" 
+                width="12rem">
+                <Label text="{i18n>fldLastExecuted}"/>
+                <t:template>
+                    <Text text="{mesData>lastExecutedDate}"/>
+                </t:template>
+            </t:Column>
+        </t:columns>
+        <t:footer>
+        </t:footer>
+    </t:Table>
+</core:FragmentDefinition>

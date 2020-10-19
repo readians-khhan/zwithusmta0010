@@ -47,7 +47,7 @@
                 <f:FormContainer>
                     <f:FormElement label="{i18n>fldFileName}">
                         <f:fields>
-                            <MultiInput id="MIFilesFileName" showValueHelp="false" />
+                            <MultiInput id="MIInterfaceName" showValueHelp="false" />
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>

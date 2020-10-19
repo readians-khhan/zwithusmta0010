@@ -13,7 +13,7 @@ sap.ui.define(
     'withus/sci/management/SCIManagement/controller/utils/dateTime',
     'withus/sci/management/SCIManagement/controller/utils/validator'
   ],
-  function (
+  function(
     Controller,
     History,
     MessageToast,
@@ -29,7 +29,7 @@ sap.ui.define(
   ) {
     'use strict';
 
-    return Controller.extend('withus.sci.management.SCIManagement.controller.common.BaseController', {
+    return Controller.extend('sk.siltron.mes.cockpit.controller.common.BaseController', {
       formatter: formatter,
       types: types,
       grouper: grouper,
@@ -111,7 +111,7 @@ sap.ui.define(
       /***************************************************************
        * ■ 모델 생성
        ***************************************************************/
-      createJSONModel: function () {
+      createJSONModel: function() {
         return new JSONModel();
       },
 
@@ -119,7 +119,7 @@ sap.ui.define(
        * ■ 컴포넌트
        ***************************************************************/
       // 컴포넌트객체
-      getComponent: function () {
+      getComponent: function() {
         return this.getOwnerComponent();
       },
 
@@ -127,7 +127,7 @@ sap.ui.define(
        * ■ 라우터
        ***************************************************************/
       // 라우터객체
-      getRouter: function () {
+      getRouter: function() {
         return sap.ui.core.UIComponent.getRouterFor(this);
       },
 
@@ -135,7 +135,7 @@ sap.ui.define(
        * ■ 모델
        ***************************************************************/
       // 모델객체
-      getModel: function (sName) {
+      getModel: function(sName) {
         var oModel = this.getView().getModel(sName);
 
         if (oModel) {
@@ -148,19 +148,19 @@ sap.ui.define(
       },
 
       // 모델바인딩
-      setModel: function (oModel, sName) {
+      setModel: function(oModel, sName) {
         this.getView().setModel(oModel, sName);
       },
 
       // 리소스번들
-      getResourceBundle: function () {
+      getResourceBundle: function() {
         return this.getOwnerComponent()
           .getModel('i18n')
           .getResourceBundle();
       },
 
       // i18n 검색
-      getI18nText: function (sKey, aParams) {
+      getI18nText: function(sKey, aParams) {
         if (!aParams) {
           aParams = [];
         }
@@ -172,7 +172,7 @@ sap.ui.define(
        * ■ 네비게이션
        ***************************************************************/
       // BACK
-      myNavBack: function (sRoute, mData) {
+      myNavBack: function(sRoute, mData) {
         var oHistory = History.getInstance();
         var sPreviousHash = oHistory.getPreviousHash();
 
@@ -188,7 +188,7 @@ sap.ui.define(
        * ■ 데이터허브
        ***************************************************************/
       // 데이터허브
-      getDataHub: function () {
+      getDataHub: function() {
         return this.getOwnerComponent()._h;
       },
 
@@ -196,14 +196,14 @@ sap.ui.define(
        * ■ manifest
        ***************************************************************/
       // 네임스페이스
-      getNamespace: function () {
+      getNamespace: function() {
         return this.getDataHub().manifest['sap.app']['id'];
       },
 
       /***************************************************************
        * ■ 컨트롤
        ***************************************************************/
-      getControl: function (sId) {
+      getControl: function(sId) {
         return this.getView().byId(sId);
       },
 
@@ -211,15 +211,15 @@ sap.ui.define(
        * ■ 이벤트
        ***************************************************************/
       // XML 커스텀데이터
-      getCustomData: function (oEvent, sKey) {
+      getCustomData: function(oEvent, sKey) {
         var aCustomData = oEvent && oEvent.getSource() ? oEvent.getSource().getCustomData() : [];
 
         return _p.go(
           aCustomData,
-          _p.find(function (oCustomData) {
+          _p.find(function(oCustomData) {
             return oCustomData.getProperty('key') === sKey;
           }),
-          function (oResult) {
+          function(oResult) {
             return oResult && oResult.getProperty('value');
           }
         );
@@ -229,7 +229,7 @@ sap.ui.define(
        * ■ 메세지
        ***************************************************************/
       // 메세지 출력
-      showMessage: function (sStatus, sI18nTitle, sI18nMessage) {
+      showMessage: function(sStatus, sI18nTitle, sI18nMessage) {
         var bCompact = !!this.getView()
           .$()
           .closest('.sapUiSizeCompact').length;
@@ -248,7 +248,7 @@ sap.ui.define(
           case this.MSGTYPE.WARNING:
             MessageBox[sStatus](sMessage, {
               title: sTitle,
-              onClose: function (oAction) {
+              onClose: function(oAction) {
                 return deferred.resolve(oAction);
               },
               styleClass: bCompact ? 'sapUiSizeCompact' : ''
@@ -257,7 +257,7 @@ sap.ui.define(
           default:
             MessageBox[this.MSGTYPE.INFORMATION](sMessage, {
               title: sTitle,
-              onClose: function (oAction) {
+              onClose: function(oAction) {
                 return deferred.resolve(oAction);
               },
               styleClass: bCompact ? 'sapUiSizeCompact' : ''
@@ -269,7 +269,7 @@ sap.ui.define(
       },
 
       // MessageToast
-      showMessageToast: function (si18n, sWidth, aParams) {
+      showMessageToast: function(si18n, sWidth, aParams) {
         if (!sWidth) {
           sWidth = '15em';
         }
@@ -288,13 +288,13 @@ sap.ui.define(
       },
 
       // Q 프라미스 에러 출력
-      showPromiseError: function (oError) {
+      showPromiseError: function(oError) {
         // TO-DO : 에러메세지에서 해당 내용을 추출하여 메세지에 추가 필요
         this.showMessage('error', 'errorClientTitle', 'errorClient');
       },
 
       // Q 프라미스 에러를 화면에 출력
-      callPromiseErrorPopup: function (oEvent) {
+      callPromiseErrorPopup: function(oEvent) {
         var sErrorDetail = '';
 
         if (oEvent.statusCode === 500) {
@@ -321,7 +321,7 @@ sap.ui.define(
           if (_.isArray(aErrorListCreated) && aErrorListCreated.length === 0) {
             sErrorDetail = oMainError.value;
           } else {
-            _.forEach(aErrorListCreated, function (oList) {
+            _.forEach(aErrorListCreated, function(oList) {
               sErrorDetail += '[' + oList.severity + '] ' + oList.message + '\n';
             });
           }
@@ -331,7 +331,7 @@ sap.ui.define(
       },
 
       // 서버오류메세지
-      showServiceError: function (sDetails) {
+      showServiceError: function(sDetails) {
         if (this._bMessageOpen) {
           return;
         }
@@ -341,14 +341,14 @@ sap.ui.define(
           details: sDetails,
           styleClass: this.getOwnerComponent().getContentDensityClass(),
           actions: [MessageBox.Action.CLOSE],
-          onClose: function () {
+          onClose: function() {
             this._bMessageOpen = false;
           }.bind(this)
         });
       },
 
       // 확인팝업출력 - 프라미스 반환
-      callPopupConfirm: function (sI18n, sType, sIcon) {
+      callPopupConfirm: function(sI18n, sType, sIcon) {
         var deferred = Q.defer();
         var sMessage = this.getI18nText(sI18n);
 
@@ -363,7 +363,7 @@ sap.ui.define(
         MessageBox[sType](sMessage, {
           icon: sIcon,
           actions: [this.MSGBOXACTION.YES, this.MSGBOXACTION.NO],
-          onClose: function (oAction) {
+          onClose: function(oAction) {
             if (oAction === MessageBox.Action.YES) {
               deferred.resolve('OK');
             } else {
@@ -379,12 +379,12 @@ sap.ui.define(
        * ■ 정합성체크
        ***************************************************************/
       // 문자열이 있는지 체크
-      hasStringValue: function (sValue) {
+      hasStringValue: function(sValue) {
         return _.isString(sValue) && !!sValue.length;
       },
 
       // 숫자값이 있는지 체크
-      hasNumberValue: function (value) {
+      hasNumberValue: function(value) {
         if (!_.isNumber(parseFloat(value)) || _.isNaN(parseFloat(value)) || parseFloat(value) === 0) {
           return false;
         } else {
@@ -396,13 +396,13 @@ sap.ui.define(
        * ■ 필터
        ***************************************************************/
       // 필터생성
-      makeFilter: function (aFields, sOperator, vValue, bAnd) {
+      makeFilter: function(aFields, sOperator, vValue, bAnd) {
         if (!_p.isArray(aFields) || !aFields.length || _p.indexOf(_p.toArray(this.OP), sOperator) < 0) {
           return null;
         }
 
         return new Filter({
-          filters: _p.map(aFields, function (sField) {
+          filters: _p.map(aFields, function(sField) {
             return new Filter(sField, sOperator, vValue);
           }),
           and: !!bAnd
@@ -410,7 +410,7 @@ sap.ui.define(
       },
 
       // Aggregation 필터링
-      setFilter: function (oControl, sAggregation, aFields, sValue, sOperator) {
+      setFilter: function(oControl, sAggregation, aFields, sValue, sOperator) {
         sOperator = _.isString(sOperator) && sOperator.length ? sOperator : this.OP.CONTAINS;
 
         var oFilter = this.makeFilter(aFields, sOperator, sValue, false);
@@ -423,7 +423,7 @@ sap.ui.define(
       },
 
       // Aggregation 필터링 - 필터객체
-      setFilterObj: function (oControl, sAggregation, aFilters, bAnd) {
+      setFilterObj: function(oControl, sAggregation, aFilters, bAnd) {
         aFilters = _.isArray(aFilters) ? aFilters : [];
 
         if (bAnd) {
@@ -435,18 +435,18 @@ sap.ui.define(
       },
 
       // Aggregation 필터삭제
-      clearFilter: function (oControl, sAggregation) {
+      clearFilter: function(oControl, sAggregation) {
         oControl.getBinding(sAggregation).filter([]);
       },
 
       // 필터생성 - 필터배열
-      makeFilterObj: function (aFilterObj, bAnd) {
+      makeFilterObj: function(aFilterObj, bAnd) {
         return _p.isArray(aFilterObj) ? new Filter({ filters: aFilterObj, and: bAnd }) : null;
       },
 
       // 여러조건에 대한 필터 생성 (값은 문자열, 숫자, 날짜)
       // aSettings : field (필드명), op (연산자), from (값1), to (값2)
-      makeMultiFilter: function (aSettings, bAnd) {
+      makeMultiFilter: function(aSettings, bAnd) {
         var self = this;
         var aFilters = [];
         var oFilter = null;
@@ -454,13 +454,13 @@ sap.ui.define(
 
         aFilters = _p.reduce(
           aSettings,
-          function (memo01, oSetting) {
+          function(memo01, oSetting) {
             aSummary = [];
             if (_p.isArray(oSetting.from)) {
               // 배열인 경우 처리
               aSummary = _p.reduce(
                 oSetting.from,
-                function (memo02, sValue) {
+                function(memo02, sValue) {
                   if (!_p.isUndefined(sValue) && !_p.isNull(sValue)) {
                     oFilter = null;
 
@@ -531,7 +531,7 @@ sap.ui.define(
       },
 
       // 필터객체를 필터객체 배열로 만든다 - 필터가 없는 경우를 처리해 준다
-      addFilterObjects: function (aFilters, oFilter) {
+      addFilterObjects: function(aFilters, oFilter) {
         aFilters = _p.isArray(aFilters) ? aFilters : [];
 
         if (_p.isObject(oFilter)) {
@@ -545,7 +545,7 @@ sap.ui.define(
        * ■ 정렬/그룹핑
        ***************************************************************/
       // 정렬객체
-      makeSorter: function (sField, bDescending, bGrouping, fnComparator) {
+      makeSorter: function(sField, bDescending, bGrouping, fnComparator) {
         if (!_.isString(sField) || !sField.length) {
           return null;
         }
@@ -557,14 +557,14 @@ sap.ui.define(
       },
 
       // 정렬객체배열
-      makeSorters: function (aSorterInfo) {
+      makeSorters: function(aSorterInfo) {
         var self = this;
 
         if (!_p.isArray(aSorterInfo) || !aSorterInfo.length) {
           return [];
         }
 
-        return _p.map(aSorterInfo, function (oSorterInfo) {
+        return _p.map(aSorterInfo, function(oSorterInfo) {
           return self.makeSorter(
             oSorterInfo.field,
             oSorterInfo.descending,
@@ -579,7 +579,7 @@ sap.ui.define(
        * 포맷 : https://unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
        ***************************************************************/
       // 날짜문자열
-      getDRS_String: function (oDateRange, sFormat, bUTC) {
+      getDRS_String: function(oDateRange, sFormat, bUTC) {
         if (!oDateRange) {
           return null;
         }
@@ -615,7 +615,7 @@ sap.ui.define(
       },
 
       // Date객체
-      getDRS_Date: function (oDateRange) {
+      getDRS_Date: function(oDateRange) {
         if (!oDateRange) {
           return null;
         }
@@ -627,14 +627,14 @@ sap.ui.define(
       },
 
       // 값초기화 - null 값으로 초기화 된다
-      clearDRS: function (oDateRange) {
+      clearDRS: function(oDateRange) {
         if (oDateRange) {
           oDateRange.setValue(null);
         }
       },
 
       // DateRange에 값 설정 - yyyyMMdd
-      setDateRange: function (oDateRange, sFdate, sTdate) {
+      setDateRange: function(oDateRange, sFdate, sTdate) {
         if (!oDateRange) {
           return null;
         }
@@ -653,17 +653,17 @@ sap.ui.define(
       /***************************************************************
        * ■ 컨트롤 - sap.m.List
        ***************************************************************/
-      deleteListItem: function (aItems, sModel) {
+      deleteListItem: function(aItems, sModel) {
         if (!_p.isArray(aItems) || !aItems.length) return -1;
 
-        var aLists = _p.map(aItems, function (oItem) {
+        var aLists = _p.map(aItems, function(oItem) {
           oItem.setSelected(false);
           return _p.go(
             oItem.getBindingContext(sModel).getPath(),
-            function (sPath) {
+            function(sPath) {
               return _p.mr(sPath, _.last(_.split(sPath, '/')));
             },
-            function (sPath, sIndex) {
+            function(sPath, sIndex) {
               return {
                 model: v.substring(sPath, 0, sPath.length - sIndex.length - 1),
                 index: _p.parseInt(sIndex)
@@ -674,7 +674,7 @@ sap.ui.define(
 
         var sRootPath = aLists[0].model;
         var aModelData = this.getModel(sModel).getProperty(sRootPath);
-        _p.each(_.reverse(_p.sortBy(aLists, 'index')), function (oList) {
+        _p.each(_.reverse(_p.sortBy(aLists, 'index')), function(oList) {
           _p.removeByIndex(aModelData, oList.index);
         });
 
@@ -682,7 +682,7 @@ sap.ui.define(
       },
 
       // 클릭한 아이템의 정보 - sap.m.Table
-      getListItemContext: function (oEvent, sModelName) {
+      getListItemContext: function(oEvent, sModelName) {
         var oContext = null;
 
         if (oEvent.getParameter('listItem')) {
@@ -715,7 +715,7 @@ sap.ui.define(
       },
 
       // 아이템클릭시에 선택여부 변경 - sap.m.Table
-      setListSelected: function (oEvent) {
+      setListSelected: function(oEvent) {
         if (oEvent.getParameter('listItems')) {
           return;
         }
@@ -745,7 +745,7 @@ sap.ui.define(
       },
 
       // 선택된 아이템의 모델데이터 정보 - sap.m.Table/ListBase
-      getTableSelectedItem: function (sId, sModelName) {
+      getTableSelectedItem: function(sId, sModelName) {
         var oTable = this.getControl(sId);
 
         var aItems = oTable.getSelectedItems();
@@ -759,7 +759,7 @@ sap.ui.define(
       },
 
       // 선택된 아이템들의 모델데이터 정보 - sap.m.Table/ListBase
-      getTableSelectedItems: function (sId, sModelName) {
+      getTableSelectedItems: function(sId, sModelName) {
         var oTable = this.getControl(sId);
 
         var aItems = oTable.getSelectedItems();
@@ -769,15 +769,15 @@ sap.ui.define(
         }
         var aData = [];
 
-        _.forEach(aItems, function (oItem) {
+        _.forEach(aItems, function(oItem) {
           aData.push(_.cloneDeep(oItem.getBindingContext(sModelName).getObject()));
         });
 
         return aData;
       },
-
-      getTableSelectedItems01: function (oTable, sModelName) {
-
+      
+      getTableSelectedItems01: function(oTable, sModelName) {
+      	
         var aItems = oTable.getSelectedItems();
 
         if (!_.isArray(aItems) || aItems.length === 0) {
@@ -785,17 +785,17 @@ sap.ui.define(
         }
         var aData = [];
 
-        _.forEach(aItems, function (oItem) {
+        _.forEach(aItems, function(oItem) {
           aData.push(_.cloneDeep(oItem.getBindingContext(sModelName).getObject()));
         });
 
         return aData;
-      },
+      }, 
 
       /***************************************************************
        * ■ 컨트롤 - sap.ui.table.Table
        ***************************************************************/
-      getSelectedTableItem: function (oTable, oModel) {
+      getSelectedTableItem: function(oTable, oModel) {
         if (!oTable) return -1;
 
         var aSelectedindices = oTable.getSelectedIndices();
@@ -812,7 +812,7 @@ sap.ui.define(
         return _.cloneDeep(aTableData[aSelectedindices[0]]);
       },
 
-      getSelectedTableItems: function (oTable, oModel) {
+      getSelectedTableItems: function(oTable, oModel) {
         if (!oTable) return -1;
 
         var aSelectedindices = oTable.getSelectedIndices();
@@ -826,21 +826,21 @@ sap.ui.define(
 
         aTableData = oModel.getProperty(oTable.getBindingPath('rows'));
 
-        _.forEach(aSelectedindices, function (iIndex) {
+        _.forEach(aSelectedindices, function(iIndex) {
           aData.push(_.cloneDeep(aTableData[iIndex]));
         });
 
         return aData;
       },
 
-      getSelectedTableItemContexts: function (oTable) {
+      getSelectedTableItemContexts: function(oTable) {
         if (!oTable) return undefined;
 
         var aSelectedIndex = oTable.getSelectedIndices();
 
         return _p.reduce(
           aSelectedIndex,
-          function (memo, index) {
+          function(memo, index) {
             memo.push(oTable.getContextByIndex(index));
             return memo;
           },
@@ -848,7 +848,7 @@ sap.ui.define(
         );
       },
 
-      deleteTableItems: function (oTable, oModel) {
+      deleteTableItems: function(oTable, oModel) {
         if (!oTable) return -1;
 
         var aSelectedindices = oTable.getSelectedIndices();
@@ -859,13 +859,13 @@ sap.ui.define(
         var sIndex = 0;
         var oRemainItem = [];
 
-        var aLists = _p.map(aSelectedindices, function (iIndex) {
+        var aLists = _p.map(aSelectedindices, function(iIndex) {
           return _p.go(
             oTable.getContextByIndex(iIndex).getPath(),
-            function (sPath) {
+            function(sPath) {
               return _p.mr(sPath, _.last(_.split(sPath, '/')));
             },
-            function (sPath, sIndex) {
+            function(sPath, sIndex) {
               return {
                 model: v.substring(sPath, 0, sPath.length - sIndex.length - 1),
                 index: _p.parseInt(sIndex)
@@ -876,7 +876,7 @@ sap.ui.define(
 
         var sRootPath = aLists[0].model;
         var aModelData = oModel.getProperty(sRootPath);
-        _p.each(_.reverse(_p.sortBy(aLists, 'index')), function (oList) {
+        _p.each(_.reverse(_p.sortBy(aLists, 'index')), function(oList) {
           _p.removeByIndex(aModelData, oList.index);
         });
 
@@ -887,7 +887,7 @@ sap.ui.define(
       /***************************************************************
        * ■ 추가
        ***************************************************************/
-      getContextObject: function (oEvent, sModelName) {
+      getContextObject: function(oEvent, sModelName) {
         return oEvent
           .getSource()
           .getBindingContext(sModelName)
@@ -898,12 +898,12 @@ sap.ui.define(
        * ■ URL
        ***************************************************************/
       // 키값을 가지는 URL 생성
-      makeUrlWithKey: function (sUrl, oKeys) {
+      makeUrlWithKey: function(sUrl, oKeys) {
         var sResult = sUrl;
         var iIndex = 0;
 
         sResult += '(';
-        _.forEach(oKeys, function (sValue, sKey) {
+        _.forEach(oKeys, function(sValue, sKey) {
           iIndex++;
           sResult = sResult + sKey + "='" + sValue + "',";
         });
@@ -917,8 +917,8 @@ sap.ui.define(
        * ■ 데이터
        ***************************************************************/
       // 같은 속성에 대해서 값을 복사
-      moveCorresponding: function (oFrom, oTo) {
-        _.forIn(oTo, function (value, key) {
+      moveCorresponding: function(oFrom, oTo) {
+        _.forIn(oTo, function(value, key) {
           if (!_.isUndefined(oFrom[key])) {
             oTo[key] = oFrom[key];
           }
@@ -929,7 +929,7 @@ sap.ui.define(
        * ■ 프레그먼트
        ***************************************************************/
       // 프레그먼트 팝업 open
-      callPopupFragment: function (sFragmentName, oEvent) {
+      callPopupFragment: function(sFragmentName, oEvent) {
         var sFragmentFile = this.getNamespace() + this.PATH.POPUP_FRAGMENT + sFragmentName;
 
         if (!this.fragments[sFragmentName]) {
@@ -947,7 +947,7 @@ sap.ui.define(
       },
 
       // 프레그먼트 팝업 close
-      closePopupFragment: function (sFragmentName) {
+      closePopupFragment: function(sFragmentName) {
         this.fragments[sFragmentName].close();
       },
 
@@ -955,7 +955,7 @@ sap.ui.define(
        * ■ 스크린
        ***************************************************************/
       //뷰모델의 BUSY 상태를 변경
-      setBusy: function (oViewModel, bBusy) {
+      setBusy: function(oViewModel, bBusy) {
         oViewModel.setProperty('/busy', bBusy);
       },
 
@@ -963,7 +963,7 @@ sap.ui.define(
        * ■ OData 호출
        ***************************************************************/
       // Create : 단일생성 + Deep Insert
-      call_odata_create: function (oModel, sUrl, oData) {
+      call_odata_create: function(oModel, sUrl, oData) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         oData = _.isObject(oData) ? oData : {};
@@ -971,12 +971,12 @@ sap.ui.define(
         var deferred = Q.defer();
 
         oModel.create(sUrl, oData, {
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             oData.sUrl = sUrl;
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oData.sUrl = sUrl;
             deferred.reject(oError);
           }
@@ -986,7 +986,7 @@ sap.ui.define(
       },
 
       // Read : 단일검색
-      call_odata_read: function (oModel, sUrl, oKeys) {
+      call_odata_read: function(oModel, sUrl, oKeys) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         if (oKeys) {
@@ -996,12 +996,12 @@ sap.ui.define(
         var deferred = Q.defer();
 
         oModel.read(sUrl, {
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             oData.sUrl = sUrl;
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oError.sUrl = sUrl;
             deferred.reject(oError);
           }
@@ -1011,7 +1011,7 @@ sap.ui.define(
       },
 
       // Update : 단일변경
-      call_odata_update: function (oModel, sUrl, oKeys, oData) {
+      call_odata_update: function(oModel, sUrl, oKeys, oData) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         oData = _.isObject(oData) ? oData : {};
@@ -1023,7 +1023,7 @@ sap.ui.define(
         var deferred = Q.defer();
 
         oModel.update(sUrl, oData, {
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             if (!oData) {
               oData = {};
             }
@@ -1031,7 +1031,7 @@ sap.ui.define(
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oData.sUrl = sUrl;
             deferred.reject(oError);
           }
@@ -1041,7 +1041,7 @@ sap.ui.define(
       },
 
       // Delete : 단일삭제
-      call_odata_delete: function (oModel, sUrl, oKeys) {
+      call_odata_delete: function(oModel, sUrl, oKeys) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         if (oKeys) {
@@ -1051,7 +1051,7 @@ sap.ui.define(
         var deferred = Q.defer();
 
         oModel.remove(sUrl, {
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             if (!oData) {
               oData = {};
             }
@@ -1059,7 +1059,7 @@ sap.ui.define(
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oError.sUrl = sUrl;
             deferred.reject(oError);
           }
@@ -1069,7 +1069,7 @@ sap.ui.define(
       },
 
       // Query : 다중검색
-      call_odata_query: function (oModel, sUrl, oParams, aFilters, aSorters) {
+      call_odata_query: function(oModel, sUrl, oParams, aFilters, aSorters) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         aFilters = _p.isArray(aFilters) ? aFilters : [];
@@ -1079,12 +1079,12 @@ sap.ui.define(
         var deferred = Q.defer();
 
         oModel.read(sUrl, {
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             oData.sUrl = sUrl;
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oError.sUrl = sUrl;
             deferred.reject(oError);
           },
@@ -1097,7 +1097,7 @@ sap.ui.define(
       },
 
       // Expand : Association 검색
-      call_odata_expand: function (oModel, sUrl, oKeys, aAssociations) {
+      call_odata_expand: function(oModel, sUrl, oKeys, aAssociations) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         if (_p.isObject(oKeys)) {
@@ -1107,7 +1107,7 @@ sap.ui.define(
         if (_p.isArray(aAssociations) && aAssociations.length !== 0) {
           var sAssociation = _p.reduce(
             aAssociations,
-            function (memo, oAssociation, index) {
+            function(memo, oAssociation, index) {
               var sComma = index === 0 ? '' : ',';
               return memo + sComma + oAssociation;
             },
@@ -1120,12 +1120,12 @@ sap.ui.define(
         var deferred = Q.defer();
 
         oModel.read(sUrl, {
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             oData.sUrl = sUrl;
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oError.sUrl = sUrl;
             deferred.reject(oError);
           },
@@ -1138,7 +1138,7 @@ sap.ui.define(
       },
 
       // Expands : Association 검색
-      call_odata_expands: function (oModel, sUrl, oParams, aAssociations, aFilters, aSorters) {
+      call_odata_expands: function(oModel, sUrl, oParams, aAssociations, aFilters, aSorters) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         aFilters = _p.isArray(aFilters) ? aFilters : [];
@@ -1148,7 +1148,7 @@ sap.ui.define(
         if (_p.isArray(aAssociations) && aAssociations.length !== 0) {
           var sAssociation = _p.reduce(
             aAssociations,
-            function (memo, oAssociation, index) {
+            function(memo, oAssociation, index) {
               var sComma = index === 0 ? '' : ',';
               return memo + sComma + oAssociation;
             },
@@ -1162,12 +1162,12 @@ sap.ui.define(
         var deferred = Q.defer();
 
         oModel.read(sUrl, {
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             oData.sUrl = sUrl;
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oError.sUrl = sUrl;
             deferred.reject(oError);
           },
@@ -1179,7 +1179,7 @@ sap.ui.define(
         return deferred.promise;
       },
 
-      call_odata_function: function (oModel, sUrl, oParams, bPost) {
+      call_odata_function: function(oModel, sUrl, oParams, bPost) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         oParams = _p.isObject(oParams) ? oParams : {};
@@ -1190,12 +1190,12 @@ sap.ui.define(
 
         oModel.callFunction(sUrl, {
           method: sMethod,
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             oData.sUrl = sUrl;
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oError.sUrl = sUrl;
             deferred.reject(oError);
           },
@@ -1205,7 +1205,7 @@ sap.ui.define(
         return deferred.promise;
       },
 
-      call_odata_read_stream: function (oModel, sUrl, oKeys) {
+      call_odata_read_stream: function(oModel, sUrl, oKeys) {
         if (!oModel || !this.hasStringValue(sUrl)) return null;
 
         if (oKeys) {
@@ -1217,54 +1217,18 @@ sap.ui.define(
         var deferred = Q.defer();
 
         oModel.read(sUrl, {
-          success: function (oData, oResponse) {
+          success: function(oData, oResponse) {
             oData.sUrl = sUrl;
             oData.oResponse = oResponse;
             deferred.resolve(oData);
           },
-          error: function (oError) {
+          error: function(oError) {
             oError.sUrl = sUrl;
             deferred.reject(oError);
           }
         });
 
         return deferred.promise;
-      },
-
-      makeNoCaseFilter: function (aFields, sValue, bAnd) {
-
-        var self = this;
-
-        if (_.isEmpty(sValue)) {
-          return null;
-        }
-
-        var aValues = [];
-        aValues.push(sValue);
-        aValues.push(_.toLower(sValue));
-        aValues.push(_.toUpper(sValue));
-        aValues.push(_.capitalize(sValue));
-        aValues.push(_.snakeCase(sValue));
-        aValues = _.uniq(aValues);
-
-        var aFilter = [];
-        var aFilter = _.reduce(aFields, function (aResult, sField) {
-          _.forEach(aValues, function (oValue) {
-            aResult.push(new Filter({
-              path: sField,
-              operator: self.OP.CONTAINS,
-              value1: oValue
-            }));
-          });
-
-          return aResult;
-        }, []);
-
-        if (_.isEmpty(aFilter)) {
-          return null;
-        } else {
-          return new Filter(aFilter, bAnd);
-        }
       }
     });
   }

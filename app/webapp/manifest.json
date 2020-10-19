@@ -76,6 +76,11 @@
 		"resources": {
 			"css": [{
 				"uri": "css/style.css"
+			}],
+			"js": [{
+				"uri": "/js/partial.js"
+			}, {
+				"uri": "/js/lodash.js"
 			}]
 		},
 		"routing": {

@@ -226,8 +226,59 @@ sap.ui.define([
 			this.setMessageType(this.MESSAGE_TYPE.SEARCH);
 
 			oControl.getBinding('rows').filter(aFilterObjects);
+		},
+
+		showMessageByType: function (oEvent) {
+
+			var bError = false;
+
+			if (oEvent.getParameter('error')) {
+				bError = true;
+			}
+
+			if (this.bInit) {
+				return;
+			}
+
+			if (bError) {
+				switch (this.sMessageType) {
+					case this.MESSAGE_TYPE.CREATE:
+						this.showMessageToast('msgError07', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.REFRESH:
+						this.showMessageToast('msgError05', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.DELETE:
+						this.showMessageToast('msgError01', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.UPDATE:
+						this.showMessageToast('msgError06', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.SEARCH:
+						this.showMessageToast('msgError08', '20rem', []);
+						break;
+				}
+			} else {
+				switch (this.sMessageType) {
+					case this.MESSAGE_TYPE.CREATE:
+						this.showMessageToast('msgSuccess16', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.REFRESH:
+						this.showMessageToast('msgSuccess14', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.DELETE:
+						this.showMessageToast('msgSuccess05', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.UPDATE:
+						this.showMessageToast('msgSuccess15', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.SEARCH:
+						this.showMessageToast('msgSuccess17', '20rem', [oEvent.getSource().getLength()]);
+						break;
+				}
+			}
+
+			this.sMessageType = '';
 		}
-
 	});
-
 });

@@ -9,8 +9,8 @@
                 <f:FormContainer>
                     <f:FormElement label="{i18n>fldStatusType}">
                         <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Files/statusFile', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Files/condition/fileStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
+                            <MultiComboBox items="{path: 'management>/SCI_TP_INTERFACELIST_SRV'}" selectedKeys="{mainView>/Files/condition/fileStatus}">
+                                <core:Item text="{management>IF_NM}" key="{management>IF_NM}" />
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>

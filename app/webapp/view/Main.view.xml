@@ -70,7 +70,6 @@
 						<OverflowToolbar>
 							<Button icon="sap-icon://alert" text="{i18n>btnMessage} : {= ${message>/}.length }" visible="true" type="Critical" enabled="{= ${message>/}.length === 0 ? false : true }" press="onPAI" app:fcCode="fcMessage"/>
 							<ToolbarSpacer/>
-							<Button icon="sap-icon://download" text="{i18n>btnDownload}" type="Emphasized" press="onPAI" app:fcCode="fcDownloadIntefaceList" busy="{mainView>/iconBusy}"/>
 						</OverflowToolbar>
 					</f:footer>
 				</f:DynamicPage>

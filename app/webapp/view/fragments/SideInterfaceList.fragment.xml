@@ -44,10 +44,11 @@
                     enabled="{= ${mainView>/Files/selectedCount} > 0 ? true : false}"
                     press="onPAI" 
                     app:fcCode="fcDeleteInterface"/>
+                <Button icon="sap-icon://download" text="{i18n>btnDownload}" type="Emphasized" press="onPAI" app:fcCode="fcDownloadIntefaceList" busy="{mainView>/iconBusy}"/>                    
             </OverflowToolbar>
         </t:extension>
         <t:columns>
-            <!-- File Name -->
+            <!-- Interface Name -->
             <t:Column width="20rem" 
                 autoResizable="true" 
                 sortProperty="IF_NM" 

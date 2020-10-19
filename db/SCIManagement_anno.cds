@@ -72,9 +72,8 @@ annotate SCI_TP0010_HIST with @(title : 'Interface List Table History', ) {
     ENTERPRSIESERVICE_NM @description : 'ERP Enterprise Servie Name';
     WEBSERVICE_NM        @description : 'ERP WebService Name';
     WEBBINDING_NM        @description : 'ERP WebBindg Name';
-    EXECUTION_CD         @description : 'Is Interface  key';
-    BATCHCYCLE_CD        @description : 'Batch check code (Real Time or Batch)';
-    BATCH_TIME           @description : 'Batch Time';
+    EXECUTION_CD         @description : 'Batch check code (Real Time or Batch)';
+    BATCH                @description : 'Batch List';
     DELEDTED_TF          @description : 'Is Deleted';
 };
 

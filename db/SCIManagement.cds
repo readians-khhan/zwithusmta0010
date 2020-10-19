@@ -102,7 +102,7 @@ define entity SCI_MST0020_HIST : cuid, managed {
 
 
 define entity SCI_TP0020 : cuid, managed {
-    TP0010    : Association to SCI_TP0010;
+    TP0010    : Association to SCI_TP0010 not null;
     EXECUTION_CD : Association to one SCI_MST0010 ;
     CYCLE_CD : Association to one SCI_MST0010;
     RECUR_CD : Association to one SCI_MST0010;

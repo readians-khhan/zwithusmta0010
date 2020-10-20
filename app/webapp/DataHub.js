@@ -92,31 +92,7 @@ sap.ui.define([
 				totalModificationsCount: 0,
 				selectedModificationsCount: 0
 			},
-			System: {
-				condition: {
-					fromDate: null,
-					toDate: null,
-					fileName: '',
-					fileStatus: ['0'],
-					movementStatus: ['0', '1', '2', '3', '4', '5', '6'],
-					confirmationStatus: ['0', '1', '2', '3', '4', '5', '6'],
-					postingfromDate: null,
-					postingtoDate: null
-				},
-				statusFile: [{
-					statusKey: '0',
-					statusName: "Active"
-				}, {
-					statusKey: '1',
-					statusName: "Deleted"
-				}],
-				statusList: [{
-					statusKey: '0',
-					statusName: "Not Target"
-				}, {
-					statusKey: '1',
-					statusName: "Not Executed"
-				}],
+			SystemList: {
 				totalCount: 0,
 				selectedCount: 0,
 				activeDelete: false

@@ -1,225 +1,121 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" 
-    xmlns:mvc="sap.ui.core.mvc" 
-    xmlns="sap.m" 
-    xmlns:t="sap.ui.table" 
-    xmlns:l="sap.ui.layout" 
-    xmlns:f="sap.ui.layout.form" 
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <t:Table id="SystemList" 
-        selectionMode="Single" 
-        enableSelectAll="false" 
-        alternateRowColors="true" 
-        visibleRowCountMode="Auto" 
-        enableBusyIndicator="true" 
-        rows="{
-            path: 'mesData>/MesMaterial',
+    <t:Table id="tabSystemList" selectionMode="MultiToggle" enableSelectAll="false" alternateRowColors="true" visibleRowCountMode="Auto" enableBusyIndicator="true" rows="{            
+            path: 'management>/SCI_MST_SYSTEMLIST_SRV',
             parameters: {
-                $count: true,
-                $select: [
-                    'isDeleted',
-                    'canDelete',
-                    'lastExecutedDate'
-                    ,'documentDate'
-                    ,'items/material'
-                    ,'items/plant'
-                    ,'items/storageLocationOrigin'
-                    ,'items/batch'
-                    ,'items/orderID'
-                    ,'items/moveType'
-                    ,'items/movetypeIndicator'
-                    ,'items/entryQuantity'
-                    ,'items/entryUnitOrigin'
-                    ,'items/productionDate'
-                    ,'items/expiryDate'
-                    ,'items/specifyStockIndicator'
-                    ,'items/vendor'
-                    ,'items/costCenter'
-                    ,'items/moveMaterial'
-                    ,'items/movePlant'
-                    ,'items/moveStorageLocation'
-                    ,'items/moveBatch'],
-                $$updateGroupId: 'filesDataGroup'
+                $count: true,                
+                $$updateGroupId: 'filesDataGroup',
+                $expand: 'COMPANY_CD,SUBSIDARY_CD,APPPLTYPE_CD,HISTORY'
             },
             events: {
-                dataReceived : '.onDR_Files'
+                dataReceived : '.onDR_SystemList'
             }
-        }" 
-        rowSelectionChange="onPAI" 
-        app:fcCode="fcFileSelectionChange">
+        }" rowSelectionChange="onPAI" app:fcCode="fcSelectionChangeSystemList">
         <t:extension>
             <OverflowToolbar>
                 <Title text="{i18n>tlTotalCount} { 
-                    path: 'mainView>/Files/totalCount',
-                    type: 'sap.ui.model.odata.type.Int32'}" 
-                    wrapping="false" />
-                <Button type="Transparent" 
-                    icon="sap-icon://refresh" 
-                    press="onPAI" 
-                    app:fcCode="fcFilesRefresh" />
+                    path: 'mainView>/SystemList/totalCount',
+                    type: 'sap.ui.model.odata.type.Int32'}" wrapping="false" />
+                <Title text=" / {i18n>tlSelectedCount} { path: 'mainView>/SystemList/selectedCount', type: 'sap.ui.model.odata.type.Int32' }" />
+                <Button type="Transparent" icon="sap-icon://refresh" press="onPAI" app:fcCode="fcRefreshSystem" />
                 <ToolbarSpacer/>
-                <Button text="{i18n>btnCreate}" 
-                    icon="sap-icon://create" 
-                    press="onPAI" 
-                    app:fcCode="fcCreateInterface"/>
-                <Button text="{i18n>btnDelete}" 
-                    icon="sap-icon://delete" 
-                    type="Reject" 
-                    enabled="{= ${mainView>/Files/selectedCount} > 0 ? true : false}"
-                    press="onPAI" 
-                    app:fcCode="fcDeleteInterface"/>
+                <Button text="{i18n>btnCreate}" icon="sap-icon://create" press="onPAI" app:fcCode="fcCreateSystem"/>
+                <Button text="{i18n>btnDelete}" icon="sap-icon://delete" type="Reject" enabled="{= ${mainView>/SystemList/selectedCount} > 0 ? true : false}" press="onPAI" app:fcCode="fcDeleteSystem"/>
             </OverflowToolbar>
         </t:extension>
         <t:columns>
-            <!-- File Name -->
-            <t:Column width="20rem" 
-                autoResizable="true" 
-                sortProperty="fileName" 
-                filterProperty="fileName" 
-                hAlign="Center">
-                <Label text="{i18n>fldFileName}" 
-                    textAlign="Center" 
-                    width="100%"/>
+            <!-- Company Name : 회사 -->
+            <t:Column width="8rem" autoResizable="true" sortProperty="COMPANY_CD/CODE" filterProperty="COMPANY_CD/CODE" hAlign="Center">
+                <Label text="{i18n>fldCompanyCd}" textAlign="Center" width="100%"/>
                 <t:template>
-                	<Text text="{mesData>fileName}" textAlign="Begin" width="100%" wrapping="false"/>
+                    <Text text="{management>COMPANY_CD/DESC01}" textAlign="Center" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
 
-            <!-- File Status -->
-            <t:Column width="8rem" 
-                autoResizable="true" 
-                sortProperty="fileStatusText" 
-                filterProperty="fileStatusText" 
-                hAlign="Center">
-                <Label text="{i18n>fldStatus}" 
-                    textAlign="Center" 
-                    width="100%"/>
+            <!-- Subsidary Company : 자회사 -->
+            <t:Column width="8rem" autoResizable="true" sortProperty="SUBSIDARY_CD/CODE" filterProperty="SUBSIDARY_CD/CODE" hAlign="Center">
+                <Label text="{i18n>fldSubsidaryCd}" textAlign="Center" width="100%"/>
                 <t:template>
-                    <ObjectStatus text="{mesData>fileStatusText}" 
-                        icon="{mesData>fileStatusIcon}" 
-                        state="{
-                                    parts: [{
-                                        path: 'mesData>fileStatus'
-                                    }],
-                                    formatter: '.getFileStatusColor'
-                                }"/>
+                    <Text text="{management>SUBSIDARY_CD/DESC01}" textAlign="Center" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
 
             <!-- Action -->
-            <t:Column hAlign="Center" 
-                width="5rem">
+            <!-- <t:Column hAlign="Center" width="5rem">
                 <Label text="{i18n>fldAction}"/>
                 <t:template>
                     <HBox justifyContent="Center">
-                        <Button icon="sap-icon://history" 
-                            press="onPAI" 
-                            app:fcCode="fcViewHistoryFile" 
-                            app:keyData="{mesData>ID}" />
-                        <Button icon="sap-icon://document-text" 
-                            press="onPAI" 
-                            app:fcCode="fcFileContentsLog" 
-                            app:keyData="{mesData>ID}" />
+                        <Button icon="sap-icon://history" press="onPAI" app:fcCode="fcViewHistoryFile" app:keyData="{mesData>ID}" />
+                        <Button icon="sap-icon://document-text" press="onPAI" app:fcCode="fcFileContentsLog" app:keyData="{mesData>ID}" />
                     </HBox>
                 </t:template>
-            </t:Column>
-            
-            <!-- File Created Date -->
-            <t:Column
-                 
-                sortProperty="fileCreatedDate" 
-                filterProperty="fileCreatedDate" 
-                hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldCreatedDate}"/>
+            </t:Column> -->
+
+            <!-- System Name : 시스템 이름 -->
+            <t:Column sortProperty="SYSTEM_NM" filterProperty="SYSTEM_NM" hAlign="Center" width="8rem" autoResizable="true">
+                <Label text="{i18n>fldSystemNm}"/>
                 <t:template>
-                    <Text text="{mesData>fileCreatedDate}"/>
-                </t:template>
-            </t:Column>
-            
-            <!-- Posting Date -->
-            <t:Column 
-                sortProperty="postingDate" 
-                filterProperty="postingDate" 
-                hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldPostingDate}"/>
-                <t:template>
-                    <Text text="{mesData>postingDate}"/>
-                </t:template>
-            </t:Column>
-            
-            <!-- Movement Status -->
-            <t:Column sortProperty="movementStatus" 
-                filterProperty="movementStatus" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldStatusMovement}"/>
-                <t:template>
-                    <Text text="{
-                                parts: [{
-                                    path: 'mesData>movementStatus'
-                                }],
-                                formatter: '.getStatusText'
-                            }"/>
+                    <Text text="{management>SYSTEM_NM}"/>
                 </t:template>
             </t:Column>
 
-            <!-- Confirmation Status -->
-            <t:Column sortProperty="confirmationStatus" 
-                filterProperty="confirmationStatus" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldStatusConfirmation}"/>
+            <!-- Application Name : 어픨리케이션 이름 -->
+            <t:Column sortProperty="APPL_NM" filterProperty="APPL_NM" hAlign="Center" width="12rem" autoResizable="true">
+                <Label text="{i18n>fldApplNm}"/>
                 <t:template>
-                    <Text text="{
-                                parts: [{
-                                    path: 'mesData>confirmationStatus'
-                                }],
-                                formatter: '.getStatusText'
-                            }"/>
+                    <Text text="{management>APPL_NM}"/>
                 </t:template>
             </t:Column>
 
-            <!-- Item Count -->
-            <t:Column sortProperty="itemCount" 
-                filterProperty="itemCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountItem}"/>
+            <!-- Application Type : 어플리케이션 유형 코드 -->
+            <t:Column sortProperty="APPPLTYPE_CD/CODE" filterProperty="APPPLTYPE_CD/CODE" hAlign="Center" width="20rem" autoResizable="true">
+                <Label text="{i18n>fldApplTypeCd}"/>
                 <t:template>
-                    <Text text="{mesData>itemCount}"/>
+                    <Text text="{management>APPPLTYPE_CD/DESC01}"/>
                 </t:template>
             </t:Column>
 
-            <!-- Material Movement Count -->
-            <t:Column sortProperty="movementCount" 
-                filterProperty="movementCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountMovement}"/>
+            <!-- Deleted :  삭제여부 -->
+            <t:Column sortProperty="DELETED_TF" filterProperty="DELETED_TF" hAlign="Center" width="10rem" autoResizable="true">
+                <Label text="{i18n>fldDeletedIf}"/>
                 <t:template>
-                    <Text text="{mesData>movementCount}"/>
-                </t:template>
-            </t:Column>
-            <!-- Production Confirmation Count -->
-            <t:Column sortProperty="confirmationCount" 
-                filterProperty="confirmationCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountConfirmation}"/>
-                <t:template>
-                    <Text text="{mesData>confirmationCount}"/>
+                    <Text text="{management>DELETED_TF}"/>
                 </t:template>
             </t:Column>
 
-            <!-- Executed Date -->
-            <t:Column sortProperty="modifiedAt" 
-                filterProperty="modifiedAt" 
-                hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldLastExecuted}"/>
+            <!-- Created Dt : 생성날짜 -->
+            <t:Column sortProperty="createdAt" filterProperty="createdAt" hAlign="Center" width="20rem" autoResizable="true">
+                <Label text="{i18n>fldCreatedAt}"/>
                 <t:template>
-                    <Text text="{mesData>lastExecutedDate}"/>
+                    <Text text="{management>createdAt}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Created By : 생성자 -->
+            <t:Column sortProperty="createdBy" filterProperty="createdBy" hAlign="Center" width="10rem" autoResizable="true">
+                <Label text="{i18n>fldCreatedBy}"/>
+                <t:template>
+                    <Text text="{management>createdBy}"/>
+                </t:template>
+            </t:Column>
+            <!-- Modifed Dt : 수정날짜 -->
+            <t:Column sortProperty="modifiedAt" filterProperty="modifiedAt" hAlign="Center" width="20rem" autoResizable="true">
+                <Label text="{i18n>fldModifiedAt}"/>
+                <t:template>
+                    <Text text="{management>modifiedAt}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Modified By : 수정자 -->
+            <t:Column sortProperty="modifiedBy" filterProperty="modifiedBy" hAlign="Center" width="12rem" autoResizable="true">
+                <Label text="{i18n>fldModifiedBy}"/>
+                <t:template>
+                    <Text text="{management>modifiedBy}"/>
                 </t:template>
             </t:Column>
         </t:columns>

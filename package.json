@@ -43,8 +43,9 @@
     "requires": {
       "db": {
         "kind": "sqlite",
+        "model": "*",
         "credentials": {
-          "database": "scimonitoring.db"
+          "database": "sci.db"
         }
       },
       "SCIDEV.sap.hci.api": {

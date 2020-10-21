@@ -5,43 +5,17 @@
     xmlns:l="sap.ui.layout" 
     xmlns:f="sap.ui.layout.form" 
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <t:Table id="SystemList" 
+    <t:Table id="InterfaceList" 
         selectionMode="Single" 
         enableSelectAll="false" 
         alternateRowColors="true" 
         visibleRowCountMode="Auto" 
         enableBusyIndicator="true" 
         rows="{
-            path: 'mesData>/MesMaterial',
+            path: 'management>/SCI_TP_INTERFACELIST_SRV',
             parameters: {
                 $count: true,
-                $select: [
-                    'isDeleted',
-                    'canDelete',
-                    'lastExecutedDate'
-                    ,'documentDate'
-                    ,'items/material'
-                    ,'items/plant'
-                    ,'items/storageLocationOrigin'
-                    ,'items/batch'
-                    ,'items/orderID'
-                    ,'items/moveType'
-                    ,'items/movetypeIndicator'
-                    ,'items/entryQuantity'
-                    ,'items/entryUnitOrigin'
-                    ,'items/productionDate'
-                    ,'items/expiryDate'
-                    ,'items/specifyStockIndicator'
-                    ,'items/vendor'
-                    ,'items/costCenter'
-                    ,'items/moveMaterial'
-                    ,'items/movePlant'
-                    ,'items/moveStorageLocation'
-                    ,'items/moveBatch'],
                 $$updateGroupId: 'filesDataGroup'
-            },
-            events: {
-
             }
         }" 
         rowSelectionChange="onPAI" 
@@ -67,20 +41,21 @@
                     enabled="{= ${mainView>/Files/selectedCount} > 0 ? true : false}"
                     press="onPAI" 
                     app:fcCode="fcDeleteInterface"/>
+                <Button icon="sap-icon://download" text="{i18n>btnDownload}" type="Emphasized" press="onPAI" app:fcCode="fcDownloadIntefaceList" busy="{mainView>/iconBusy}"/>                    
             </OverflowToolbar>
         </t:extension>
         <t:columns>
-            <!-- File Name -->
+            <!-- Interface Name -->
             <t:Column width="20rem" 
                 autoResizable="true" 
-                sortProperty="fileName" 
-                filterProperty="fileName" 
+                sortProperty="IF_NM" 
+                filterProperty="IF_NM" 
                 hAlign="Center">
-                <Label text="{i18n>fldFileName}" 
+                <Label text="{i18n>fldInterfaceName}" 
                     textAlign="Center" 
                     width="100%"/>
                 <t:template>
-                	<Text text="{mesData>fileName}" textAlign="Begin" width="100%" wrapping="false"/>
+                	<Text text="{management>IF_NM}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
 

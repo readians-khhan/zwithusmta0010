@@ -39,9 +39,6 @@
                     ,'items/moveStorageLocation'
                     ,'items/moveBatch'],
                 $$updateGroupId: 'filesDataGroup'
-            },
-            events: {
-                dataReceived : '.onDR_Files'
             }
         }" 
         rowSelectionChange="onPAI" 
@@ -100,7 +97,6 @@
                                     parts: [{
                                         path: 'mesData>fileStatus'
                                     }],
-                                    formatter: '.getFileStatusColor'
                                 }"/>
                 </t:template>
             </t:Column>
@@ -159,7 +155,6 @@
                                 parts: [{
                                     path: 'mesData>movementStatus'
                                 }],
-                                formatter: '.getStatusText'
                             }"/>
                 </t:template>
             </t:Column>
@@ -175,7 +170,6 @@
                                 parts: [{
                                     path: 'mesData>confirmationStatus'
                                 }],
-                                formatter: '.getStatusText'
                             }"/>
                 </t:template>
             </t:Column>

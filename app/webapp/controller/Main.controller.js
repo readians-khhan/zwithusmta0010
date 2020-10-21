@@ -5,13 +5,65 @@ sap.ui.define([
 	"sap/ui/core/Fragment",
 	'sap/ui/model/Filter',
 	'sap/ui/model/FilterType',
+	'sap/ui/model/json/JSONModel',
 	'withus/sci/management/SCIManagement/controller/share/screenData'
 ], function (MessageToast, BaseController, Message, Fragment, Filter, FilterType, screenData) {
 	"use strict";
 
 	return BaseController.extend("withus.sci.management.SCIManagement/controller.Main", {
+
+		ControlID: {
+			// CODE LIST
+			MCIFSoruce: 'Search'
+		},
+
+		MESSAGE_TYPE: {
+			CREATE: 'Create',
+			UPDATE: 'Update',
+			DELETE: 'Delete',
+			REFRESH: 'Refresh',
+			SEARCH: 'Search'
+		},
+
+
+		/* 
+		========================================================== */
+		/* Lifecyle
+		/* ========================================================== */
+		// Initialization 
 		onInit: function () {
 
+			// View Data Initialization
+			this.sMessageType = '';
+
+		},
+
+		// Before Rendering
+		onBeforeRendering: function () {
+
+		},
+
+		// After Rendering
+		onAfterRendering: function (oEvent) {
+
+		},
+
+		// Destory Program
+		onExit: function () {
+
+		},
+
+
+		/* ========================================================== */
+		/* Events
+		/* ========================================================== */
+		// Data Received Event Hander=
+		onDR_InterfaceList: function (oEvent) {
+			this.showMessageByType(oEvent);
+		},
+
+		onDR_CodeList: function (oEvent) {
+			this.showMessageByType(oEvent);
 		},
 
 		// side Navigation 컨트롤
@@ -22,6 +74,11 @@ sap.ui.define([
 			oSideNavigation.setExpanded(!bExpanded);
 		},
 
+		// URL Route Event Handler
+		onPatternMatched: function (oEvent) {
+			this.fcSearchCode();
+		},
+
 		// Event Handler
 		onPAI: function (oEvent) {
 			var sCode = this.getCustomData(oEvent, 'fcCode');
@@ -29,6 +86,9 @@ sap.ui.define([
 			switch (sCode) {
 				case 'fcItemSelect':
 					this.fcItemSelect(oEvent);
+					break;
+				case 'fcSearchCode':
+					this.fcSearchCode(oEvent);
 					break;
 			}
 		},
@@ -41,14 +101,14 @@ sap.ui.define([
 					this._h.mainView.getProperty('/sideExpanded') ? this._h.mainView.setProperty('/sideExpanded', false) : this._h.mainView.setProperty(
 						'/sideExpanded', true);
 					break;
-				case 'interface':
+				case 'interfaceList':
 					this.getView().byId('tabFileList__bDelete').setEnabled(false);
 					oNavConMain.to(this.getControl('dp-interface'), 'slide');
 					break;
-				case 'code':
+				case 'codeList':
 					oNavConMain.to(this.getControl('dp-code'), 'slide');
 					break;
-				case 'system':
+				case 'systemList':
 					oNavConMain.to(this.getControl('dp-system'), 'slide');
 					break;
 				case 'exception':
@@ -71,7 +131,7 @@ sap.ui.define([
 			var oCondition = this._h.mainView.getProperty('/Files/condition');
 			var oControl = this.getControl(this.CONTROL_ID.tabFileList);
 
-			var aFileNameTokens = _.map(this.getView().byId("MIFilesFileName").getTokens(), oData => {
+			var aFileNameTokens = _.map(this.getView().byId("MIInterfaceName").getTokens(), oData => {
 				return oData.getKey();
 			});
 
@@ -181,8 +241,94 @@ sap.ui.define([
 			this.setMessageType(this.MESSAGE_TYPE.SEARCH);
 
 			oControl.getBinding('rows').filter(aFilterObjects);
-		}
+		},
 
+		fcSearchCode: function (oEvent){
+			var self = this;
+			var aFilters = [];
+
+			var oSSCategory = this.getControl(this.ControlID.MCIFSoruce);
+			var oTable = this.getControl("tabCodeList");
+			
+
+			aFilters.push({
+				field: 'CAT01',
+				op: this.OP.CONTAINS,
+				from: aFileNameTokens
+			});
+
+
+
+
+			oControl.getBinding('rows').filter(aFilterObjects);
+
+		},
+
+		/* ========================================================== */
+		/* Local Methods
+		/* ========================================================== */
+
+		setMessageType: function (sType) {
+			this.sMessageType = sType;
+
+			this.oMessageManager.removeAllMessages();
+		},
+
+		showMessageByType: function (oEvent) {
+
+			var bError = false;
+
+			if (oEvent.getParameter('error')) {
+				bError = true;
+			}
+
+			if (this.bInit) {
+				return;
+			}
+
+			if (bError) {
+				switch (this.sMessageType) {
+					case this.MESSAGE_TYPE.CREATE:
+						this.showMessageToast('msgError07', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.REFRESH:
+						this.showMessageToast('msgError05', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.DELETE:
+						this.showMessageToast('msgError01', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.UPDATE:
+						this.showMessageToast('msgError06', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.SEARCH:
+						this.showMessageToast('msgError08', '20rem', []);
+						break;
+				}
+			} else {
+				switch (this.sMessageType) {
+					case this.MESSAGE_TYPE.CREATE:
+						this.showMessageToast('msgSuccess16', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.REFRESH:
+						this.showMessageToast('msgSuccess14', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.DELETE:
+						this.showMessageToast('msgSuccess05', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.UPDATE:
+						this.showMessageToast('msgSuccess15', '20rem', []);
+						break;
+					case this.MESSAGE_TYPE.SEARCH:
+						this.showMessageToast('msgSuccess17', '20rem', [oEvent.getSource().getLength()]);
+						break;
+				}
+			}
+
+			this.sMessageType = '';
+		},
+
+		
 	});
-	
+
+
 });

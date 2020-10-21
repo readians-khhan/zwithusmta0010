@@ -41,7 +41,6 @@
                 $$updateGroupId: 'filesDataGroup'
             },
             events: {
-
             }
         }" 
         rowSelectionChange="onPAI" 

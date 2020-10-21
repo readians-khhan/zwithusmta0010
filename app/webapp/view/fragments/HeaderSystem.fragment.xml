@@ -39,7 +39,7 @@
                 <f:FormContainer>
                     <f:FormElement label="{i18n>fldSystemName}">
                         <f:fields>
-                            <MultiInput id="MIFilesFileName" showValueHelp="false" />
+                            <MultiInput id="MISystemName" showValueHelp="false" />
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>                

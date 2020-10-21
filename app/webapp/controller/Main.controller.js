@@ -66,6 +66,31 @@ sap.ui.define([
 			this.showMessageByType(oEvent);
 		},
 
+
+		// Before Rendering
+		onBeforeRendering: function () {
+
+		},
+
+		// After Rendering
+		onAfterRendering: function (oEvent) {
+
+		},
+
+		// Destory Program
+		onExit: function () {
+
+		},
+
+
+		/* ========================================================== */
+		/* Events
+		/* ========================================================== */
+		// Data Received Event Hander=
+		onDR_InterfaceList: function (oEvent) {
+			this.showMessageByType(oEvent);
+		},
+
 		// side Navigation 컨트롤
 		onCollapseExpandPress: function () {
 			var oSideNavigation = this.byId("sideNavigation");
@@ -325,10 +350,6 @@ sap.ui.define([
 			}
 
 			this.sMessageType = '';
-		},
-
-		
+		}
 	});
-
-
 });

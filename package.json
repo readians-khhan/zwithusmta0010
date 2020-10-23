@@ -42,7 +42,8 @@
     },
     "requires": {
       "db": {
-        "kind": "sql",
+        "kind": "sqlite",
+        "model": "*",
         "credentials": {
           "database": "scimonitoring.db"
         }

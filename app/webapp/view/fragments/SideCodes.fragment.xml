@@ -12,36 +12,13 @@
         visibleRowCountMode="Auto" 
         enableBusyIndicator="true" 
         rows="{
-            path: 'mesData>/MesMaterial',
+            path: 'management>/SCI_MST_CODE_SRV',
             parameters: {
                 $count: true,
-                $select: [
-                    'isDeleted',
-                    'canDelete',
-                    'lastExecutedDate'
-                    ,'documentDate'
-                    ,'items/material'
-                    ,'items/plant'
-                    ,'items/storageLocationOrigin'
-                    ,'items/batch'
-                    ,'items/orderID'
-                    ,'items/moveType'
-                    ,'items/movetypeIndicator'
-                    ,'items/entryQuantity'
-                    ,'items/entryUnitOrigin'
-                    ,'items/productionDate'
-                    ,'items/expiryDate'
-                    ,'items/specifyStockIndicator'
-                    ,'items/vendor'
-                    ,'items/costCenter'
-                    ,'items/moveMaterial'
-                    ,'items/movePlant'
-                    ,'items/moveStorageLocation'
-                    ,'items/moveBatch'],
                 $$updateGroupId: 'filesDataGroup'
             },
             events: {
-                dataReceived : '.onDR_Files'
+                dataReceived : '.onDR_CodeList'
             }
         }" 
         rowSelectionChange="onPAI" 
@@ -55,12 +32,16 @@
                 <Button type="Transparent" 
                     icon="sap-icon://refresh" 
                     press="onPAI" 
-                    app:fcCode="fcFilesRefresh" />
+                    app:fcCode="fcCodeRefresh" />
                 <ToolbarSpacer/>
+                <!-- <Button text="{i18n>btnDownload}" 
+                    icon="sap-icon://download" 
+                    press="onPAI" 
+                    app:fcCode="fcCreateInterface"/>                 -->
                 <Button text="{i18n>btnCreate}" 
                     icon="sap-icon://create" 
                     press="onPAI" 
-                    app:fcCode="fcCreateInterface"/>
+                    app:fcCode="fcCreateCode"/>
                 <Button text="{i18n>btnDelete}" 
                     icon="sap-icon://delete" 
                     type="Reject" 
@@ -70,158 +51,82 @@
             </OverflowToolbar>
         </t:extension>
         <t:columns>
-            <!-- File Name -->
-            <t:Column width="20rem" 
+            <!-- 구분 -->
+            <t:Column width="11rem" 
                 autoResizable="true" 
-                sortProperty="fileName" 
-                filterProperty="fileName" 
+                sortProperty="codeCategory" 
+                filterProperty="codeCategory" 
                 hAlign="Center">
-                <Label text="{i18n>fldFileName}" 
+                <Label text="{i18n>fldCodeCategory}" 
                     textAlign="Center" 
                     width="100%"/>
                 <t:template>
-                	<Text text="{mesData>fileName}" textAlign="Begin" width="100%" wrapping="false"/>
+                	<Text text="{management>CAT01}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- File Status -->
-            <t:Column width="8rem" 
+            <!-- 상세구분 -->
+            <t:Column width="15rem" 
                 autoResizable="true" 
-                sortProperty="fileStatusText" 
-                filterProperty="fileStatusText" 
+                sortProperty="codeDetailCategory" 
+                filterProperty="codeDetailCategory" 
                 hAlign="Center">
-                <Label text="{i18n>fldStatus}" 
+                <Label text="{i18n>fldCodeDetailCategory}" 
                     textAlign="Center" 
                     width="100%"/>
                 <t:template>
-                    <ObjectStatus text="{mesData>fileStatusText}" 
-                        icon="{mesData>fileStatusIcon}" 
-                        state="{
-                                    parts: [{
-                                        path: 'mesData>fileStatus'
-                                    }],
-                                    formatter: '.getFileStatusColor'
-                                }"/>
+                    <Text text="{management>CAT02}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- Action -->
+            <!-- 기타구분  -->
             <t:Column hAlign="Center" 
-                width="5rem">
-                <Label text="{i18n>fldAction}"/>
+                width="10rem">
+                <Label text="{i18n>fldCodeEtcCategory}"/>
                 <t:template>
-                    <HBox justifyContent="Center">
-                        <Button icon="sap-icon://history" 
-                            press="onPAI" 
-                            app:fcCode="fcViewHistoryFile" 
-                            app:keyData="{mesData>ID}" />
-                        <Button icon="sap-icon://document-text" 
-                            press="onPAI" 
-                            app:fcCode="fcFileContentsLog" 
-                            app:keyData="{mesData>ID}" />
-                    </HBox>
+                    <Text text="{management>CAT03}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
-            </t:Column>
-            
-            <!-- File Created Date -->
-            <t:Column
-                 
+            </t:Column>            
+            <!-- 명칭 -->
+            <t:Column                 
                 sortProperty="fileCreatedDate" 
                 filterProperty="fileCreatedDate" 
                 hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldCreatedDate}"/>
+                width="15rem">
+                <Label text="{i18n>fldCodeTitle}"/>
                 <t:template>
-                    <Text text="{mesData>fileCreatedDate}"/>
+                    <Text text="{management>CODE}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
-            </t:Column>
-            
-            <!-- Posting Date -->
+            </t:Column>            
+            <!-- 설명 -->
             <t:Column 
                 sortProperty="postingDate" 
                 filterProperty="postingDate" 
                 hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldPostingDate}"/>
+                width="19rem">
+                <Label text="{i18n>fldCodeDescription}"/>
                 <t:template>
-                    <Text text="{mesData>postingDate}"/>
+                    <Text text="{management>DESC01}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
-            </t:Column>
-            
-            <!-- Movement Status -->
+            </t:Column>            
+            <!-- 상세설명 -->
             <t:Column sortProperty="movementStatus" 
                 filterProperty="movementStatus" 
                 hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldStatusMovement}"/>
+                width="27rem">
+                <Label text="{i18n>fldCodeDetailDescription}"/>
                 <t:template>
-                    <Text text="{
-                                parts: [{
-                                    path: 'mesData>movementStatus'
-                                }],
-                                formatter: '.getStatusText'
-                            }"/>
+                    <Text text="{management>DESC02}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- Confirmation Status -->
-            <t:Column sortProperty="confirmationStatus" 
-                filterProperty="confirmationStatus" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldStatusConfirmation}"/>
-                <t:template>
-                    <Text text="{
-                                parts: [{
-                                    path: 'mesData>confirmationStatus'
-                                }],
-                                formatter: '.getStatusText'
-                            }"/>
-                </t:template>
-            </t:Column>
-
-            <!-- Item Count -->
-            <t:Column sortProperty="itemCount" 
-                filterProperty="itemCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountItem}"/>
-                <t:template>
-                    <Text text="{mesData>itemCount}"/>
-                </t:template>
-            </t:Column>
-
-            <!-- Material Movement Count -->
-            <t:Column sortProperty="movementCount" 
-                filterProperty="movementCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountMovement}"/>
-                <t:template>
-                    <Text text="{mesData>movementCount}"/>
-                </t:template>
-            </t:Column>
-            <!-- Production Confirmation Count -->
-            <t:Column sortProperty="confirmationCount" 
-                filterProperty="confirmationCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountConfirmation}"/>
-                <t:template>
-                    <Text text="{mesData>confirmationCount}"/>
-                </t:template>
-            </t:Column>
-
-            <!-- Executed Date -->
-            <t:Column sortProperty="modifiedAt" 
-                filterProperty="modifiedAt" 
-                hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldLastExecuted}"/>
-                <t:template>
-                    <Text text="{mesData>lastExecutedDate}"/>
-                </t:template>
-            </t:Column>
+            <!-- 삭제여부 -->
+            <t:Column sortProperty="movementStatus" 
+            filterProperty="movementStatus" 
+            hAlign="Center" 
+            width="5rem">
+            <Label text="{i18n>fldCodeDeleted}"/>
+            <t:template>
+                <Text text="{management>DELETED_TF}" textAlign="Begin" width="100%" wrapping="false"/>
+            </t:template>
+        </t:Column>
         </t:columns>
         <t:footer>
         </t:footer>

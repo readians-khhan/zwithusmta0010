@@ -16,9 +16,6 @@
             parameters: {   
                 $count: true,
                 $$updateGroupId: 'filesDataGroup'
-            },
-            events: {
-                dataReceived : '.onDR_InterfaceList'
             }
         }"
         rowSelectionChange="onPAI"

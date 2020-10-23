@@ -104,7 +104,6 @@
                                 }"/>
                 </t:template>
             </t:Column>
-
             <!-- Action -->
             <t:Column hAlign="Center" 
                 width="5rem">
@@ -122,7 +121,6 @@
                     </HBox>
                 </t:template>
             </t:Column>
-            
             <!-- File Created Date -->
             <t:Column
                  
@@ -135,7 +133,6 @@
                     <Text text="{mesData>fileCreatedDate}"/>
                 </t:template>
             </t:Column>
-            
             <!-- Posting Date -->
             <t:Column 
                 sortProperty="postingDate" 
@@ -147,7 +144,6 @@
                     <Text text="{mesData>postingDate}"/>
                 </t:template>
             </t:Column>
-            
             <!-- Movement Status -->
             <t:Column sortProperty="movementStatus" 
                 filterProperty="movementStatus" 
@@ -163,7 +159,6 @@
                             }"/>
                 </t:template>
             </t:Column>
-
             <!-- Confirmation Status -->
             <t:Column sortProperty="confirmationStatus" 
                 filterProperty="confirmationStatus" 

@@ -1,53 +1,184 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
     <Panel class="sapUiNoContentPadding" backgroundDesign="Transparent">
         <f:Form editable="true" width="100%">
             <f:layout>
-                <f:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="4" columnsL="4" columnsM="2" singleContainerFullSize="true" />
+                <f:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="6" columnsL="6" columnsM="3" singleContainerFullSize="true" />
             </f:layout>
             <f:formContainers>
-                <!-- Type -->
-                <f:FormContainer>
-                    <f:FormElement label="{i18n>fldStatusType}">
-                        <f:fields>
-                            <MultiComboBox items="{path: 'management>/SCI_TP_INTERFACELIST_SRV'}" selectedKeys="{mainView>/Files/condition/fileStatus}">
-                                <core:Item text="{management>IF_NM}" key="{management>IF_NM}" />
-                            </MultiComboBox>
-                        </f:fields>
-                    </f:FormElement>
-                </f:FormContainer>
-                <!-- Section -->
-                <f:FormContainer>
-                    <f:FormElement label="{i18n>fldStatusSection}">
-                        <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Files/statusList', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Files/condition/movementStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
-                            </MultiComboBox>
-                        </f:fields>
-                    </f:FormElement>
-                </f:FormContainer>
-                <!-- DetailSection -->
-                <f:FormContainer>
-                    <f:FormElement label="{i18n>fldStatusDetailSection}">
-                        <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Files/statusList', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Files/condition/confirmationStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
-                            </MultiComboBox>
-                        </f:fields>
-                    </f:FormElement>
-                </f:FormContainer>
-                <!-- Creation Date -->
-                <f:FormContainer>
-                    <f:FormElement label="{i18n>fldStatusDate}">
-                        <f:fields>
-                            <DateRangeSelection dateValue="{mainView>/Files/condition/fromDate}" secondDateValue="{mainView>/Files/condition/toDate}" displayFormat="MM.dd.yyyy" required="true" />
-                        </f:fields>
-                    </f:FormElement>
-                </f:FormContainer>
                 <!-- Interface Name -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldFileName}">
+                    <f:FormElement label="{i18n>fldInterfaceName}">
                         <f:fields>
-                            <MultiInput id="MIInterfaceName" showValueHelp="false" />
+                            <MultiInput id="MIInterfaceName"
+                            showValueHelp="false"/>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Interface Number -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldInterfaceNumber}">
+                        <f:fields>
+                            <MultiInput id="MIInterfaceNumber" showValueHelp="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Sorce Company -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldSCompany}">
+                        <f:fields>
+                            <MultiComboBox id="MCIFSorceCompanyCode" items="{path: 'management>/SCI_VH_CODE_COMPANY_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Sorce Subsidary -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldSSubsidary}">
+                        <f:fields>
+                            <MultiComboBox id="MCIFSorceSubsidaryCode"  items="{path: 'management>/SCI_VH_CODE_SUBSIDARY_SRV'}">
+                                <core:Item text="{management>DESC01}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Sorce System -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldSSystemName}">
+                        <f:fields>
+                            <MultiInput id="MISSystemName" showValueHelp="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Sorce Application -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldSApplicationName}">
+                        <f:fields>
+                            <MultiInput id="MISApplicationName" showValueHelp="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Sorce Application Type -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldSApplicationType}">
+                        <f:fields>
+                            <MultiComboBox id="MCSApplicationType" items="{path: 'management>/SCI_VH_CODE_APPLICATIONTYPE_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Sorce Interface Protocol -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldSProtocol}">
+                        <f:fields>
+                            <MultiComboBox id="MCSInterfaceProtocol" items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Target Company -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldTCompany}">
+                        <f:fields>
+                            <MultiComboBox id="MCTargetCompanyCode" items="{path: 'management>/SCI_VH_CODE_COMPANY_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Target Subsidary -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldTSubsidary}">
+                        <f:fields>
+                            <MultiComboBox id="MCTargetSubsidaryCode"  items="{path: 'management>/SCI_VH_CODE_SUBSIDARY_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Target System -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldTSystemName}">
+                        <f:fields>
+                            <MultiInput id="MITSystemName" showValueHelp="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Target Application -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldTApplicationName}">
+                        <f:fields>
+                            <MultiInput id="MITApplicationName" showValueHelp="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Target Application Type -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldTApplicationType}">
+                        <f:fields>
+                            <MultiComboBox id="MCTApplicationType" items="{path: 'management>/SCI_VH_CODE_APPLICATIONTYPE_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Target Interface Protocol -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldTProtocol}">
+                        <f:fields>
+                            <MultiComboBox id="MCTInterfaceProtocol" items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Interface Status -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldStatus}">
+                        <f:fields>
+                            <MultiComboBox id="MCstatus" items="{path: 'management>/SCI_VH_CODE_IFSTATUS_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Interface Type -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldBatch}">
+                        <f:fields>
+                            <MultiComboBox id="MCInterfaceType" items="{path: 'management>/SCI_VH_CODE_IFEXECUTION_SRV'}">
+                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            </MultiComboBox>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- SCI Package -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldSCIPackage}">
+                        <f:fields>
+                            <MultiInput id="MISCIPackage" showValueHelp="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- SCI Integration Flow -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldSCIif}">
+                        <f:fields>
+                            <MultiInput id="MISCIIf" showValueHelp="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- Deleted -->
+                <f:FormContainer>
+                    <f:FormElement>
+                        <f:fields>
+                            <CheckBox id="CBdeleted" text="{i18n>cbdeleted}" selected="false" />
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>

@@ -1,203 +1,531 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" 
-    xmlns:mvc="sap.ui.core.mvc" 
-    xmlns="sap.m" 
-    xmlns:t="sap.ui.table" 
-    xmlns:l="sap.ui.layout" 
-    xmlns:f="sap.ui.layout.form" 
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <t:Table id="InterfaceList" 
-        selectionMode="Single" 
-        enableSelectAll="false" 
-        alternateRowColors="true" 
-        visibleRowCountMode="Auto" 
-        enableBusyIndicator="true" 
+    <t:Table id="InterfaceList"
+        selectionMode="Single"
+        enableSelectAll="false"
+        alternateRowColors="true"
+        visibleRowCountMode="Auto"
+        enableBusyIndicator="true"
         rows="{
             path: 'management>/SCI_TP_INTERFACELIST_SRV',
-            parameters: {
+            parameters: {   
                 $count: true,
                 $$updateGroupId: 'filesDataGroup'
             },
             events: {
                 dataReceived : '.onDR_InterfaceList'
             }
-        }" 
-        rowSelectionChange="onPAI" 
+        }"
+        rowSelectionChange="onPAI"
         app:fcCode="fcFileSelectionChange">
         <t:extension>
             <OverflowToolbar>
                 <Title text="{i18n>tlTotalCount} { 
                     path: 'mainView>/Files/totalCount',
-                    type: 'sap.ui.model.odata.type.Int32'}" 
+                    type: 'sap.ui.model.odata.type.Int32'}"
                     wrapping="false" />
-                <Button type="Transparent" 
-                    icon="sap-icon://refresh" 
-                    press="onPAI" 
+                <Button type="Transparent"
+                    icon="sap-icon://refresh"
+                    press="onPAI"
                     app:fcCode="fcFilesRefresh" />
                 <ToolbarSpacer/>
-                <Button text="{i18n>btnCreate}" 
-                    icon="sap-icon://create" 
-                    press="onPAI" 
-                    app:fcCode="fcCreateInterface"/>
-                <Button text="{i18n>btnDelete}" 
-                    icon="sap-icon://delete" 
-                    type="Reject" 
+                <Button text="{i18n>btnCreate}"
+                    icon="sap-icon://create"
+                    press="onPAI"
+                    app:fcCode="fcCreateIntefaceList"/>
+                <Button text="{i18n>btnDelete}"
+                    icon="sap-icon://delete"
+                    type="Reject"
                     enabled="{= ${mainView>/Files/selectedCount} > 0 ? true : false}"
-                    press="onPAI" 
+                    press="onPAI"
                     app:fcCode="fcDeleteInterface"/>
-                <Button icon="sap-icon://download" text="{i18n>btnDownload}" type="Emphasized" press="onPAI" app:fcCode="fcDownloadIntefaceList" busy="{mainView>/iconBusy}"/>                    
+                <Button icon="sap-icon://download"
+                    text="{i18n>btnDownload}"
+                    type="Emphasized"
+                    press="onPAI"
+                    app:fcCode="fcDownloadIntefaceList"
+                    busy="{mainView>/iconBusy}"/>
             </OverflowToolbar>
         </t:extension>
         <t:columns>
+            <!-- Deleted_TF -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="DELEDTED_TF"
+                filterProperty="DELEDTED_TF"
+                hAlign="Center">
+                <Label text="{i18n>fldDelted}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>DELEDTED_TF}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Interface Status -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="STATUS_CD/CODE"
+                filterProperty="STATUS_CD/CODE"
+                hAlign="Center">
+                <Label text="{i18n>fldStatus}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>STATUS_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Interface No -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_NO"
+                filterProperty="IF_NO"
+                hAlign="Center">
+                <Label text="{i18n>fldInterfaceNumber}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>IF_NO}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
             <!-- Interface Name -->
-            <t:Column width="20rem" 
-                autoResizable="true" 
-                sortProperty="IF_NM" 
-                filterProperty="IF_NM" 
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_NM"
+                filterProperty="IF_NM"
                 hAlign="Center">
-                <Label text="{i18n>fldInterfaceName}" 
-                    textAlign="Center" 
+                <Label text="{i18n>fldInterfaceName}"
+                    textAlign="Center"
                     width="100%"/>
                 <t:template>
-                	<Text text="{management>IF_NM}" textAlign="Begin" width="100%" wrapping="false"/>
+                    <Text text="{management>IF_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- File Status -->
-            <t:Column width="8rem" 
-                autoResizable="true" 
-                sortProperty="fileStatusText" 
-                filterProperty="fileStatusText" 
+            <!-- 갱신날짜 -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
                 hAlign="Center">
-                <Label text="{i18n>fldStatus}" 
-                    textAlign="Center" 
+                <Label text="{i18n>fldmodifiedAt}"
+                    textAlign="Center"
                     width="100%"/>
                 <t:template>
-                    <ObjectStatus text="{mesData>fileStatusText}" 
-                        icon="{mesData>fileStatusIcon}" 
-                        state="{
-                                    parts: [{
-                                        path: 'mesData>fileStatus'
-                                    }],
-                                    formatter: '.getFileStatusColor'
-                                }"/>
+                    <Text text="{management>modifiedAt}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- Action -->
-            <t:Column hAlign="Center" 
-                width="5rem">
-                <Label text="{i18n>fldAction}"/>
+            <!-- Interface Description -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldInterfaceDesc}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <HBox justifyContent="Center">
-                        <Button icon="sap-icon://history" 
-                            press="onPAI" 
-                            app:fcCode="fcViewHistoryFile" 
-                            app:keyData="{mesData>ID}" />
-                        <Button icon="sap-icon://document-text" 
-                            press="onPAI" 
-                            app:fcCode="fcFileContentsLog" 
-                            app:keyData="{mesData>ID}" />
-                    </HBox>
+                    <Text text="{management>IF_DESC}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-            
-            <!-- File Created Date -->
-            <t:Column
-                 
-                sortProperty="fileCreatedDate" 
-                filterProperty="fileCreatedDate" 
-                hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldCreatedDate}"/>
+            <!-- SCI Package -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldSCIPackage}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <Text text="{mesData>fileCreatedDate}"/>
+                    <Text text="{management>PAKCAGE_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-            
-            <!-- Posting Date -->
-            <t:Column 
-                sortProperty="postingDate" 
-                filterProperty="postingDate" 
-                hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldPostingDate}"/>
+            <!-- SCI Integration Flow Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldSCIif}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <Text text="{mesData>postingDate}"/>
+                    <Text text="{management>PI_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-            
-            <!-- Movement Status -->
-            <t:Column sortProperty="movementStatus" 
-                filterProperty="movementStatus" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldStatusMovement}"/>
+            <!-- Interface As-Is ID -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldaAsIsID}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <Text text="{
-                                parts: [{
-                                    path: 'mesData>movementStatus'
-                                }],
-                                formatter: '.getStatusText'
-                            }"/>
+                    <Text text="{management>IF_ASIS}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- Confirmation Status -->
-            <t:Column sortProperty="confirmationStatus" 
-                filterProperty="confirmationStatus" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldStatusConfirmation}"/>
+            <!-- Interface As-Is Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldaAsIsName}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <Text text="{
-                                parts: [{
-                                    path: 'mesData>confirmationStatus'
-                                }],
-                                formatter: '.getStatusText'
-                            }"/>
+                    <Text text="{management>IF_ASIS_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- Item Count -->
-            <t:Column sortProperty="itemCount" 
-                filterProperty="itemCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountItem}"/>
+            <!-- Interface As-Is Description -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldaAsIsDesc}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <Text text="{mesData>itemCount}"/>
+                    <Text text="{management>IF_ASIS_DESC}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- Material Movement Count -->
-            <t:Column sortProperty="movementCount" 
-                filterProperty="movementCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountMovement}"/>
+            <!-- Sorce Company -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldSCompany}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <Text text="{mesData>movementCount}"/>
+                    <Text text="{management>SC_SYS_COMAPANY_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-            <!-- Production Confirmation Count -->
-            <t:Column sortProperty="confirmationCount" 
-                filterProperty="confirmationCount" 
-                hAlign="Center" 
-                width="10rem">
-                <Label text="{i18n>fldCountConfirmation}"/>
+            <!-- Sorce Subsidary -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldSSubsidary}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <Text text="{mesData>confirmationCount}"/>
+                    <Text text="{management>SC_SYS_SUBSIDARY_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
-
-            <!-- Executed Date -->
-            <t:Column sortProperty="modifiedAt" 
-                filterProperty="modifiedAt" 
-                hAlign="Center" 
-                width="12rem">
-                <Label text="{i18n>fldLastExecuted}"/>
+            <!-- Sorce System Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldSSystemName}"
+                    textAlign="Center"
+                    width="100%"/>
                 <t:template>
-                    <Text text="{mesData>lastExecutedDate}"/>
+                    <Text text="{management>SC_SYS_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Sorce Application Type -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldSApplicationType}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>SC_SYS_APPLTYPE_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Sorce Application Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldSApplicationName}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>SC_SYS_APPL_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Sorce Protocol -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldSProtocol}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>SC_IFTYPE_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Target Company -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldTCompany}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>TG_SYS_COMAPANY_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Target Subsidary -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldTSubsidary}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>TG_SYS_SUBSIDARY_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Target System Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldTSystemName}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>TG_SYS_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Target Application Type -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldTApplicationType}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>TG_SYS_APPLTYPE_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Target Application Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldTApplicationName}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>TG_SYS_APPL_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Target Protocol -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="TG_IFTYPE_DESC01"
+                filterProperty="TG_IFTYPE_DESC01"
+                hAlign="Center">
+                <Label text="{i18n>fldTProtocol}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>TG_IFTYPE_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- RFC Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="RFC_NM"
+                filterProperty="RFC_NM"
+                hAlign="Center">
+                <Label text="{i18n>fldRFCName}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>RFC_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Enterprise Service Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="ENTERPRSIESERVICE_NM"
+                filterProperty="ENTERPRSIESERVICE_NM"
+                hAlign="Center">
+                <Label text="{i18n>fldESName}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>ENTERPRSIESERVICE_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Web Service Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="WEBSERVICE_NM"
+                filterProperty="WEBSERVICE_NM"
+                hAlign="Center">
+                <Label text="{i18n>fldWSName}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>WEBSERVICE_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Web Binding Name -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="WEBBINDING_NM"
+                filterProperty="WEBBINDING_NM"
+                hAlign="Center">
+                <Label text="{i18n>fldWSBName}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>WEBBINDING_NM}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Execution Type -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="EXECUTION_DESC01"
+                filterProperty="EXECUTION_DESC01"
+                hAlign="Center">
+                <Label text="{i18n>fldExecutionType}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>EXECUTION_DESC01}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
+                </t:template>
+            </t:Column>
+            <!-- Batch List -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                hAlign="Center">
+                <Label text="{i18n>fldBatchList}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Button text="List"></Button>
+                </t:template>
+            </t:Column>
+            <!-- 작성자 -->
+            <t:Column width="7rem"
+                autoResizable="true"
+                sortProperty="IF_DESC"
+                filterProperty="IF_DESC"
+                hAlign="Center">
+                <Label text="{i18n>fldmodifiedBy}"
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Text text="{management>modifiedBy}"
+                        textAlign="Begin"
+                        width="100%"
+                        wrapping="false"/>
                 </t:template>
             </t:Column>
         </t:columns>

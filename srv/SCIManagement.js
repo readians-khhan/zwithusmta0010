@@ -16,6 +16,7 @@ module.exports = cds.service.impl(async (srv) => {
         message: `The ID does not exist in the database. : ${req.data.ID}`,
         target: 'SCI_MST_SYSTEMLIST_SRV'
       });
+      return;
     }
 
     // ▶ Data Check Logic
@@ -125,7 +126,7 @@ module.exports = cds.service.impl(async (srv) => {
   srv.after("CREATE", "SCI_TP_INTERFACELIST_SRV", ExceptionHandler((data, req) => {
     const tx = srv.transaction(req);
     tx.emit("LogInterfaceList", _.cloneDeep(data));
-    if (data.BATCH.length > 0) {
+    if (objectPath.get(data,'BATCH',false)) {
       tx.emit("LogBatchList", _.cloneDeep(data.BATCH));
     }
 
@@ -134,7 +135,7 @@ module.exports = cds.service.impl(async (srv) => {
   srv.after("UPDATE", "SCI_TP_INTERFACELIST_SRV", ExceptionHandler((data, req) => {
     const tx = srv.transaction(req);
     tx.emit("LogInterfaceList", _.cloneDeep(data));
-    if (data.BATCH.length > 0) {
+    if (objectPath.get(data,'BATCH',false)) {
       tx.emit("LogBatchList", _.cloneDeep(data.BATCH));
     }
   }));

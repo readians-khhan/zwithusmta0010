@@ -31,7 +31,7 @@ module.exports = class SequenceHelper {
 					if (bf.IsNotValid(aNextNumber[0].nextNumber)) {
 						iNextNumber = 1
 					} else {
-						iNextNumber = aNextNumber[0].nextNumber;
+						iNextNumber = aNextNumber[0].nextNumber+1;
 					}
 					resolve(iNextNumber);
 					break;

@@ -24,31 +24,38 @@ annotate MST_CODE with @title : 'Code Mater Service' {};
 
 annotate VH_COMPANY with @(
   readonly,
-  title : 'Code Company Mater ValueHelp'
-);
+  title : 'Code Company Mater ValueHelp',
+){
+  CODE @(
+   Common.ValueList : {
+      $Type          : 'Common.ValueListType',
+      CollectionPath : 'CODE',
+    }
+  )
+};
 annotate VH_SUBSIDARY with @(
   readonly,
-  title : 'Code Subsidary Mater ValueHelp'
+  title : 'Code Subsidary Mater ValueHelp',
 );
 annotate VH_APPLTYPE with @(
   readonly,
-  title : 'Code Application Type Mater ValueHelp'
+  title : 'Code Application Type Mater ValueHelp',
 );
 annotate VH_IFSTATUS with @(
   readonly,
-  title : 'Code Mater Interface Status ValueHelp'
+  title : 'Code Mater Interface Status ValueHelp',
 );
 annotate VH_IFPROTOCAL with @(
   readonly,
-  title : 'Code Mater Interface Protocol ValueHelp'
+  title : 'Code Mater Interface Protocol ValueHelp',
 );
 annotate VH_IFEXECUTION with @(
   readonly,
-  title : 'Code Mater Interface Execution ValueHelp'
+  title : 'Code Mater Interface Execution ValueHelp',
 );
 annotate VH_IFCYCLE with @(
   readonly,
-  title : 'Code Mater Interface Cycle ValueHelp'
+  title : 'Code Mater Interface Cycle ValueHelp',
 );
 annotate VH_BATCHEXEC with @(
   readonly,
@@ -56,18 +63,18 @@ annotate VH_BATCHEXEC with @(
 );
 annotate VH_BATCHCYCLE with @(
   readonly,
-  title : 'Code Mater Batch Cycle ValueHelp'
+  title : 'Code Mater Batch Cycle ValueHelp',
 );
 annotate VH_BATCHTIMEINTERVAL with @(
   readonly,
-  title : 'Code Mater Batch Time Interval ValueHelp'
+  title : 'Code Mater Batch Time Interval ValueHelp',
 );
 annotate VH_BATCHRECUR with @(
   readonly,
-  title : 'Code Mater Batch Recursive ValueHelp'
+  title : 'Code Mater Batch Recursive ValueHelp',
 );
 
 annotate VH_SYSTEMLIST with @(
   title : 'System Mater ValueHelp',
-  readonly
+  readonly,
 );

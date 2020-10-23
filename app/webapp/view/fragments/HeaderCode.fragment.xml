@@ -5,44 +5,47 @@
                 <f:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="4" columnsL="4" columnsM="2" singleContainerFullSize="true" />
             </f:layout>
             <f:formContainers>
-                <!-- 대분류 -->
+                <!-- 구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldMainCategory}">
+                    <f:FormElement label="{i18n>fldCodeCategory}">
                         <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Codes/statusFile', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Codes/condition/fileStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
+                            <MultiComboBox id="MCCDSoruceCt01" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT01' }
+                                                                }">
+                                <core:Item text="{management>CAT01}" key="{management>CAT01}" />
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>
-                <!-- 중분류 -->
+                <!-- 상세구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldMiddleCategory}">
+                    <f:FormElement label="{i18n>fldCodeDetailCategory}">
                         <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Codes/statusList', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Codes/condition/movementStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
+                            <MultiComboBox id="MCCDSoruceCt02" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT02'}
+                                                }">
+                                <core:Item text="{management>CAT02}" key="{management>CAT02}" />
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>
-                <!-- 소분류 -->
+                <!-- 기타구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldSubclass}">
+                    <f:FormElement label="{i18n>fldCodeEtcCategory}">
                         <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Codes/statusList', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Codes/condition/confirmationStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
+                            <MultiComboBox id="MCCDSoruceCt03" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT03'}
+                                                }">
+                                <core:Item id="" text="{management>CAT03}" key="{management>CAT03}" />
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>
-                <!-- Code 명 -->
+                <!-- 명칭 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldCodeName}">
+                    <f:FormElement label="{i18n>fldCodeTitle}">
                         <f:fields>
-                            <MultiInput id="MICodeName" showValueHelp="false" />
+                            <MultiInput id="MCCDSoruceCd" showValueHelp="false" />
                         </f:fields>
                     </f:FormElement>
-                </f:FormContainer>                
+                </f:FormContainer>
             </f:formContainers>
         </f:Form>
     </Panel>

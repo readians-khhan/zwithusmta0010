@@ -85,7 +85,7 @@ annotate SCI_MST0010 with @(
     CODE
     ]},
     Capabilities  : {Deletable : false},
-    title         : 'Code Mater Table'
+    title         : 'Code Mater Table',
 ) {
     ID         @description : 'Code Key';
     CAT01      @description : 'Main Category';
@@ -112,25 +112,64 @@ annotate SCI_MST0010_HIST with @(title : 'Code Mater History Table') {
 
 
 annotate SCI_MST0020 with @(
-    assert.unique : {CONTENTS : [
+    assert.unique    : {CONTENTS : [
     COMPANY_CD,
     SUBSIDARY_CD,
     SYSTEM_NM,
     APPL_NM,
     APPPLTYPE_CD
     ]},
-    Capabilities  : {Deletable : false},
-    title         : 'System Mater Table'
+    Capabilities     : {Deletable : false},
+    title            : 'System Mater Table',
+    Common.ValueList : {
+        $Type           : 'Common.ValueListType',
+        CollectionPath  : 'SCI_MST0020',
+        SearchSupported : true,
+        Parameters      : [
+        {
+            $Type             : 'Common.ValueListParameterInOut',
+            ValueListProperty : ID,
+        },
+        {
+            $Type             : 'Common.ValueListParameterDisplayOnly',
+            ValueListProperty : APPL_NM,
+        },
+        {
+            $Type             : 'Common.ValueListParameterDisplayOnly',
+            ValueListProperty : APPPLTYPE_CD,
+        }
+        ]
+    }
 ) {
-    ID           @description : 'System Key';
-    COMPANY_CD   @description : 'Company Code';
-    SUBSIDARY_CD @description : 'Susbsidary Code';
-    SYSTEM_NM    @description : 'System Name';
-    APPL_NM      @description : 'Application Name';
-    APPPLTYPE_CD @description : 'Application Type Code';
-    DELETED_TF   @description : 'Is Deleted';
+    ID           @(
+        sap.label : 'System Key',
+        description  : 'System Key'
+    );
+    COMPANY_CD   @(
+        sap.label : 'Company Code',
+        description  : 'Company Code'
+    );
+    SUBSIDARY_CD @(
+        sap.label : 'Susbsidary Code',
+        description  : 'Susbsidary Code'
+    );
+    SYSTEM_NM    @(
+        sap.label : 'System Name',
+        description  : 'System Name'
+    );
+    APPL_NM      @(
+        sap.label : 'Application Name',
+        description  : 'Application Name'
+    );
+    APPPLTYPE_CD @(
+        sap.label : 'Application Type Code',
+        description  : 'Application Type Code'
+    );
+    DELETED_TF   @(
+        sap.label : 'Is Deleted',
+        description  : 'Is Deleted'
+    );
 }
-
 
 annotate SCI_MST0020_HIST with @(title : 'System Mater History Table') {
     ID           @description : 'System History Key';
@@ -144,26 +183,83 @@ annotate SCI_MST0020_HIST with @(title : 'System Mater History Table') {
 }
 
 annotate SCI_TP0020 with @(title : 'SCI BATCH LIST TABLE', ) {
-    TP0010          @description : 'REFERENCED TP0010 KEY';
-    EXECUTION_CD    @description : '특정일 지정/주기 반복';
-    CYCLE_CD        @description : '특정시간 지정/반복 주기 지정';
-    RECUR_CD        @description : '매일/매주/매년';
-    ONTIME_T        @description : '지정 시간';
-    TIMEINTERVAL_CD @description : '시간 간격';
-    ONFRDATE        @description : '지정 시작시간';
-    ONTODATE        @description : '지정 멈춤시간';
-    TIMEZONE        @description : '타임존(디폴트 값: 한국)';
+    TP0010          @(
+        sap.label : 'REFERENCED TP0010 KEY',
+        description  : 'REFERENCED TP0010 KEY'
+    );
+    EXECUTION_CD    @(
+        sap.label : '특정일 지정/주기 반복',
+        description  : '특정일 지정/주기 반복'
+    );
+    CYCLE_CD        @(
+        sap.label : '특정시간 지정/반복 주기 지정',
+        description  : '특정시간 지정/반복 주기 지정'
+    );
+    RECUR_CD        @(
+        sap.label : '매일/매주/매년',
+        description  : '매일/매주/매년'
+    );
+    ONTIME_T        @(
+        sap.label : '지정 시간',
+        description  : '지정 시간'
+    );
+    TIMEINTERVAL_CD @(
+        sap.label : '시간 간격',
+        description  : '시간 간격'
+    );
+    ONFRDATE        @(
+        sap.label : '지정 시작시간',
+        description  : '지정 시작시간'
+    );
+    ONTODATE        @(
+        sap.label : '지정 멈춤시간',
+        description  : '지정 멈춤시간'
+    );
+    TIMEZONE        @(
+        sap.label : '타임존(디폴트 값: 한국)',
+        description  : '타임존(디폴트 값: 한국)'
+    );
 }
 
 annotate SCI_TP0020_HIST with @(title : 'SCI BATCH LIST History Table', ) {
-    TP0020          @description : 'REFERENCED TP0020 KEY';
-    TP0010          @description : 'REFERENCED TP0010 KEY';
-    EXECUTION_CD    @description : '특정일 지정/주기 반복';
-    CYCLE_CD        @description : '특정시간 지정/반복 주기 지정';
-    RECUR_CD        @description : '매일/매주/매년';
-    ONTIME_T        @description : '지정 시간';
-    TIMEINTERVAL_CD @description : '시간 간격';
-    ONFRDATE        @description : '지정 시작시간';
-    ONTODATE        @description : '지정 멈춤시간';
-    TIMEZONE        @description : '타임존(디폴트 값: 한국)';
+    TP0020          @( 
+        sap.label : 'REFERENCED TP0020 KEY',
+        description : 'REFERENCED TP0020 KEY'
+        );
+    TP0010          @( 
+        sap.label : 'REFERENCED TP0010 KEY',
+        description : 'REFERENCED TP0010 KEY'
+        );
+    EXECUTION_CD    @( 
+        sap.label : '특정일 지정/주기 반복',
+        description : '특정일 지정/주기 반복'
+        );
+    CYCLE_CD        @( 
+        sap.label : '특정시간 지정/반복 주기 지정',
+        description : '특정시간 지정/반복 주기 지정'
+        );
+    RECUR_CD        @( 
+        sap.label : '매일/매주/매년',
+        description : '매일/매주/매년'
+        );
+    ONTIME_T        @( 
+        sap.label : '지정 시간',
+        description : '지정 시간'
+        );
+    TIMEINTERVAL_CD @( 
+        sap.label : '시간 간격',
+        description : '시간 간격'
+        );
+    ONFRDATE        @( 
+        sap.label : '지정 시작시간',
+        description : '지정 시작시간'
+        );
+    ONTODATE        @( 
+        sap.label : '지정 멈춤시간',
+        description : '지정 멈춤시간'
+        );
+    TIMEZONE        @( 
+        sap.label : '타임존(디폴트 값: 한국)',
+        description : '타임존(디폴트 값: 한국)'
+        );
 }

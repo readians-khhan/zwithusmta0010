@@ -45,7 +45,7 @@
         "kind": "sqlite",
         "model": "*",
         "credentials": {
-          "database": "sci.db"
+          "database": "scimonitoring.db"
         }
       },
       "SCIDEV.sap.hci.api": {

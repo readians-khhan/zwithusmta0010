@@ -19,11 +19,6 @@ sap.ui.define([
 
 
 		/**
-		 * Main뷰 모델
-		 */
-		mainView: null,
-
-		/**
 		 * OData모델객체
 		 */
 		management: null,
@@ -52,6 +47,55 @@ sap.ui.define([
 				reject: 0,
 				approval: 0,
 				cancel: 0
+			},
+
+
+			Files: {
+				condition: {
+					fromDate: null,
+					toDate: null,
+					fileName: '',
+					fileStatus: ['0'],
+					movementStatus: ['0', '1', '2', '3', '4', '5', '6'],
+					confirmationStatus: ['0', '1', '2', '3', '4', '5', '6'],
+					postingfromDate: null,
+					postingtoDate: null
+				},
+				statusFile: [{
+					statusKey: '0',
+					statusName: "Active"
+				}, {
+					statusKey: '1',
+					statusName: "Deleted"
+				}],
+				statusList: [{
+					statusKey: '0',
+					statusName: "Not Target"
+				}, {
+					statusKey: '1',
+					statusName: "Not Executed"
+				}],
+				totalCount: 0,
+				selectedCount: 0,
+				activeDelete: false
+			},
+			Codes: {
+				FieldName: '',
+				FieldStatus: [{
+					FieldStatusKey: "Movement",
+					FieldStatusName: "Movements"
+				}, {
+					FieldStatusKey: "Confirmation",
+					FieldStatusName: "Confirmations"
+				}],
+				SelectedFieldStatusKey: "Confirmation",
+				totalModificationsCount: 0,
+				selectedModificationsCount: 0
+			},
+			SystemList: {
+				totalCount: 0,
+				selectedCount: 0,
+				activeDelete: false
 			},
 
 			SAPURL: '',

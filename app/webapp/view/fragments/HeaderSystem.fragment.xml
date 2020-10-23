@@ -1,16 +1,36 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <Panel class="sapUiNoContentPadding" backgroundDesign="Transparent">
-        <f:Form editable="true" width="100%">
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Panel class="sapUiNoContentPadding"
+        backgroundDesign="Transparent">
+        <f:Form editable="true"
+            width="100%">
             <f:layout>
-                <f:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="4" columnsL="4" columnsM="2" singleContainerFullSize="true" />
+                <f:ResponsiveGridLayout labelSpanXL="12"
+                    labelSpanL="12"
+                    labelSpanM="12"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="0"
+                    emptySpanL="0"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="4"
+                    columnsL="4"
+                    columnsM="2"
+                    singleContainerFullSize="true" />
             </f:layout>
             <f:formContainers>
                 <!-- 회사 -->
                 <f:FormContainer>
                     <f:FormElement label="{i18n>fldCompany}">
                         <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Systems/statusFile', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Systems/condition/fileStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
+                            <MultiComboBox id="McSLSorceCompanyCd"
+                                items="{path: 'management>/SCI_VH_CODE_COMPANY_SRV'}">
+                                <core:Item text="{management>DESC01}"
+                                    key="{management>CODE}"/>
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>
@@ -19,30 +39,28 @@
                 <f:FormContainer>
                     <f:FormElement label="{i18n>fldSubsidiaryCompany}">
                         <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Systems/statusList', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Systems/condition/movementStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
+                            <MultiComboBox id="McSLSorceSubsidiaryCd"
+                                items="{path: 'management>/SCI_VH_CODE_SUBSIDARY_SRV'}">
+                                <core:Item text="{management>DESC01}"
+                                    key="{management>CODE}"/>
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>
-                <!-- 어플리케이션 -->
+                <!-- 어플리케이션 명 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldApplication}">
+                    <f:FormElement label="{i18n>fldApplicationName}">
                         <f:fields>
-                            <MultiComboBox items="{path: 'mainView>/Systems/statusList', sorter: {path: 'statusKey'}}" selectedKeys="{mainView>/Systems/condition/confirmationStatus}">
-                                <core:Item text="{mainView>statusName}" key="{mainView>statusKey}" />
-                            </MultiComboBox>
+                            <!-- <MultiInput id="MiSystemAppNm" showValueHelp="false" /> -->
+                            <MultiInput id="MiSystemAppNm"
+                                showValueHelp="false"
+                                suggestionItems="{path: 'management>/SCI_MST_SYSTEMLIST_SRV', sorter: { path: 'management>APPL_NM' } }">
+                                <core:Item key="{management>APPL_NM}"
+                                    text="{management>APPL_NM}" />
+                            </MultiInput>
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>
-                <!-- 시스템 명 -->
-                <f:FormContainer>
-                    <f:FormElement label="{i18n>fldSystemName}">
-                        <f:fields>
-                            <MultiInput id="MISystemName" showValueHelp="false" />
-                        </f:fields>
-                    </f:FormElement>
-                </f:FormContainer>                
             </f:formContainers>
         </f:Form>
     </Panel>

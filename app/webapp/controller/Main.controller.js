@@ -70,6 +70,9 @@ sap.ui.define(
           //--- Update Pop Up ---
           UpdateSystemList: "UpdateSystemList",
           dialogUpdateSystemList: "dialogUpdateSystemList",
+          UpdateSysLiCompanyCd: "UpdateSysLiCompanyCd",
+          UpdateSysLiSubdiaryCd: "UpdateSysLiSubdiaryCd",
+          UpdateSysLiAppliCd: "UpdateSysLiAppliCd",
 
           // CODE LIST
           tabCodeList: "tabCodeList",
@@ -986,7 +989,7 @@ sap.ui.define(
           if (oSCCompany.length) {
             aCompanyFilters = _.map(oSCCompany, function (iStatus) {
               return {
-                field: "COMAPANY_CODE",
+                field: "COMPANY_CODE",
                 op: self.OP.EQ,
                 from: iStatus,
               };
@@ -1041,32 +1044,48 @@ sap.ui.define(
 
         fcCreateSystemList: function (oEvent) {
           this._h.mainView.setProperty("/SystemList/Add", {
-            appliNm: '',
-			systemNm: '',
-			systemCerti: '0'
+            appliNm: "",
+            systemNm: "",
+            systemCerti: "0",
           });
 
           this.callPopupFragment("AddSystemList", oEvent);
         },
 
-        onChange: function (oEvent) {
-          var sId = oEvent.getSource().sId;
+        //Combox Selection Change
+        onSelectionChange: function (oEvent) {
+		  var sId = oEvent.getSource().sId.substring(12);
 
-          if (sId == "AddSysLiCompanyCd") {
+          if (sId == "AddSysLiCompanyCd") {			  
             this._h.mainView.setProperty(
               "/SystemList/Add/company",
               oEvent.getSource().getSelectedKey()
-            );
+			);
           } else if (sId == "AddSysLiSubdiaryCd") {
             this._h.mainView.setProperty(
               "/SystemList/Add/subdiary",
               oEvent.getSource().getSelectedKey()
-            );
+			);
           } else if (sId == "AddSysLiAppliCd") {
             this._h.mainView.setProperty(
               "/SystemList/Add/appliCd",
               oEvent.getSource().getSelectedKey()
-            );
+			);
+          } else if (sId == "UpdateSysLiCompanyCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/company",
+              oEvent.getSource().getSelectedKey()
+			);
+          } else if (sId == "UpdateSysLiSubdiaryCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/subdiary",
+              oEvent.getSource().getSelectedKey()
+			);
+          } else if (sId == "UpdateSysLiAppliCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/appliCd",
+              oEvent.getSource().getSelectedKey()
+			);
           }
         },
 
@@ -1143,26 +1162,28 @@ sap.ui.define(
             APPPLTYPE_CD_ID: oInput.appliCd,
             APPL_NM: oInput.appliNm,
             SYSTEM_NM: oInput.systemNm,
-            // description: oInput.description,
-            MANAGER: [{
-				NAME : oInput.managerName,
-				PHONE : oInput.contact,
-				EMAIL : oInput.email
-			}],
+            DESCRIPTION: oInput.description,
+            MANAGER: [
+              {
+                NAME: oInput.managerName,
+                PHONE: oInput.contact,
+                EMAIL: oInput.email,
+              },
+            ],
             IP: oInput.systemIP,
             HOST: oInput.systemHost,
             PORT: oInput.systemPort,
-            ATHENTIC_TYPE: oInput.systemCerti
+            ATHENTIC_TYPE: _.toInteger(oInput.systemCerti),
           });
 
           this.setMessageType(this.MESSAGE_TYPE.CREATE);
 
           this._h.management
-            .submitBatch(this.ControlID.systemListDataGroup)
+            .submitBatch(self.ControlID.systemListDataGroup)
             .then(
               function (oData) {
                 this.showMessageToast("msgSuccess13", "20rem", []);
-                this.closePopupFragment(this.ControlID.AddSystemList);
+                this.closePopupFragment(self.ControlID.AddSystemList);
               }.bind(this),
               function (oError) {
                 this.resetBindingChanges(oBinding);
@@ -1195,7 +1216,7 @@ sap.ui.define(
               function () {
                 self.setUIChanges(self._h.management, false);
                 self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-                self.closePopupFragment(this.ControlID.UpdateSystemList);
+                self.closePopupFragment(self.ControlID.UpdateSystemList);
                 self._h.management.refresh();
               },
               function (oError) {
@@ -1235,8 +1256,8 @@ sap.ui.define(
 
                 self.setMessageType(self.MESSAGE_TYPE.UPDATE);
 
-                self._h.mesData
-                  .submitBatch(this.ControlID.systemListDataGroup)
+                self._h.management
+                  .submitBatch(self.ControlID.systemListDataGroup)
                   .then(
                     // Success
                     function (oData) {

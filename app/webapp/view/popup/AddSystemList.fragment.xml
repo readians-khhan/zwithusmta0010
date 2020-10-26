@@ -35,7 +35,7 @@
                         <Label text="{i18n>fldCompanyCd}" />
                         <ComboBox id="AddSysLiCompanyCd"
                             items="{path: 'management>/SCI_VH_CODE_COMPANY_SRV'}"
-                            selectionChange="onChange"
+                            selectionChange="onSelectionChange"
                             required="true">
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
@@ -44,7 +44,7 @@
                         <Label text="{i18n>fldSubsidaryCd}" />
                         <ComboBox id="AddSysLiSubdiaryCd"
                             items="{path: 'management>/SCI_VH_CODE_SUBSIDARY_SRV'}"
-                            selectionChange="onChange"
+                            selectionChange="onSelectionChange"
                             required="true">
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
@@ -53,7 +53,7 @@
                         <Label text="{i18n>fldApplTypeCd}" />
                         <ComboBox id="AddSysLiAppliCd"
                             items="{path: 'management>/SCI_VH_CODE_APPLICATIONTYPE_SRV'}"
-                            selectionChange="onChange"
+                            selectionChange="onSelectionChange"
                             required="true">
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
@@ -96,7 +96,7 @@
                             required="true"/>
                         <!-- 시스템 인증방식 -->
                         <Label text="{i18n>fldSystemCerti}" />
-                        <ComboBox items="{path: 'mainView>/SystemList/AcessCerti', sorter: {path: 'type'}}"
+                        <ComboBox items="{path: 'mainView>/SystemList/AccessCerti', sorter: {path: 'type'}}"
                             selectedKey="{mainView>/SystemList/Add/systemCerti}">
                             <core:Item text="{mainView>typeName}"
                                 key="{mainView>type}"/>

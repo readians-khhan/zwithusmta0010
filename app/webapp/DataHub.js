@@ -119,8 +119,15 @@ sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (
 						systemIP: "",
 						systemHost: "",
 						systemPort: "",
-						systemCerti: "",
+						systemCerti: "0",						
 					},
+					AcessCerti: [{ 
+						type: 0,
+						typeName: 'Basic',
+					}, {
+						type: 1,
+						typeName: 'oAuth2.0'
+					}],
 					Update: {
 						company: "",
 						subdiary: "",

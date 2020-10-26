@@ -901,8 +901,9 @@ sap.ui.define(
 
         fcCreateSystemList: function (oEvent) {
           this._h.mainView.setProperty("/SystemList/Add", {
-            appliNm: "",
-            systemNm: "",
+            appliNm: '',
+			systemNm: '',
+			systemCerti: '0'
           });
 
           this.callPopupFragment("AddSystemList", oEvent);
@@ -1003,13 +1004,15 @@ sap.ui.define(
             APPL_NM: oInput.appliNm,
             SYSTEM_NM: oInput.systemNm,
             // description: oInput.description,
-            // managerName: oInput.managerName,
-            // contact: oInput.contact,
-            // email: oInput.email,
-            // systemIP: oInput.systemIP,
-            // systemHost: oInput.systemHost,
-            // systemPort: oInput.systemPort,
-            // systemCerti: oInput.systemCerti
+            MANAGER: [{
+				NAME : oInput.managerName,
+				PHONE : oInput.contact,
+				EMAIL : oInput.email
+			}],
+            IP: oInput.systemIP,
+            HOST: oInput.systemHost,
+            PORT: oInput.systemPort,
+            ATHENTIC_TYPE: oInput.systemCerti
           });
 
           this.setMessageType(this.MESSAGE_TYPE.CREATE);

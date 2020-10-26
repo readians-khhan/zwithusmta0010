@@ -62,38 +62,45 @@
                         <Label text="{i18n>fldApplNm}" />
                         <Input value="{mainView>/SystemList/Add/appliNm}"
                             required="true" />
-                        <!-- <Input value="{management>APPL_NM}"
-                            required="true" /> -->
                         <!-- 시스템 명 -->
                         <Label text="{i18n>fldSystemNm}" />
                         <Input value="{mainView>/SystemList/Add/systemNm}"
                             required="true" />
-                        <!-- <Input value="{management>SYSTEM_NM}"
-                            required="true" /> -->
                         <!-- 설명 -->
-                        <!-- <Label text="{i18n>fldSystemDescription}" />
-                        <Input value="{mainView>/SystemList/Add/description}" required="true" visible="false"/> -->
+                        <Label text="{i18n>fldSystemDescription}" />
+                        <Input value="{mainView>/SystemList/Add/description}"
+                            required="true"/>
                         <!-- 담당자 이름 -->
-                        <!-- <Label text="{i18n>fldSystemManager}" />
-                        <Input value="{mainView>/SystemList/Add/managerName}" required="true" visible="false"/> -->
+                        <Label text="{i18n>fldSystemManager}" />
+                        <Input value="{mainView>/SystemList/Add/managerName}"
+                            required="true"/>
                         <!-- 연락처 -->
-                        <!-- <Label text="{i18n>fldSystemManagerContact}" />
-                        <Input value="{mainView>/SystemList/Add/contact}" required="true" visible="false"/> -->
+                        <Label text="{i18n>fldSystemManagerContact}" />
+                        <Input value="{mainView>/SystemList/Add/contact}"
+                            required="true"/>
                         <!-- 이메일 -->
-                        <!-- <Label text="{i18n>fldSystemManagerEmail}" />
-                        <Input value="{mainView>/SystemList/Add/email}" required="true" visible="false"/> -->
+                        <Label text="{i18n>fldSystemManagerEmail}" />
+                        <Input value="{mainView>/SystemList/Add/email}"
+                            required="true"/>
                         <!-- 시스템 IP -->
-                        <!-- <Label text="{i18n>fldSystemIp}" />
-                        <Input value="{mainView>/SystemList/Add/systemIP}" required="true" visible="false"/> -->
+                        <Label text="{i18n>fldSystemIp}" />
+                        <Input value="{mainView>/SystemList/Add/systemIP}"
+                            required="true"/>
                         <!-- 시스템 HOST -->
-                        <!-- <Label text="{i18n>fldSystemHost}" />
-                        <Input value="{mainView>/SystemList/Add/systemHost}" required="true" visible="false"/> -->
+                        <Label text="{i18n>fldSystemHost}" />
+                        <Input value="{mainView>/SystemList/Add/systemHost}"
+                            required="true"/>
                         <!-- 시스템 PORT -->
-                        <!-- <Label text="{i18n>fldSystemPort}" />
-                        <Input value="{mainView>/SystemList/Add/systemPort}" required="true" visible="false"/> -->
+                        <Label text="{i18n>fldSystemPort}" />
+                        <Input value="{mainView>/SystemList/Add/systemPort}"
+                            required="true"/>
                         <!-- 시스템 인증방식 -->
-                        <!-- <Label text="{i18n>fldSystemCerti}" />
-                        <Input value="{mainView>/SystemList/Add/systemCerti}" required="true" visible="false"/> -->
+                        <Label text="{i18n>fldSystemCerti}" />
+                        <ComboBox items="{path: 'mainView>/SystemList/AcessCerti', sorter: {path: 'type'}}"
+                            selectedKey="{mainView>/SystemList/Add/systemCerti}">
+                            <core:Item text="{mainView>typeName}"
+                                key="{mainView>type}"/>
+                        </ComboBox>
                     </f:content>
                 </f:SimpleForm>
             </VBox>

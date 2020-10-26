@@ -1,6 +1,7 @@
 using {
   SCI_TP0010       as TP0010,
   SCI_TP0020       as TP0020,
+  SCI_TP0030       as TP0030,
   SCI_MST0010      as MST0010,
   SCI_MST0020      as MST0020,
   SCI_MST0010_HIST as MST0010_HIST,
@@ -57,11 +58,35 @@ service SCIManagementService @(requires: ['authenticated-user']){
 
   entity SCI_MST_SYSTEMLIST_SRV    as projection on MST0020 {
     * , 
+    COMPANY_CD   : redirected to SCI_MST_CODE_SRV,
+    COMPANY_CD.CODE     AS COMPANY_CODE,
+    COMPANY_CD.DESC01   AS COMPANY_DESC01,
+    COMPANY_CD.DESC02   AS COMPANY_DESC02, 
+    SUBSIDARY_CD : redirected to SCI_MST_CODE_SRV,
+    SUBSIDARY_CD.CODE   AS SUBSIDARY_CODE,
+    SUBSIDARY_CD.DESC01 AS SUBSIDARY_DESC01,
+    SUBSIDARY_CD.DESC02 AS SUBSIDARY_DESC02,
+    APPPLTYPE_CD : redirected to SCI_MST_CODE_SRV,
+    APPPLTYPE_CD.CODE   AS APPLTYPE_CODE,
+    APPPLTYPE_CD.DESC01 AS APPLTYPE_DESC01,
+    APPPLTYPE_CD.DESC02 AS APPLTYPE_DESC02,
+    HISTORY : redirected to SCI_HIS_SYSTEMLIST_SRV,
+  };
+  entity SCI_HIS_SYSTEMLIST_SRV    as projection on MST0020_HIST {
+    * ,
+    MST0020 : redirected to SCI_MST_SYSTEMLIST_SRV,
     COMPANY_CD : redirected to SCI_MST_CODE_SRV, 
     SUBSIDARY_CD : redirected to SCI_MST_CODE_SRV, 
     APPPLTYPE_CD : redirected to SCI_MST_CODE_SRV
   };
-  entity SCI_HIS_SYSTEMLIST_SRV    as projection on MST0020_HIST {
+
+  entity SCI_TP_MANAGERLIST_SRV as projection on TP0030 {
+    * ,
+    MST0020 : redirected to SCI_MST_SYSTEMLIST_SRV
+  };
+
+
+  entity SCI_TP_SYSTEMLIST_SRV    as projection on MST0020_HIST {
     * ,
     MST0020 : redirected to SCI_MST_SYSTEMLIST_SRV,
     COMPANY_CD : redirected to SCI_MST_CODE_SRV, 

@@ -69,8 +69,8 @@
             <!-- Interface Status -->
             <t:Column width="7rem"
                 autoResizable="true"
-                sortProperty="STATUS_CD/CODE"
-                filterProperty="STATUS_CD/CODE"
+                sortProperty="STATUS_DESC01"
+                filterProperty="STATUS_DESC01"
                 hAlign="Center">
                 <Label text="{i18n>fldStatus}"
                     textAlign="Center"

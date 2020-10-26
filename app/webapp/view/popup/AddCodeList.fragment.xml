@@ -1,24 +1,24 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <Dialog id="dialogRegisterInterface" resizable="true" draggable="true" stretch="false" busy="{mainView>/busy}" busyIndicatorDelay="0" title="{i18n>tlRegisterCode}" contentWidth="50%">
+    <Dialog id="dialogRegisterInterface" resizable="true" draggable="true" stretch="false" busy="{mainView>/busy}" busyIndicatorDelay="0" title="{i18n>tlAddSystemList}" contentWidth="50%">
         <content>
             <VBox class="sapUiSmallMargin">
                 <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
                     <f:content>
-                        
+
                         <Label text="{i18n>fldCodeSection}" />
-                        <MultiComboBox items="{path: 'management>/SCI_MST_CODE_SRV'}" required="true" >
-                            <core:Item text="{management>CAT01}" key="{management>CAT01}"  />
-                        </MultiComboBox>
+                        <ComboBox items="{path: 'management>/SCI_MST_CODE_SRV'}" required="true">
+                            <core:Item text="{management>CAT01}" key="{management>CAT01}" />
+                        </ComboBox>
 
                         <Label text="{i18n>fldCodeDetailSection}" />
-                        <MultiComboBox items="{path: 'management>/SCI_MST_CODE_SRV'}" required="true" >
+                        <ComboBox items="{path: 'management>/SCI_MST_CODE_SRV'}" required="true">
                             <core:Item text="{management>CAT02}" key="{management>CAT02}" />
-                        </MultiComboBox>
+                        </ComboBox>
 
                         <Label text="{i18n>fldCodeEtcSection}" />
-                        <MultiComboBox items="path: 'management>/SCI_MST_CODE_SRV'}" required="true" >
+                        <ComboBox items="{path: 'management>/SCI_MST_CODE_SRV'}" required="true">
                             <core:Item text="{management>CAT03}" key="{management>CAT03}" />
-                        </MultiComboBox>
+                        </ComboBox>
 
                         <Label text="{i18n>fldCodeName}" />
                         <Input value="{mainView>/Emails/Register/user}" required="true">
@@ -35,7 +35,7 @@
                         </Input>
 
                         <Label text="{i18n>fldCodeDetailDescription}" />
-                        <Input value="{mainView>/Emails/Register/address}" >
+                        <Input value="{mainView>/Emails/Register/address}">
                             <layoutData>
                                 <l:GridData span="XL2 L3 M4 S4" />
                             </layoutData>
@@ -47,6 +47,7 @@
         </content>
         <buttons>
             <Button text="Create" press="onPAI" app:fcCode="fcCreateEmailPopup" />
+
             <Button text="Cancel" press="onPAI" app:fcCode="fcCancelCodePopup" />
         </buttons>
     </Dialog>

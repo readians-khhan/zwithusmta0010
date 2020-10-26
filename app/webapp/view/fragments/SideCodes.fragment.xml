@@ -57,7 +57,7 @@
                 sortProperty="codeCategory" 
                 filterProperty="codeCategory" 
                 hAlign="Center">
-                <Label text="{i18n>fldCodeCategory}" 
+                <Label text="{i18n>fldCodeSection}" 
                     textAlign="Center" 
                     width="100%"/>
                 <t:template>
@@ -70,7 +70,7 @@
                 sortProperty="codeDetailCategory" 
                 filterProperty="codeDetailCategory" 
                 hAlign="Center">
-                <Label text="{i18n>fldCodeDetailCategory}" 
+                <Label text="{i18n>fldCodeDetailSection}" 
                     textAlign="Center" 
                     width="100%"/>
                 <t:template>
@@ -80,7 +80,7 @@
             <!-- 기타구분  -->
             <t:Column hAlign="Center" 
                 width="10rem">
-                <Label text="{i18n>fldCodeEtcCategory}"/>
+                <Label text="{i18n>fldCodeEtcSection}"/>
                 <t:template>
                     <Text text="{management>CAT03}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
@@ -91,7 +91,7 @@
                 filterProperty="fileCreatedDate" 
                 hAlign="Center" 
                 width="15rem">
-                <Label text="{i18n>fldCodeTitle}"/>
+                <Label text="{i18n>fldCodeName}"/>
                 <t:template>
                     <Text text="{management>CODE}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>

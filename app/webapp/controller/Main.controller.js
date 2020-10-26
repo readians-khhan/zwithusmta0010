@@ -176,7 +176,12 @@ sap.ui.define([
                     break;
                 case 'fcCreateCode':
                     this.fcCreateCode(oEvent);
-                    break;
+					break;
+
+				// Code Create Popup 
+				case 'fcCancelCodePopup':
+					this.fcCancelCodePopup(oEvent);
+					break;
 
 				//System List
 				case "fcSearchSystemList":
@@ -625,13 +630,16 @@ sap.ui.define([
 
 		fcCreateCode: function (oEvent) {
 			console.log("생성")
+			this._h.mainView.setProperty("/SystemList/Add", {
+				appliNm: ""
+			});
 
-			this.callPopupFragment('RegisterInterface', oEvent);
+			this.callPopupFragment('AddCodeList', oEvent);
 		},
 
-		fcCancelPopStorageLocation: function (oEvent) {
+		fcCancelCodePopup: function (oEvent) {
 			this.oMessageManager.removeAllMessages();
-			this.closePopupFragment('RegisterStorageLocation');
+			this.closePopupFragment('AddCodeList');
 		},
 
 		//System List

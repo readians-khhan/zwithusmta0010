@@ -102,6 +102,7 @@ sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (
 					totalModificationsCount: 0,
 					selectedModificationsCount: 0,
 				},
+				// System List
 				SystemList: {
 					totalCount: 0,
 					selectedCount: 0,
@@ -137,6 +138,45 @@ sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (
 						systemCerti: "",
 					},
 				},
+				
+				// Code List
+				CodeList: {
+					totalCount: 0,
+					selectedCount: 0,
+					activeDelete: false,
+					Add: {
+						company: "",
+						subdiary: "",
+						appliCd: "",
+						appliNm: "",
+						systemNm: "",
+						description: "",
+						managerName: "",
+						contact: "",
+						email: "",
+						systemIP: "",
+						systemHost: "",
+						systemPort: "",
+						systemCerti: "",
+					},
+					Update: {
+						company: "",
+						subdiary: "",
+						appliCd: "",
+						appliNm: "",
+						systemNm: "",
+						description: "",
+						managerName: "",
+						contact: "",
+						email: "",
+						systemIP: "",
+						systemHost: "",
+						systemPort: "",
+						systemCerti: "",
+					},
+				},
+
+
 				ApiLog: "",
 				ModLog: "",
 				ExceptionLog: "",

@@ -145,6 +145,7 @@ module.exports = cds.service.impl(async (srv) => {
     let oLoggingData = await SELECT.one('SCI_MST0020').where({ ID: req.data.ID });
     oLoggingData.MST0020_ID = req.data.ID;
     oLoggingData.ID = uuidv4();
+    delete oLoggingData.MANAGER;
     await INSERT.into('SCI_MST0020_HIST').entries(oLoggingData);
   }));
 

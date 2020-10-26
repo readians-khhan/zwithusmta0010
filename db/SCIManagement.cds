@@ -96,6 +96,7 @@ define entity SCI_MST0020 : cuid, managed {
     SYSTEM_NM    : String(50) not null;
     APPL_NM      : String(20) not null;
     APPPLTYPE_CD : Association to one SCI_MST0010 not null;
+    DESCRIPTION  : String(200);
     MANAGER      : Composition of many SCI_TP0030
                        on MANAGER.MST0020 = $self;
     IP           : String(15);

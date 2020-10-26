@@ -35,16 +35,15 @@
                         <!-- 회사 -->
                         <Label text="{i18n>fldCompanyCd}" />
                         <ComboBox items="{path: 'management>/SCI_VH_CODE_COMPANY_SRV'}"
-                            selectedKey="{management>COMAPANY_CODE}"
-                            required="true"
-                            valueLiveUpdate="false">
+                            selectedKey="{path: 'management>COMAPANY_CODE', mode : 'OneWay'}"
+                            required="true">
                             <core:Item text="{management>DESC01}"
                                 key="{management>CODE}"/>
                         </ComboBox>
                         <!-- 자회사 -->
                         <Label text="{i18n>fldSubsidaryCd}" />
                         <ComboBox items="{path: 'management>/SCI_VH_CODE_SUBSIDARY_SRV'}"
-                            selectedKey="{management>SUBSIDARY_CODE}"
+                            selectedKey="{path: 'management>SUBSIDARY_CODE', mode: 'OneWay'}"
                             required="true">
                             <core:Item text="{management>DESC01}"
                                 key="{management>CODE}"/>
@@ -52,7 +51,7 @@
                         <!-- 어플리케이션 구분 -->
                         <Label text="{i18n>fldApplTypeCd}" />
                         <ComboBox items="{path: 'management>/SCI_VH_CODE_APPLICATIONTYPE_SRV'}"
-                            selectedKey="{management>APPLTYPE_CODE}"
+                            selectedKey="{path: 'management>APPLTYPE_CODE', mode : 'OneWay'}"
                             required="true">
                             <core:Item text="{management>DESC01}"
                                 key="{management>CODE}"/>

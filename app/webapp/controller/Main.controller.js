@@ -48,6 +48,7 @@ sap.ui.define([
 			McSLSorceCompanyCd: "McSLSorceCompanyCd",
 			McSLSorceSubsidiaryCd: "McSLSorceSubsidiaryCd",
 			MiSystemAppNm: "MiSystemAppNm",
+
 			//--- Add Pop Up ---
 			AddSystemList: "AddSystemList",
 			AddSysLiCompanyCd: "AddSysLiCompanyCd",
@@ -62,7 +63,10 @@ sap.ui.define([
 			MCCDSoruceCt01: 'MCCDSoruceCt01',
 			MCCDSoruceCt02: 'MCCDSoruceCt02',
 			MCCDSoruceCt03: 'MCCDSoruceCt03',
-			MCCDSoruceCd: 'MCCDSoruceCd'
+			MCCDSoruceCd: 'MCCDSoruceCd',
+			codeListDataGroup: 'codeListDataGroup',
+			AddCodeList: 'AddCodeList'
+
 		},
 
 		MESSAGE_TYPE: {
@@ -139,6 +143,14 @@ sap.ui.define([
 			this.showMessageByType(oEvent);
 		},
 
+		onDR_CodeList: function (oEvent) {
+			this.showMessageByType(oEvent);
+			this._h.mainView.setProperty(
+				"/CodeList/totalCount",
+				oEvent.getSource().getLength()
+			);
+		},
+
 		onDR_SystemList: function (oEvent) {
 			this.showMessageByType(oEvent);
 			this._h.mainView.setProperty(
@@ -169,13 +181,19 @@ sap.ui.define([
 
 				// Code List
 				case 'fcSearchCode':
-                    this.fcSearchCode(oEvent);
-                    break;
-                case 'fcCodeRefresh':
-                    this.fcCodeRefresh(oEvent);
-                    break;
-                case 'fcCreateCode':
-                    this.fcCreateCode(oEvent);
+					this.fcSearchCode(oEvent);
+					break;
+				case 'fcCodeRefresh':
+					this.fcCodeRefresh(oEvent);
+					break;
+				case 'fcCreateCode':
+					this.fcCreateCode(oEvent);
+					break;
+				case "fcSelectionChangeCodeList":
+					this.fcSelectionChangeCodeList(oEvent);
+					break;
+				case "fcSelectionChangeCodeList":
+					this.fcSelectionChangeCodeList(oEvent);
 					break;
 
 				// Code Create Popup 
@@ -197,6 +215,9 @@ sap.ui.define([
 				case "fcCreateSystemList":
 					this.fcCreateSystemList(oEvent);
 					break;
+				case "fcAddCodeListPopup":
+					this.fcAddCodeListPopup(oEvent);
+					break;
 				case "fcAddSystemListPopup":
 					this.fcAddSystemListPopup(oEvent);
 					break;
@@ -217,6 +238,9 @@ sap.ui.define([
 				case "fcDeleteSystemList":
 					this.fcDeleteSystemList(oEvent);
 					break;
+				case "fcDeleteCodeList":
+					this.fcDeleteCodeList(oEvent);
+					break;
 			}
 		},
 
@@ -225,10 +249,6 @@ sap.ui.define([
 		/* ========================================================== */
 		// Data Received Event Hander=
 		onDR_InterfaceList: function (oEvent) {
-			this.showMessageByType(oEvent);
-		},
-
-		onDR_CodeList: function (oEvent) {
 			this.showMessageByType(oEvent);
 		},
 
@@ -496,9 +516,7 @@ sap.ui.define([
 				});
 			}
 
-
 			var aMultiFilter = this.makeMultiFilter(aFilters, true);
-
 
 			oTable.getBinding('rows').filter(aMultiFilter);
 			this.showMessageToast('msgSuccess120', '20rem', []);
@@ -628,18 +646,132 @@ sap.ui.define([
 			oControl.getBinding("rows").filter(aFilterObjects);
 		},
 
+
 		fcCreateCode: function (oEvent) {
-			console.log("생성")
-			this._h.mainView.setProperty("/SystemList/Add", {
-				appliNm: ""
+			this._h.mainView.setProperty("/CodeList/Add", {
+				codeNm: "",
+				description: "",
+				detailDescription: ""
 			});
 
 			this.callPopupFragment('AddCodeList', oEvent);
 		},
 
+		// 코드 생성 
+		fcAddCodeListPopup: function (oEvent) {
+
+			var self = this;
+			// 테이블 컨트롤러 호출
+			var oTable = this.getControl(this.ControlID.tabCodeList);
+			this.oMessageManager.removeAllMessages();
+
+			var bError = false;
+			var oInput = this._h.mainView.getProperty("/CodeList/Add");
+
+			if (!oInput.cat01) {
+				bError = true;
+				var oMessage = new Message({
+					message: this.getI18nText("msgError09", ["Category01"]),
+					type: "Error",
+					processor: this._h.mainView,
+				});
+				this.oMessageManager.addMessages(oMessage);
+			}
+
+			if (!oInput.cat02) {
+				bError = true;
+				var oMessage = new Message({
+					message: this.getI18nText("msgError09", ["Category02"]),
+					type: "Error",
+					processor: this._h.mainView,
+				});
+				this.oMessageManager.addMessages(oMessage);
+			}
+
+			if (!oInput.cat03) {
+				bError = true;
+				var oMessage = new Message({
+					message: this.getI18nText("msgError09", ["Category03"]),
+					type: "Error",
+					processor: this._h.mainView,
+				});
+				this.oMessageManager.addMessages(oMessage);
+			}
+
+			if (!oInput.codeNm) {
+				bError = true;
+				var oMessage = new Message({
+					message: this.getI18nText("msgError09", ["Code Name"]),
+					type: "Error",
+					processor: this._h.mainView,
+				});
+				this.oMessageManager.addMessages(oMessage);
+			}
+
+			if (!oInput.description) {
+				bError = true;
+				var oMessage = new Message({
+					message: this.getI18nText("msgError09", ["Description"]),
+					type: "Error",
+					processor: this._h.mainView,
+				});
+				this.oMessageManager.addMessages(oMessage);
+			}
+
+			if (!oInput.detailDescription) {
+				bError = true;
+				var oMessage = new Message({
+					message: this.getI18nText("msgError09", ["Detail Description"]),
+					type: "Error",
+					processor: this._h.mainView,
+				});
+				this.oMessageManager.addMessages(oMessage);
+			}
+
+			if (bError) {
+				return;
+			}
+
+			var oBinding = oTable.getBinding("rows");
+
+			oBinding.create({
+				CAT01: oInput.cat01,
+				CAT02: oInput.cat02,
+				CAT03: oInput.cat03,
+				CODE: oInput.codeNm,
+				DESC01: oInput.description,
+				DESC02: oInput.detailDescription,
+			});
+
+			this.setMessageType(this.MESSAGE_TYPE.CREATE);
+
+			this._h.management
+				.submitBatch(this.ControlID.codeListDataGroup)
+				.then(
+					function (oData) {
+						this.showMessageToast("msgSuccess13", "20rem", []);
+						this.closePopupFragment(this.ControlID.AddCodeList);
+					}.bind(this),
+					function (oError) {
+						this.resetBindingChanges(oBinding);
+						this.showMessageToast("msgError04", "20rem", [oError.message]);
+					}.bind(this)
+				);
+
+		},
+
+		// 코드 생성 팝업 닫기
 		fcCancelCodePopup: function (oEvent) {
 			this.oMessageManager.removeAllMessages();
 			this.closePopupFragment('AddCodeList');
+		},
+
+
+		fcSelectionChangeCodeList: function (oEvent) {
+			this._h.mainView.setProperty(
+				"/CodeList/selectedCount",
+				oEvent.getSource().getSelectedIndices().length
+			);
 		},
 
 		//System List
@@ -763,9 +895,23 @@ sap.ui.define([
 					"/SystemList/Add/appliCd",
 					oEvent.getSource().getSelectedKey()
 				);
+			} else if (sId == "AddCodeLiCat01") {
+				this._h.mainView.setProperty(
+					"/CodeList/Add/cat01",
+					oEvent.getSource().getSelectedKey()
+				);
+			} else if (sId == "AddCodeLiCat02") {
+				this._h.mainView.setProperty(
+					"/CodeList/Add/cat02",
+					oEvent.getSource().getSelectedKey()
+				);
+			} else if (sId == "AddCodeLiCat03") {
+				this._h.mainView.setProperty(
+					"/CodeList/Add/cat03",
+					oEvent.getSource().getSelectedKey()
+				);
 			}
 		},
-
 
 		fcAddSystemListPopup: function (oEvent) {
 			var self = this;
@@ -940,6 +1086,53 @@ sap.ui.define([
 						self.setMessageType(self.MESSAGE_TYPE.UPDATE);
 
 						self._h.mesData
+							.submitBatch(this.ControlID.codeListDataGroup)
+							.then(
+								// Success
+								function (oData) {
+									self._h.mesData.refresh();
+									oTable.clearSelection();
+								},
+								// Fail
+								function (oError) {
+									self.resetBindingChanges(oBinding);
+									self.showMessageToast("msgError10", "20rem", [
+										oError.message,
+									]);
+								}
+							);
+					}
+				})
+				.catch(function (oError) {
+					console.log(oError);
+				});
+		},
+
+		fcDeleteCodeList: function (oEvent) {
+			console.log("삭제")
+
+			var self = this;
+			var oTable = this.getControl(this.ControlID.tabCodeList);
+			var oBinding = oTable.getBinding("rows");
+
+			if (oTable.getSelectedIndices().length === 0) {
+				self.showMessageToast("msgWarn03", "20rem", []);
+				return;
+			}
+
+
+			this.callPopupConfirm("msgAlert03", "alert", this.MSGBOXICON.WARNING)
+				.then(function (sAction) {
+					if (sAction === "OK") {
+						_.forEach(oTable.getSelectedIndices(), function (iIndex) {
+							oTable
+								.getContextByIndex(iIndex)
+								.setProperty("isDeleted", true);
+						});
+
+						self.setMessageType(self.MESSAGE_TYPE.UPDATE);
+
+						self._h.mesData
 							.submitBatch(this.ControlID.systemListDataGroup)
 							.then(
 								// Success
@@ -960,6 +1153,7 @@ sap.ui.define([
 				.catch(function (oError) {
 					console.log(oError);
 				});
+
 		},
 
 

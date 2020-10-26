@@ -113,6 +113,7 @@ define entity SCI_MST0020_HIST : cuid, managed {
     MST0020      : Association to SCI_MST0020;
     COMPANY_CD   : Association to one SCI_MST0010;
     SUBSIDARY_CD : Association to one SCI_MST0010;
+    DESCRIPTION  : String(200);
     SYSTEM_NM    : String(50) not null;
     APPL_NM      : String(20) not null;
     APPPLTYPE_CD : Association to one SCI_MST0010 not null;

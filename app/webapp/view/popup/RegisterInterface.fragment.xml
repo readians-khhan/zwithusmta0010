@@ -1,47 +1,231 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <Dialog id="dialogRegisterInterface" resizable="true" draggable="true" stretch="false" busy="{mainView>/busy}" busyIndicatorDelay="0" title="{i18n>tlRegisterCode}" contentWidth="50%">
+<core:FragmentDefinition id="RegisterInterface" xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    fragmentName="RegisterInterface"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Dialog id="dialogRegisterInterfaceList"
+        resizable="true"
+        draggable="true"
+        stretch="false"
+        busy="{mainView>/busy}"
+        busyIndicatorDelay="0"
+        title="{i18n>tlRegisterInterface}"
+        contentWidth="50%">
         <content>
             <VBox class="sapUiSmallMargin">
-                <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+                <f:SimpleForm editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="4"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="0"
+                    emptySpanL="0"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1"
+                    singleContainerFullSize="false">
                     <f:content>
-                        <Label text="{i18n>fldCodeCategory}" />
-                        <MultiComboBox items="{path: 'management>/SCI_MST_CODE_SRV'}" >
-                            <core:Item text="{management>CAT01}" key="{management>CAT01}"  />
-                        </MultiComboBox>
-                        <Label text="{i18n>fldCodeDetailCategory}" />
-                        <MultiComboBox items="{path: 'management>/SCI_MST_CODE_SRV'}" >
-                            <core:Item text="{management>CAT02}" key="{management>CAT02}" />
-                        </MultiComboBox>
-                        <Label text="{i18n>fldCodeEtcCategory}" />
-                        <MultiComboBox items="path: 'management>/SCI_MST_CODE_SRV'}" >
-                            <core:Item text="{management>CAT03}" key="{management>CAT03}" />
-                        </MultiComboBox>
-                        <Label text="{i18n>fldCodeTitle" />
-                        <Input value="{mainView>/Emails/Register/user}" required="true">
+                        <!--Interface Status-->
+                        <Label text="{i18n>fldStatus}" />
+                        <ComboBox items="{path: 'management>/SCI_VH_CODE_IFSTATUS_SRV', sorter: {path: 'DESC01'}}">
+                            <core:Item text="{management>DESC01}"
+                                key="{management>CODE}"/>
                             <layoutData>
-                                <l:GridData span="XL2 L3 M4 S4" />
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </ComboBox>
+
+                        <!--Interface Name -->
+                        <Label text="{i18n>fldInterfaceName}" />
+                        <Input value="{mainView>/Interface/Register/Name}"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
                             </layoutData>
                         </Input>
-                        <Label text="{i18n>fldCodeDescription}" />
-                        <Input value="{mainView>/Emails/Register/address}" required="true">
+
+                        <!--Interface Description   -->
+                        <Label text="{i18n>fldInterfaceDesc}" />
+                        <Input value="{mainView>/Interface/Register/Description}"
+                            required="true">
                             <layoutData>
-                                <l:GridData span="XL2 L3 M4 S4" />
+                                <l:GridData span="XL3 L4 M5 S5" />
                             </layoutData>
                         </Input>
-                        <Label text="{i18n>fldCodeDetailDescription}" />
-                        <Input value="{mainView>/Emails/Register/address}" required="true">
+
+                        <!--SCI Package -->
+                        <Label text="{i18n>fldSCIPackage}" />
+                        <Input value="{mainView>/Interface/Register/Package}"
+                            required="true">
                             <layoutData>
-                                <l:GridData span="XL2 L3 M4 S4" />
+                                <l:GridData span="XL3 L4 M5 S5" />
                             </layoutData>
                         </Input>
+
+                        <!--SCI Integration Flow Name-->
+                        <Label text="{i18n>fldSCIif}" />
+                        <Input value="{mainView>/Interface/Register/IFName}"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </Input>
+
+                        <!--Interface As -Is ID -->
+                        <Label text="{i18n>fldaAsIsID}" />
+                        <Input value="{mainView>/Interface/Register/AsIsID"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </Input>
+
+                        <!--Interface As-Is Name -->
+                        <Label text="{i18n>fldaAsIsName}" />
+                        <Input value="{mainView>/Interface/Register/AsIsName}"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </Input>
+
+                        <!--Interface As-Is Description-->
+                        <Label text="{i18n>fldaAsIsDesc}" />
+                        <Input value="{mainView>/Interface/Register/AsIsDescription}"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </Input>
+
+                        <!--Sorce System -->
+                        <Label text="{i18n>fldSSystemName}" />
+                        <Input id="ISourceSystem"
+                            showValueHelp="true"
+                            valueHelpOnly="true"
+                            valueHelpRequest="onPAI"
+                            app:fcCode="fcVHSSystem">
+                            <core:Item key="{management>SCI_VH_SYSTEMLIST_SRV/ID}" text="{management>SCI_VH_SYSTEMLIST_SRV/COMPANY_NM} - {management>SCI_VH_SYSTEMLIST_SRV/SUBSIDARY_NM} {management>SCI_VH_SYSTEMLIST_SRV/SYSTEM_NM} {management>SCI_VH_SYSTEMLIST_SRV/APPL_NM} {management>SCI_VH_SYSTEMLIST_SRV/APPPLTYPE_NM}" />
+                        </Input>
+
+                        <!--Target System -->
+                        <Label text="{i18n>fldTSystemName}" />
+                        <ComboBox items="{path: 'mainView>/Emails/emailType', sorter: {path: 'type'}}"
+                            selectedKey="{mainView>/Emails/Register/type}">
+                            <core:Item text="{mainView>typeName}"
+                                key="{mainView>type}"/>
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </ComboBox>
+
+                        <!--RFC Name -->
+                        <Label text="{i18n>fldRFCName}" />
+                        <Input value="{mainView>/Interface/Register/RFCName}"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </Input>
+
+                        <!--Enterprise Service Name -->
+                        <Label text="{i18n>fldESName}" />
+                        <Input value="{mainView>/Interface/Register/ESName}"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </Input>
+
+                        <!--Web Service Name        -->
+                        <Label text="{i18n>fldWSName}" />
+                        <Input value="{mainView>/Interface/Register/WSName}"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </Input>
+
+                        <!--Web Binding Name        -->
+                        <Label text="{i18n>fldWSBName}" />
+                        <Input value="{mainView>/Interface/Register/WSBName}"
+                            required="true">
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </Input>
+
+                        <!--Execution Type          -->
+                        <Label text="{i18n>fldBatch}" />
+                        <ComboBox items="{path: 'mainView>/Emails/emailType', sorter: {path: 'type'}}"
+                            selectedKey="{mainView>/Emails/Register/type}">
+                            <core:Item text="{mainView>typeName}"
+                                key="{mainView>type}"/>
+                            <layoutData>
+                                <l:GridData span="XL3 L4 M5 S5" />
+                            </layoutData>
+                        </ComboBox>
+
+                        <!--Batch List              -->
+                        <Label text="{i18n>fldBatchList}" />
+                        <Table id="tbPartnerFunctions"
+                            width="80%"
+                            inset="false"
+                            visible="{detailView>/isModification}"
+                            items="{detailView>/CustomerPartnerFunctions}">
+                            <headerToolbar>
+                                <OverflowToolbar >
+                                    <content>
+                                        <Title text="{i18n>tlPartnerFunction}"
+                                            level="H2"/>
+                                        <ToolbarSpacer />
+                                        <Button visible="{= !${detailView>/review} }"
+                                            text="{i18n>btnAdd}"
+                                            press="onPAI"
+                                            app:fcCode="fcAddPartnerFunction"/>
+                                    </content>
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldAction}"/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Input value="{detailView>PartnerFunctionName}"
+                                            editable="false" />
+                                        <Input value="{detailView>BPCustomerNumber}"
+                                            editable="{= !${detailView>/review} &amp;&amp; !${detailView>IsExist} }"/>
+                                        <Input value="{detailView>CustomerPartnerDescription}"
+                                            editable="{= !${detailView>/review} &amp;&amp; ${detailView>IsEdit} }"/>
+                                        <CheckBox class="sapUiTinyMarginBegin"
+                                            editable="{= !${detailView>/review} &amp;&amp; ${detailView>IsEdit} }"
+                                            selected="{detailView>DefaultPartner}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
                     </f:content>
                 </f:SimpleForm>
             </VBox>
         </content>
         <buttons>
-            <Button text="Create" press="onPAI" app:fcCode="fcCreateEmailPopup" />
+            <Button text="Create"
+                press="onPAI"
+                app:fcCode="fcCreateEmailPopup" />
 
-            <Button text="Cancel" press="onPAI" app:fcCode="fcCancelEmailPopup" />
+            <Button text="Cancel"
+                press="onPAI"
+                app:fcCode="fcCancelInterfaceGeneratePopup" />
         </buttons>
     </Dialog>
 </core:FragmentDefinition>

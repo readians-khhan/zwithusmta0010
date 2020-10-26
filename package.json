@@ -43,6 +43,7 @@
     "requires": {
       "db": {
         "kind": "sqlite",
+        "model": "*",
         "credentials": {
           "database": "scimonitoring.db"
         }

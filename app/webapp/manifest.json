@@ -102,6 +102,9 @@
       "js": [
         {
           "uri": "/js/partial.js"
+        }, 
+        {
+          "uri": "/js/q.js"
         },
         {
           "uri": "/js/lodash.js"

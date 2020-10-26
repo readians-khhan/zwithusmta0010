@@ -65,8 +65,10 @@ sap.ui.define([
 			MCCDSoruceCt03: 'MCCDSoruceCt03',
 			MCCDSoruceCd: 'MCCDSoruceCd',
 			codeListDataGroup: 'codeListDataGroup',
-			AddCodeList: 'AddCodeList'
-
+			AddCodeList: 'AddCodeList',
+			AddCodeLiCat01: 'AddCodeLiCat01',
+			AddCodeLiCat02: 'AddCodeLiCat02',
+			AddCodeLiCat03: 'AddCodeLiCat03'
 		},
 
 		MESSAGE_TYPE: {
@@ -646,8 +648,9 @@ sap.ui.define([
 			oControl.getBinding("rows").filter(aFilterObjects);
 		},
 
-
+		// 코드 생성 팝업 나타내기
 		fcCreateCode: function (oEvent) {
+
 			this._h.mainView.setProperty("/CodeList/Add", {
 				codeNm: "",
 				description: "",
@@ -766,7 +769,7 @@ sap.ui.define([
 			this.closePopupFragment('AddCodeList');
 		},
 
-
+		// 코드 선택
 		fcSelectionChangeCodeList: function (oEvent) {
 			this._h.mainView.setProperty(
 				"/CodeList/selectedCount",
@@ -1069,47 +1072,12 @@ sap.ui.define([
 			var oTable = this.getControl(this.ControlID.tabSystemList);
 			var oBinding = oTable.getBinding("rows");
 
-			if (oTable.getSelectedIndices().length === 0) {
-				self.showMessageToast("msgWarn03", "20rem", []);
-				return;
-			}
 
-			this.callPopupConfirm("msgAlert03", "alert", this.MSGBOXICON.WARNING)
-				.then(function (sAction) {
-					if (sAction === "OK") {
-						_.forEach(oTable.getSelectedIndices(), function (iIndex) {
-							oTable
-								.getContextByIndex(iIndex)
-								.setProperty("isDeleted", true);
-						});
 
-						self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-
-						self._h.mesData
-							.submitBatch(this.ControlID.codeListDataGroup)
-							.then(
-								// Success
-								function (oData) {
-									self._h.mesData.refresh();
-									oTable.clearSelection();
-								},
-								// Fail
-								function (oError) {
-									self.resetBindingChanges(oBinding);
-									self.showMessageToast("msgError10", "20rem", [
-										oError.message,
-									]);
-								}
-							);
-					}
-				})
-				.catch(function (oError) {
-					console.log(oError);
-				});
 		},
 
+		// 코드 삭제
 		fcDeleteCodeList: function (oEvent) {
-			console.log("삭제")
 
 			var self = this;
 			var oTable = this.getControl(this.ControlID.tabCodeList);
@@ -1121,7 +1089,7 @@ sap.ui.define([
 			}
 
 
-			this.callPopupConfirm("msgAlert03", "alert", this.MSGBOXICON.WARNING)
+			this.callPopupConfirm("msgAlert002", "alert", this.MSGBOXICON.WARNING)
 				.then(function (sAction) {
 					if (sAction === "OK") {
 						_.forEach(oTable.getSelectedIndices(), function (iIndex) {
@@ -1130,24 +1098,20 @@ sap.ui.define([
 								.setProperty("isDeleted", true);
 						});
 
-						self.setMessageType(self.MESSAGE_TYPE.UPDATE);
+						self.setMessageType(self.MESSAGE_TYPE.DELETE);
 
-						self._h.mesData
-							.submitBatch(this.ControlID.systemListDataGroup)
-							.then(
-								// Success
-								function (oData) {
-									self._h.mesData.refresh();
-									oTable.clearSelection();
-								},
-								// Fail
-								function (oError) {
-									self.resetBindingChanges(oBinding);
-									self.showMessageToast("msgError10", "20rem", [
-										oError.message,
-									]);
-								}
-							);
+						Promise.all(aPromises)
+							.then(function (aResult) {
+								self.showMessageToast('msgSuccess03', '20rem', []);
+								self._h.mainView.setProperty('/Modifications/totalModificationsCount', oSettingTable.getBinding('rows').getLength());
+							})
+							.catch(function (sError) {
+								self.showMessageToast('msgError01', '20rem', []);
+							})
+							.finally(function () {
+								oSettingTable.clearSelection();
+								oSettingTable.getBinding('rows').refresh();
+							});
 					}
 				})
 				.catch(function (oError) {

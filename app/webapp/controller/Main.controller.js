@@ -49,6 +49,8 @@ sap.ui.define(
 
           CBdeleted: "CBdeleted",
 
+          ISourceSystem: "ISourceSystem",
+
           MCIFSorceCompanyCode: "MCIFSorceCompanyCode",
           InterfaceList: "InterfaceList",
 
@@ -166,15 +168,25 @@ sap.ui.define(
         },
 
         // URL Route Event Handler
-        onPatternMatched: function (oEvent) {},
+        onPatternMatched: function (oEvent) {
+          this.fcSearchInterface();
+        },
 
         // Event Handler
         onPAI: function (oEvent) {
           var sCode = this.getCustomData(oEvent, "fcCode");
 
           switch (sCode) {
+            // Interface List
             case "fcItemSelect":
               this.fcItemSelect(oEvent);
+              break;
+            case "fcCreateIntefaceList":
+              this.fcCreateIntefaceList(oEvent);
+              break;
+
+            case "fcVHSSystem":
+              this.fcVHSSystem(oEvent);
               break;
 
             // Code List
@@ -250,40 +262,148 @@ sap.ui.define(
           this.fcSearchCode();
         },
 
-        //Value Help Logic
-        fcValueHelpOkPress: function (oEvent) {
-          var aTokens = oEvent.getParameter("tokens");
-          this._oInput.setSelectedKey(aTokens[0].getKey());
-          this._oValueHelpDialog.close();
-        },
-
-        fcValueHelpCancelPress: function () {
-          this._oValueHelpDialog.close();
-        },
-
-        fcValueHelpAfterClose: function () {
-          this._oValueHelpDialog.destroy();
-        },
-
         fcCancelInterfaceGeneratePopup: function (oEvent) {
           this.closePopupFragment("RegisterInterface");
         },
 
-        fcVHSystem: function (oEvent) {
-          this.callPopupFragment("ValueHelpSystem");
+        ////// Value help
+        // Source System
+        onVHSSystemCancel: function (oEvent) {
+          this.fragments["VHSSystemList"].close();
+        },
 
-          this.fragments["ValueHelpSystem"].getTableAsync().then(
-            function (oTable) {
-              oTable.setModel(this.oProductsModel);
-              oTable.setModel(this.oColModel, "columns");
+        onVHSSystemAfterClose: function () {
+          this.fragments["VHSSystemList"].destroy();
+        },
 
+        onVHSSystemOK: function (oEvent) {
+          var oInput = this.byId(this.ControlID.ISourceSystem);
+
+          var aTokens = oEvent.getParameter("tokens");
+          oInput.setSelectedKey(aTokens[0].getKey());
+          oInput.setValue(
+            aTokens[0]
+              .getText()
+              .slice(
+                0,
+                aTokens[0].getText().length - aTokens[0].getKey().length - 3
+              )
+          );
+          this.fragments["VHSSystemList"].close();
+        },
+
+        fcVHSSystem: function (oEvent) {
+          var self = this;
+
+          this.callPopupFragment("VHSSystemList");
+          var oInput = this.byId(this.ControlID.ISourceSystem);
+          // Column Settings
+
+          var oColID = new sap.ui.table.Column({
+            visible: false,
+            label: new sap.m.Label({
+              text: "{i18n>fldID}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>ID}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColCompany = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldCompanyCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>COMPANY_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColSubsidary = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSubsidaryCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>SUBSIDARY_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColSystem = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSystemNm}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>SYSTEM_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColApplication = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldApplNm}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>APPPLTYPE_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          this.fragments["VHSSystemList"]
+            .getTableAsync()
+            .then(function (oTable) {
+              // Model Setting to Table
+              oTable.setModel(self.getModel("management"));
+
+              // Rows Setting to Table
               if (oTable.bindRows) {
-                oTable.bindAggregation("rows", "managerment>/");
+                oTable.bindAggregation("rows", {
+                  path: "management>/SCI_VH_SYSTEMLIST_SRV",
+                });
               }
 
-              this._oValueHelpDialog.update();
-            }.bind(this)
-          );
+              if (oTable.getColumns().length <= 0) {
+                // Adding Column
+                oTable.addColumn(oColID);
+                oTable.addColumn(oColCompany);
+                oTable.addColumn(oColSubsidary);
+                oTable.addColumn(oColSystem);
+                oTable.addColumn(oColApplication);
+              }
+
+              self.fragments["VHSSystemList"].update();
+            });
+
+          var oToken = new Token();
+          oToken.setKey(oInput.getSelectedKey());
+          oToken.setText(oInput.getValue());
+          this.fragments["VHSSystemList"].setTokens([oToken]);
         },
 
         //

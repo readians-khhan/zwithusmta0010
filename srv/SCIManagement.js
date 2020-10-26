@@ -191,7 +191,29 @@ module.exports = cds.service.impl(async (srv) => {
   }
 
   srv.after("READ", "SCI_VH_SYSTEMLIST_SRV", (each) => {
-    each.DESC = each.COMPANY_NM + ' ' + each.SUBSIDARY_NM + ' ' + each.SYSTEM_NM + ' ' + each.APPL_NM + ' ' + each.APPPLTYPE_NM;
+    let sCOMPANY_NM = '';
+    let sSUBSIDARY_NM = '';
+    let sSYSTEM_NM = '';
+    let sAPPL_NM = '';
+    let sAPPPLTYPE_NM = '';
+
+    if(!bf.IsNotValid(each.COMPANY_NM)){
+      sCOMPANY_NM = each.COMPANY_NM
+    }
+    if(!bf.IsNotValid(each.SUBSIDARY_NM)){
+      sSUBSIDARY_NM = each.SUBSIDARY_NM
+    }
+    if(!bf.IsNotValid(each.SYSTEM_NM)){
+      sSYSTEM_NM = each.SYSTEM_NM
+    }
+    if(!bf.IsNotValid(each.APPL_NM)){
+      sAPPL_NM = each.APPL_NM
+    }
+    if(!bf.IsNotValid(each.APPPLTYPE_NM)){
+      sAPPPLTYPE_NM = each.APPPLTYPE_NM
+    }
+
+    each.DESC = `${sCOMPANY_NM} ${sSUBSIDARY_NM} ${sSYSTEM_NM} ${sAPPL_NM} ${sAPPPLTYPE_NM}`;
   });
 
 

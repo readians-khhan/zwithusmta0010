@@ -933,7 +933,7 @@ sap.ui.define(
         var sFragmentFile = this.getNamespace() + this.PATH.POPUP_FRAGMENT + sFragmentName;
 
         if (!this.fragments[sFragmentName]) {
-          this.fragments[sFragmentName] = sap.ui.xmlfragment(sFragmentFile, this);
+          this.fragments[sFragmentName] = sap.ui.xmlfragment(this.getView().getId(), sFragmentFile, this);
         }
 
         this.getView().addDependent(this.fragments[sFragmentName]);

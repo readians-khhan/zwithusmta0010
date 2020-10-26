@@ -190,6 +190,10 @@ module.exports = cds.service.impl(async (srv) => {
     };
   }
 
+  srv.after("READ", "SCI_VH_SYSTEMLIST_SRV", (each) => {
+    each.DESC = each.COMPANY_NM + ' ' + each.SUBSIDARY_NM + ' ' + each.SYSTEM_NM + ' ' + each.APPL_NM + ' ' + each.APPPLTYPE_NM;
+  });
+
 
   srv.on("sendErrorEmail", ExceptionHandler((req, next) => {
     sendErrorEmail(req, `File Aleready Exist - ${req.data.fileName}`, sOriginalData);

@@ -1,8 +1,19 @@
-
 using {
     cuid,
     managed
 } from '@sap/cds/common';
+
+type ATHENTIC_TYPE {
+    TYPE           : Integer enum {
+        BASOIC = 0;
+        OAUTH  = 1
+    };
+    LOGINID        : String(100);
+    LOGINPWD       : String(100);
+    ACCESSTOKENURL : String(100);
+    CLIENTID       : String(100);
+    CLIENTSECRET   : String(100);
+}
 
 define entity SCI_TP0010 : cuid, managed {
     IF_NO                : Integer;
@@ -25,7 +36,8 @@ define entity SCI_TP0010 : cuid, managed {
     WEBBINDING_NM        : String(50);
     EXECUTION_CD         : Association to one SCI_MST0010 not null;
     DELEDTED_TF          : Boolean not null default false;
-    BATCH                : Composition of many SCI_TP0020 on BATCH.TP0010 = $self;
+    BATCH                : Composition of many SCI_TP0020
+                               on BATCH.TP0010 = $self;
     HISTORY              : Association to many SCI_TP0010_HIST
                                on HISTORY.TP0010 = $self;
 }
@@ -84,14 +96,20 @@ define entity SCI_MST0020 : cuid, managed {
     SYSTEM_NM    : String(50) not null;
     APPL_NM      : String(20) not null;
     APPPLTYPE_CD : Association to one SCI_MST0010 not null;
+    MANAGER      : Composition of many SCI_TP0030
+                       on MANAGER.MST0020 = $self;
+    IP           : String(15);
+    HOST         : String(100);
+    PORT         : String(5);
+    ATHENTIC     : ATHENTIC_TYPE;
     DELETED_TF   : Boolean not null default false;
-    HISTORY    : Association to many SCI_MST0020_HIST
-                     on HISTORY.MST0020 = $self;
+    HISTORY      : Association to many SCI_MST0020_HIST
+                       on HISTORY.MST0020 = $self;
 }
 
 
 define entity SCI_MST0020_HIST : cuid, managed {
-    MST0020    : Association to SCI_MST0020;
+    MST0020      : Association to SCI_MST0020;
     COMPANY_CD   : Association to one SCI_MST0010;
     SUBSIDARY_CD : Association to one SCI_MST0010;
     SYSTEM_NM    : String(50) not null;
@@ -102,29 +120,37 @@ define entity SCI_MST0020_HIST : cuid, managed {
 
 
 define entity SCI_TP0020 : cuid, managed {
-    TP0010    : Association to SCI_TP0010 not null;
-    EXECUTION_CD : Association to one SCI_MST0010 ;
-    CYCLE_CD : Association to one SCI_MST0010;
-    RECUR_CD : Association to one SCI_MST0010;
-    ONTIME_T : Time;
+    TP0010          : Association to SCI_TP0010 not null;
+    EXECUTION_CD    : Association to one SCI_MST0010;
+    CYCLE_CD        : Association to one SCI_MST0010;
+    RECUR_CD        : Association to one SCI_MST0010;
+    ONTIME_T        : Time;
     TIMEINTERVAL_CD : Association to one SCI_MST0010;
-    ONFRDATE : Date;
-    ONTODATE : Date;
-    DELETED_TF : Boolean not null default false;
-    TIMEZONE : String default '한국/서울 +9:00';
+    ONFRDATE        : Date;
+    ONTODATE        : Date;
+    DELETED_TF      : Boolean not null default false;
+    TIMEZONE        : String default '한국/서울 +9:00';
 }
 
 
+define entity SCI_TP0030 : cuid, managed {
+    MST0020 : Association to SCI_MST0020;
+    NAME    : String(50);
+    PHONE   : String(50);
+    EMAIL   : String(50);
+}
+
+// 담당자 테이블
 define entity SCI_TP0020_HIST : cuid, managed {
-    TP0020    : Association to SCI_TP0020;
-    TP0010    : Association to SCI_TP0010;
-    EXECUTION_CD : Association to one SCI_MST0010 ;
-    CYCLE_CD : Association to one SCI_MST0010;
-    RECUR_CD : Association to one SCI_MST0010;
-    ONTIME_T : Time;
+    TP0020          : Association to SCI_TP0020;
+    TP0010          : Association to SCI_TP0010;
+    EXECUTION_CD    : Association to one SCI_MST0010;
+    CYCLE_CD        : Association to one SCI_MST0010;
+    RECUR_CD        : Association to one SCI_MST0010;
+    ONTIME_T        : Time;
     TIMEINTERVAL_CD : Association to one SCI_MST0010;
-    ONFRDATE : Date;
-    ONTODATE : Date;
-    DELETED_TF : Boolean not null default false;
-    TIMEZONE : String default '한국/서울 +9:00';
+    ONFRDATE        : Date;
+    ONTODATE        : Date;
+    DELETED_TF      : Boolean not null default false;
+    TIMEZONE        : String default '한국/서울 +9:00';
 }

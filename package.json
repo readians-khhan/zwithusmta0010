@@ -43,13 +43,16 @@
     "requires": {
       "db": {
         "kind": "sqlite",
-        "model": "*",
         "credentials": {
-          "database": "sci.db"
+          "database": "scimonitoring.db"
+        },
+        "pool": {
+          "min": 1,
+          "max": 10
         }
       },
       "SCIDEV.sap.hci.api": {
-        "kind": "rest",
+        "kind": "odata",
         "credentials": {
           "url": "https://sk-dev.it-cpi006.cfapps.jp10.hana.ondemand.com/api/v1",
           "username": "astro@sk.com",

@@ -4,9 +4,9 @@
     <ValueHelpDialog title="{i18n>tlSystmeListValeuHelp}"
         ok=".onVHSSystemOK"
         cancel=".onVHSSystemCancel"
-        afterClose=".onValueHelpAfterClose"
+        afterClose=".onVHSSystemAfterClose"
         supportMultiselect="false"
         key="ID"
-        descriptionKey="SYSTEM_NM">
+        descriptionKey="DESC">
     </ValueHelpDialog>
 </core:FragmentDefinition>

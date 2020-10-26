@@ -254,27 +254,19 @@ sap.ui.define([
 			this.fcSearchCode();
 		},
 
-		//Value Help Logic
-		fcValueHelpOkPress: function (oEvent) {
-			var aTokens = oEvent.getParameter("tokens");
-			this._oInput.setSelectedKey(aTokens[0].getKey());
-			this._oValueHelpDialog.close();
-		},
-
-		fcValueHelpCancelPress: function () {
-			this._oValueHelpDialog.close();
-		},
-
-		fcValueHelpAfterClose: function () {
-			this._oValueHelpDialog.destroy();
-		},
-
 		fcCancelInterfaceGeneratePopup: function (oEvent) {
 			this.closePopupFragment('RegisterInterface');
 		},
 
+
+		////// Value help
+		// Source System
 		onVHSSystemCancel: function (oEvent) {
 			this.fragments['VHSSystemList'].close();
+		},
+
+		onVHSSystemAfterClose: function () {
+			this.fragments['VHSSystemList'].destroy();
 		},
 
 		onVHSSystemOK: function (oEvent) {
@@ -283,7 +275,7 @@ sap.ui.define([
 
 			var aTokens = oEvent.getParameter("tokens");
 			oInput.setSelectedKey(aTokens[0].getKey());
-			oInput.setValue(aTokens[0].getText());
+			oInput.setValue(aTokens[0].getText().slice(0,aTokens[0].getText().length-aTokens[0].getKey().length-3));
 			this.fragments['VHSSystemList'].close();
 		},
 

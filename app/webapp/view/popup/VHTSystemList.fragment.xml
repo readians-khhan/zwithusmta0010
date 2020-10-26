@@ -2,9 +2,9 @@
     xmlns:core="sap.ui.core"
     xmlns:t="sap.ui.table">
     <ValueHelpDialog title="{i18n>tlSystmeListValeuHelp}"
-        ok=".onVHSSystemOK"
-        cancel=".onVHSSystemCancel"
-        afterClose=".onVHSSystemAfterClose"
+        ok=".onVHTSystemOK"
+        cancel=".onVHTSystemCancel"
+        afterClose=".onVHTSystemAfterClose"
         supportMultiselect="false"
         key="ID"
         descriptionKey="DESC">

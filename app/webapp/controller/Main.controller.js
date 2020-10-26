@@ -187,6 +187,9 @@ sap.ui.define(
             case "fcVHSSystem":
               this.fcVHSSystem(oEvent);
               break;
+            case "fcVHTSystem":
+              this.fcVHTSystem(oEvent);
+              break;
 
             // Code List
             case "fcSearchCode":
@@ -405,7 +408,144 @@ sap.ui.define(
           this.fragments["VHSSystemList"].setTokens([oToken]);
         },
 
-        //
+        // Value Help - Target System
+        onVHTSystemCancel: function (oEvent) {
+          this.fragments["VHTSystemList"].close();
+        },
+
+        onVHTSystemAfterClose: function () {
+          this.fragments["VHTSystemList"].destroy();
+        },
+
+        onVHTSystemOK: function (oEvent) {
+          var oInput = this.byId(this.ControlID.ISourceSystem);
+
+          var aTokens = oEvent.getParameter("tokens");
+          oInput.setSelectedKey(aTokens[0].getKey());
+          oInput.setValue(
+            aTokens[0]
+              .getText()
+              .slice(
+                0,
+                aTokens[0].getText().length - aTokens[0].getKey().length - 3
+              )
+          );
+          this.fragments["VHTSystemList"].close();
+        },
+
+        fcVHTSystem: function (oEvent) {
+          var self = this;
+
+          this.callPopupFragment("VHTSystemList");
+          var oInput = this.byId(this.ControlID.ISourceSystem);
+          // Column Settings
+
+          var oColID = new sap.ui.table.Column({
+            visible: false,
+            label: new sap.m.Label({
+              text: "{i18n>fldID}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>ID}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColCompany = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldCompanyCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>COMPANY_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColSubsidary = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSubsidaryCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>SUBSIDARY_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColSystem = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSystemNm}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>SYSTEM_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColApplication = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldApplNm}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>APPPLTYPE_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          this.fragments["VHTSystemList"]
+            .getTableAsync()
+            .then(function (oTable) {
+              // Model Setting to Table
+              oTable.setModel(self.getModel("management"));
+
+              // Rows Setting to Table
+              if (oTable.bindRows) {
+                oTable.bindAggregation("rows", {
+                  path: "management>/SCI_VH_SYSTEMLIST_SRV",
+                });
+              }
+
+              if (oTable.getColumns().length <= 0) {
+                // Adding Column
+                oTable.addColumn(oColID);
+                oTable.addColumn(oColCompany);
+                oTable.addColumn(oColSubsidary);
+                oTable.addColumn(oColSystem);
+                oTable.addColumn(oColApplication);
+              }
+
+              self.fragments["VHTSystemList"].update();
+            });
+
+          var oToken = new Token();
+          oToken.setKey(oInput.getSelectedKey());
+          oToken.setText(oInput.getValue());
+          this.fragments["VHTSystemList"].setTokens([oToken]);
+        },
 
         fcCreateIntefaceList: function (oEvent) {
           this.callPopupFragment("RegisterInterface", oEvent);

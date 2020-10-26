@@ -117,14 +117,13 @@
 
                         <!--Target System -->
                         <Label text="{i18n>fldTSystemName}" />
-                        <ComboBox items="{path: 'mainView>/Emails/emailType', sorter: {path: 'type'}}"
-                            selectedKey="{mainView>/Emails/Register/type}">
-                            <core:Item text="{mainView>typeName}"
-                                key="{mainView>type}"/>
-                            <layoutData>
-                                <l:GridData span="XL3 L4 M5 S5" />
-                            </layoutData>
-                        </ComboBox>
+                        <Input id="ITargetSystem"
+                            showValueHelp="true"
+                            valueHelpOnly="true"
+                            valueHelpRequest="onPAI"
+                            app:fcCode="fcVHTSystem">
+                            <core:Item key="{management>SCI_VH_SYSTEMLIST_SRV/ID}" text="{management>SCI_VH_SYSTEMLIST_SRV/COMPANY_NM} - {management>SCI_VH_SYSTEMLIST_SRV/SUBSIDARY_NM} {management>SCI_VH_SYSTEMLIST_SRV/SYSTEM_NM} {management>SCI_VH_SYSTEMLIST_SRV/APPL_NM} {management>SCI_VH_SYSTEMLIST_SRV/APPPLTYPE_NM}" />
+                        </Input>
 
                         <!--RFC Name -->
                         <Label text="{i18n>fldRFCName}" />

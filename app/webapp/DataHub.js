@@ -86,21 +86,30 @@ sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (
 					selectedCount: 0,
 					activeDelete: false,
 				},
-				Codes: {
-					FieldName: "",
-					FieldStatus: [
-						{
-							FieldStatusKey: "Movement",
-							FieldStatusName: "Movements",
-						},
-						{
-							FieldStatusKey: "Confirmation",
-							FieldStatusName: "Confirmations",
-						},
-					],
-					SelectedFieldStatusKey: "Confirmation",
-					totalModificationsCount: 0,
-					selectedModificationsCount: 0,
+				Interface : {
+					totalCount: 0,
+					selectedCount: 0,
+					activeDelete: false,
+					Regist: {
+						StatusID: "",
+						Name: "",
+						Description: "",
+						Package: "",
+						IFName: "",
+						AsIsID: "",
+						AsIsName: "",
+						AsIsDescription: "",
+						SourceSystemID : "",
+						SourceSystemTypeID : "",
+						TargetSystemID : "",
+						TargetSystemDESC : "",
+						TargetSystemTypeID : "",
+						RFCName : "",
+						ESName:"",
+						WSName : "",
+						WSBName : "",
+						typeID : ""
+					}
 				},
 				SystemList: {
 					totalCount: 0,

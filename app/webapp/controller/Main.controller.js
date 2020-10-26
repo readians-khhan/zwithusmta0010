@@ -50,9 +50,11 @@ sap.ui.define(
           CBdeleted: "CBdeleted",
 
           ISourceSystem: "ISourceSystem",
+          ITargetSystem: "ITargetSystem",
 
           MCIFSorceCompanyCode: "MCIFSorceCompanyCode",
-          InterfaceList: "InterfaceList",
+          tabInterfaceList: "tabInterfaceList",
+          InterfaceDataGroup: "InterfaceDataGroup",
 
           // System List
           tabSystemList: "tabSystemList",
@@ -191,6 +193,10 @@ sap.ui.define(
               this.fcVHTSystem(oEvent);
               break;
 
+            case "fcCreateInterfacePopup":
+              this.fcCreateInterfacePopup(oEvent);
+              break;
+
             // Code List
             case "fcSearchCode":
               this.fcSearchCode(oEvent);
@@ -274,9 +280,7 @@ sap.ui.define(
           this.fragments["VHSSystemList"].close();
         },
 
-        onVHSSystemAfterClose: function () {
-          this.fragments["VHSSystemList"].destroy();
-        },
+        onVHSSystemAfterClose: function () {},
 
         onVHSSystemOK: function (oEvent) {
           var oInput = this.byId(this.ControlID.ISourceSystem);
@@ -291,7 +295,62 @@ sap.ui.define(
                 aTokens[0].getText().length - aTokens[0].getKey().length - 3
               )
           );
+          oInput.getValue();
           this.fragments["VHSSystemList"].close();
+        },
+
+        fcCreateInterfacePopup: function (oEvent) {
+          var self = this;
+          var oTable = this.getControl(this.ControlID.tabInterfaceList);
+          var oInput = this._h.mainView.getProperty("/Interface/Regist");
+          var sInputSSystem = this.byId(
+            this.ControlID.ISourceSystem
+          ).getSelectedKey();
+          var sInputTSystem = this.byId(
+            this.ControlID.ISourceSystem
+          ).getSelectedKey();
+
+          var oBinding = oTable.getBinding("rows");
+
+          oBinding.create({
+            IF_NM: oInput.Name,
+            IF_DESC: oInput.Description,
+            PAKCAGE_NM: oInput.Package,
+            PI_NM: oInput.IFName,
+            IF_ASIS: oInput.AsIsID,
+            IF_ASIS_NM: oInput.AsIsName,
+            IF_ASIS_DESC: oInput.AsIsDescription,
+            STATUS_CD_ID: oInput.StatusID,
+            SC_SYS_FK_ID: sInputSSystem,
+            SC_IFTYPE_CD_ID: oInput.SourceSystemTypeID,
+            TG_SYS_FK_ID: sInputTSystem,
+            TG_IFTYPE_CD_ID: oInput.TargetSystemTypeID,
+            RFC_NM: oInput.RFCName,
+            ENTERPRSIESERVICE_NM: oInput.ESName,
+            WEBSERVICE_NM: oInput.WSName,
+            WEBBINDING_NM: oInput.WSBName,
+            EXECUTION_CD_ID: oInput.typeID,
+          });
+
+          this._h.management
+            .submitBatch(this.ControlID.InterfaceDataGroup)
+            .then(
+              function (oData) {
+                if (!oBinding.hasPendingChanges()) {
+                  this.showMessageToast("msgSuccess13", "20rem", []);
+                  this.closePopupFragment("RegisterInterface");
+                } else {
+                  this.resetBindingChanges(oBinding);
+                  this.showMessageToast("msgError04", "20rem", [oError.message]);
+                }
+              }.bind(this),
+              function (oError) {
+                this.resetBindingChanges(oBinding);
+                this.showMessageToast("msgError04", "20rem", [oError.message]);
+              }.bind(this)
+            );
+
+          console.log("");
         },
 
         fcVHSSystem: function (oEvent) {
@@ -377,6 +436,36 @@ sap.ui.define(
             width: "100px",
           });
 
+          var oColApplType = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldApplTypeCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>APPPLTYPE_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "10rem",
+          });
+
+          var oColDescription = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSystemDescription}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>DESCRIPTION}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "10rem",
+          });
+
           this.fragments["VHSSystemList"]
             .getTableAsync()
             .then(function (oTable) {
@@ -397,6 +486,8 @@ sap.ui.define(
                 oTable.addColumn(oColSubsidary);
                 oTable.addColumn(oColSystem);
                 oTable.addColumn(oColApplication);
+                oTable.addColumn(oColApplType);
+                oTable.addColumn(oColDescription);
               }
 
               self.fragments["VHSSystemList"].update();
@@ -413,12 +504,10 @@ sap.ui.define(
           this.fragments["VHTSystemList"].close();
         },
 
-        onVHTSystemAfterClose: function () {
-          this.fragments["VHTSystemList"].destroy();
-        },
+        onVHTSystemAfterClose: function () {},
 
         onVHTSystemOK: function (oEvent) {
-          var oInput = this.byId(this.ControlID.ISourceSystem);
+          var oInput = this.byId(this.ControlID.ITargetSystem);
 
           var aTokens = oEvent.getParameter("tokens");
           oInput.setSelectedKey(aTokens[0].getKey());
@@ -430,6 +519,7 @@ sap.ui.define(
                 aTokens[0].getText().length - aTokens[0].getKey().length - 3
               )
           );
+          oInput.getValue();
           this.fragments["VHTSystemList"].close();
         },
 
@@ -437,7 +527,7 @@ sap.ui.define(
           var self = this;
 
           this.callPopupFragment("VHTSystemList");
-          var oInput = this.byId(this.ControlID.ISourceSystem);
+          var oInput = this.byId(this.ControlID.ITargetSystem);
           // Column Settings
 
           var oColID = new sap.ui.table.Column({
@@ -508,12 +598,42 @@ sap.ui.define(
               width: "100%",
             }),
             template: new sap.m.Text({
+              text: "{management>APPL_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "10rem",
+          });
+
+          var oColApplType = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldApplTypeCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
               text: "{management>APPPLTYPE_NM}",
               textAlign: "Center",
               width: "100%",
               wrapping: false,
             }),
-            width: "100px",
+            width: "10rem",
+          });
+
+          var oColDescription = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSystemDescription}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>DESCRIPTION}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "10rem",
           });
 
           this.fragments["VHTSystemList"]
@@ -536,6 +656,8 @@ sap.ui.define(
                 oTable.addColumn(oColSubsidary);
                 oTable.addColumn(oColSystem);
                 oTable.addColumn(oColApplication);
+                oTable.addColumn(oColApplType);
+                oTable.addColumn(oColDescription);
               }
 
               self.fragments["VHTSystemList"].update();
@@ -544,6 +666,7 @@ sap.ui.define(
           var oToken = new Token();
           oToken.setKey(oInput.getSelectedKey());
           oToken.setText(oInput.getValue());
+
           this.fragments["VHTSystemList"].setTokens([oToken]);
         },
 
@@ -1076,8 +1199,6 @@ sap.ui.define(
           // Check Input
           var bError = false;
           var oInput = this._h.mainView.getProperty("/SystemList/Add");
-
-          console.log(oInput);
 
           if (!oInput.company) {
             bError = true;

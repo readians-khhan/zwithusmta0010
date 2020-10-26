@@ -43,7 +43,6 @@
     "requires": {
       "db": {
         "kind": "sqlite",
-        "model": "*",
         "credentials": {
           "database": "sci.db"
         }

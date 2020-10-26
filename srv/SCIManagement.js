@@ -145,7 +145,6 @@ module.exports = cds.service.impl(async (srv) => {
     let oLoggingData = await SELECT.one('SCI_MST0020').where({ ID: req.data.ID });
     oLoggingData.MST0020_ID = req.data.ID;
     oLoggingData.ID = uuidv4();
-    delete oLoggingData.MANAGER;
     await INSERT.into('SCI_MST0020_HIST').entries(oLoggingData);
   }));
 
@@ -190,32 +189,6 @@ module.exports = cds.service.impl(async (srv) => {
       }
     };
   }
-
-  srv.after("READ", "SCI_VH_SYSTEMLIST_SRV", (each) => {
-    let sCOMPANY_NM = '';
-    let sSUBSIDARY_NM = '';
-    let sSYSTEM_NM = '';
-    let sAPPL_NM = '';
-    let sAPPPLTYPE_NM = '';
-
-    if(!bf.IsNotValid(each.COMPANY_NM)){
-      sCOMPANY_NM = each.COMPANY_NM
-    }
-    if(!bf.IsNotValid(each.SUBSIDARY_NM)){
-      sSUBSIDARY_NM = each.SUBSIDARY_NM
-    }
-    if(!bf.IsNotValid(each.SYSTEM_NM)){
-      sSYSTEM_NM = each.SYSTEM_NM
-    }
-    if(!bf.IsNotValid(each.APPL_NM)){
-      sAPPL_NM = each.APPL_NM
-    }
-    if(!bf.IsNotValid(each.APPPLTYPE_NM)){
-      sAPPPLTYPE_NM = each.APPPLTYPE_NM
-    }
-
-    each.DESC = `${sCOMPANY_NM} ${sSUBSIDARY_NM} ${sSYSTEM_NM} ${sAPPL_NM} ${sAPPPLTYPE_NM}`;
-  });
 
 
   srv.on("sendErrorEmail", ExceptionHandler((req, next) => {

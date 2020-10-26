@@ -30,16 +30,10 @@
         </t:extension>
         <t:columns>
             <!-- Company Name : 회사 -->
-            <t:Column width="8rem"
-                autoResizable="true"
-                sortProperty="COMPANY_CODE"
-                filterProperty="COMPANY_CODE"
-                hAlign="Center">
-                <Label text="{i18n>fldCompanyCd}"
-                    textAlign="Center"
-                    width="100%"/>
+            <t:Column width="8rem" autoResizable="true" sortProperty="COMPANY_CD/CODE" filterProperty="COMPANY_CD/CODE" hAlign="Center">
+                <Label text="{i18n>fldCompanyCd}" textAlign="Center" width="100%"/>
                 <t:template>
-                    <Text text="{management>COMPANY_DESC01}"
+                    <Text text="{management>COMAPANY_DESC01}"
                         textAlign="Center"
                         width="100%"
                         wrapping="false"/>

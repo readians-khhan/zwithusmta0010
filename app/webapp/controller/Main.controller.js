@@ -69,6 +69,10 @@ sap.ui.define(
 
           //--- Update Pop Up ---
           UpdateSystemList: "UpdateSystemList",
+          dialogUpdateSystemList: "dialogUpdateSystemList",
+          UpdateSysLiCompanyCd: "UpdateSysLiCompanyCd",
+          UpdateSysLiSubdiaryCd: "UpdateSysLiSubdiaryCd",
+          UpdateSysLiAppliCd: "UpdateSysLiAppliCd",
 
           // CODE LIST
           tabCodeList: "tabCodeList",
@@ -1905,7 +1909,7 @@ sap.ui.define(
           if (oSCCompany.length) {
             aCompanyFilters = _.map(oSCCompany, function (iStatus) {
               return {
-                field: "COMAPANY_CODE",
+                field: "COMPANY_CODE",
                 op: self.OP.EQ,
                 from: iStatus,
               };
@@ -1962,29 +1966,46 @@ sap.ui.define(
           this._h.mainView.setProperty("/SystemList/Add", {
             appliNm: "",
             systemNm: "",
+            systemCerti: "0",
           });
 
           this.callPopupFragment("AddSystemList", oEvent);
         },
 
-        onChange: function (oEvent) {
-          var sId = oEvent.getSource().sId;
+        //Combox Selection Change
+        onSelectionChange: function (oEvent) {
+		  var sId = oEvent.getSource().sId.substring(12);
 
-          if (sId == "AddSysLiCompanyCd") {
+          if (sId == "AddSysLiCompanyCd") {			  
             this._h.mainView.setProperty(
               "/SystemList/Add/company",
               oEvent.getSource().getSelectedKey()
-            );
+			);
           } else if (sId == "AddSysLiSubdiaryCd") {
             this._h.mainView.setProperty(
               "/SystemList/Add/subdiary",
               oEvent.getSource().getSelectedKey()
-            );
+			);
           } else if (sId == "AddSysLiAppliCd") {
             this._h.mainView.setProperty(
               "/SystemList/Add/appliCd",
               oEvent.getSource().getSelectedKey()
-            );
+			);
+          } else if (sId == "UpdateSysLiCompanyCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/company",
+              oEvent.getSource().getSelectedKey()
+			);
+          } else if (sId == "UpdateSysLiSubdiaryCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/subdiary",
+              oEvent.getSource().getSelectedKey()
+			);
+          } else if (sId == "UpdateSysLiAppliCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/appliCd",
+              oEvent.getSource().getSelectedKey()
+			);
           }
         },
 
@@ -2056,29 +2077,33 @@ sap.ui.define(
           var oBinding = oTable.getBinding("rows");
 
           oBinding.create({
-            COMAPANY_CODE: oInput.company,
-            SUBSIDARY_CODE: oInput.subdiary,
-            APPLTYPE_CODE: oInput.appliCd,
+            COMPANY_CD_ID: oInput.company,
+            SUBSIDARY_CD_ID: oInput.subdiary,
+            APPPLTYPE_CD_ID: oInput.appliCd,
             APPL_NM: oInput.appliNm,
             SYSTEM_NM: oInput.systemNm,
-            // description: oInput.description,
-            // managerName: oInput.managerName,
-            // contact: oInput.contact,
-            // email: oInput.email,
-            // systemIP: oInput.systemIP,
-            // systemHost: oInput.systemHost,
-            // systemPort: oInput.systemPort,
-            // systemCerti: oInput.systemCerti
+            DESCRIPTION: oInput.description,
+            MANAGER: [
+              {
+                NAME: oInput.managerName,
+                PHONE: oInput.contact,
+                EMAIL: oInput.email,
+              },
+            ],
+            IP: oInput.systemIP,
+            HOST: oInput.systemHost,
+            PORT: oInput.systemPort,
+            ATHENTIC_TYPE: _.toInteger(oInput.systemCerti),
           });
 
           this.setMessageType(this.MESSAGE_TYPE.CREATE);
 
           this._h.management
-            .submitBatch(this.ControlID.systemListDataGroup)
+            .submitBatch(self.ControlID.systemListDataGroup)
             .then(
               function (oData) {
                 this.showMessageToast("msgSuccess13", "20rem", []);
-                this.closePopupFragment(this.ControlID.AddSystemList);
+                this.closePopupFragment(self.ControlID.AddSystemList);
               }.bind(this),
               function (oError) {
                 this.resetBindingChanges(oBinding);
@@ -2094,10 +2119,7 @@ sap.ui.define(
         fcUpdateSystemList: function (oEvent) {
           this.callPopupFragment(this.ControlID.UpdateSystemList, oEvent);
 
-          var oData = this.getListItemContext(oEvent, "management").oData;
           var oPath = this.getListItemContext(oEvent, "management").sPath;
-
-          console.log(oData);
 
           this.fragments["UpdateSystemList"].bindElement({
             path: oPath,
@@ -2107,29 +2129,21 @@ sap.ui.define(
 
         fcUpdateSystemListPopup: function (oEvent) {
           var self = this;
-          var oTable = this.getControl(this.ControlID.tabSystemList);
-
-          this.setUIChanges(this.getModel("management"), true);
+          this.setUIChanges(this._h.management);
 
           if (this.checkUIChanges()) {
-            this.getModel("management")
-              .submitBatch(this.ControlID.systemListDataGroup)
-              .then(
-                function (oSuccess) {
-                  self.setUIChanges(self.getModel("management"), false);
-                  self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-                  self.closePopupFragment(self.ControlID.UpdateSystemList);
-                  self.getModel("management").refresh();
-                  oTable.getBinding("rows").refresh();
-                },
-                function (oError) {
-                  self.setUIChanges(this.getModel("management"), false);
-                  self.showMessageToast("msgError10", "20rem", [
-                    oError.message,
-                  ]);
-                  oTable.getBinding("rows").refresh();
-                }
-              );
+            this._h.management.submitBatch("systemListDataGroup").then(
+              function () {
+                self.setUIChanges(self._h.management, false);
+                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
+                self.closePopupFragment(self.ControlID.UpdateSystemList);
+                self._h.management.refresh();
+              },
+              function (oError) {
+                self.setUIChanges(self._h.management, false);
+                self.showMessageToast("msgError10", "20rem", [oError.message]);
+              }
+            );
           } else {
             this.closePopupFragment(this.ControlID.UpdateSystemList);
             this.showMessageToast("msgInfo01", "20rem");
@@ -2162,8 +2176,8 @@ sap.ui.define(
 
                 self.setMessageType(self.MESSAGE_TYPE.UPDATE);
 
-                self._h.mesData
-                  .submitBatch(this.ControlID.systemListDataGroup)
+                self._h.management
+                  .submitBatch(self.ControlID.systemListDataGroup)
                   .then(
                     // Success
                     function (oData) {

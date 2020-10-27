@@ -27,6 +27,8 @@ sap.ui.define(
       "withus.sci.management.SCIManagement.controller.Main",
       {
         ControlID: {
+          //-------------------------------------------------------------------------------------------
+          //Interface List
           MIInterfaceName: "MIInterfaceName",
           MIInterfaceNumber: "MIInterfaceNumber",
           MISSystemName: "MISSystemName",
@@ -56,6 +58,21 @@ sap.ui.define(
           tabInterfaceList: "tabInterfaceList",
           InterfaceDataGroup: "InterfaceDataGroup",
 
+          //-------------------------------------------------------------------------------------------
+          // CODE LIST
+          tabCodeList: "tabCodeList",
+          MCCDSoruceCt01: "MCCDSoruceCt01",
+          MCCDSoruceCt02: "MCCDSoruceCt02",
+          MCCDSoruceCt03: "MCCDSoruceCt03",
+          MCCDSoruceCd: "MCCDSoruceCd",
+          codeListDataGroup: "codeListDataGroup",
+          AddCodeList: "AddCodeList",
+          AddCodeLiCat01: "AddCodeLiCat01",
+          AddCodeLiCat02: "AddCodeLiCat02",
+          AddCodeLiCat03: "AddCodeLiCat03",
+
+          //-------------------------------------------------------------------------------------------
+
           // System List
           tabSystemList: "tabSystemList",
           tabSystemList__bDelete: "tabSystemList__bDelete",
@@ -76,18 +93,6 @@ sap.ui.define(
           UpdateSysLiCompanyCd: "UpdateSysLiCompanyCd",
           UpdateSysLiSubdiaryCd: "UpdateSysLiSubdiaryCd",
           UpdateSysLiAppliCd: "UpdateSysLiAppliCd",
-
-          // CODE LIST
-          tabCodeList: "tabCodeList",
-          MCCDSoruceCt01: "MCCDSoruceCt01",
-          MCCDSoruceCt02: "MCCDSoruceCt02",
-          MCCDSoruceCt03: "MCCDSoruceCt03",
-          MCCDSoruceCd: "MCCDSoruceCd",
-          codeListDataGroup: "codeListDataGroup",
-          AddCodeList: "AddCodeList",
-          AddCodeLiCat01: "AddCodeLiCat01",
-          AddCodeLiCat02: "AddCodeLiCat02",
-          AddCodeLiCat03: "AddCodeLiCat03",
         },
 
         MESSAGE_TYPE: {
@@ -98,11 +103,9 @@ sap.ui.define(
           SEARCH: "Search",
         },
 
-        /* 
-
-		========================================================== */
-        /* Lifecyle
-		/* ========================================================== */
+        /* ========================================================== */
+        /* Lifecyle */
+        /* ========================================================== */
         // Initialization
         onInit: function () {
           // Global
@@ -153,25 +156,26 @@ sap.ui.define(
         onExit: function () {},
 
         /* ========================================================== */
-        /* Events
-		/* ========================================================== */
-        // Data Received Event Hander=
+        /* Events */
+        /* ========================================================== */
+
+        // Data Received Event Handler
         onDR_InterfaceList: function (oEvent) {
           this.showMessageByType(oEvent);
-        },
-
-        onDR_SystemList: function (oEvent) {
-          this.showMessageByType(oEvent);
-          this._h.mainView.setProperty(
-            "/SystemList/totalCount",
-            oEvent.getSource().getLength()
-          );
         },
 
         onDR_CodeList: function (oEvent) {
           this.showMessageByType(oEvent);
           this._h.mainView.setProperty(
             "/CodeList/totalCount",
+            oEvent.getSource().getLength()
+          );
+        },
+
+        onDR_SystemList: function (oEvent) {
+          this.showMessageByType(oEvent);
+          this._h.mainView.setProperty(
+            "/SystemList/totalCount",
             oEvent.getSource().getLength()
           );
         },
@@ -231,6 +235,9 @@ sap.ui.define(
             case "fcSelectionChangeCodeList":
               this.fcSelectionChangeCodeList(oEvent);
               break;
+            case "fcDeleteCodeList":
+              this.fcDeleteCodeList(oEvent);
+              break;
 
             // Code Create Popup
             case "fcCancelCodePopup":
@@ -238,7 +245,6 @@ sap.ui.define(
               break;
             case "fcAddCodeListPopup":
               this.fcAddCodeListPopup(oEvent);
-            
 
             //System List
             case "fcSearchSystemList":
@@ -274,36 +280,12 @@ sap.ui.define(
             case "fcDeleteSystemList":
               this.fcDeleteSystemList(oEvent);
               break;
-            case "fcDeleteCodeList":
-              this.fcDeleteCodeList(oEvent);
-              break;
 
             // Commons
             case "fcMessage":
               this.fcMessage(oEvent);
               break;
           }
-        },
-
-        // Data Received Event Hander=
-
-        //Value Help Logic
-        fcValueHelpOkPress: function (oEvent) {
-          var aTokens = oEvent.getParameter("tokens");
-          this._oInput.setSelectedKey(aTokens[0].getKey());
-          this._oValueHelpDialog.close();
-        },
-
-        fcValueHelpCancelPress: function () {
-          this._oValueHelpDialog.close();
-        },
-
-        fcValueHelpAfterClose: function () {
-          this._oValueHelpDialog.destroy();
-        },
-
-        fcCancelInterfaceGeneratePopup: function (oEvent) {
-          this.closePopupFragment("RegisterInterface");
         },
 
         fcItemSelect: function (oEvent) {
@@ -329,6 +311,278 @@ sap.ui.define(
               oNavConMain.to(this.getControl("dp-exception"), "slide");
               break;
           }
+        },
+
+        //------------------------- Common Start -------------------------------------------
+
+        fcMessage: function (oEvent) {
+          if (!this.fragments["Messages"]) {
+            var sFragmentName =
+              this._h.nameSpace + ".view.fragments." + "Messages";
+            this.fragments["Messages"] = sap.ui.xmlfragment(
+              sFragmentName,
+              this
+            );
+            this.getView().addDependent(this.fragments["Messages"]);
+          }
+          this.fragments["Messages"].openBy(oEvent.getSource());
+        },
+
+        //Combox Selection Change
+        onSelectionChange: function (oEvent) {
+          var sId = oEvent.getSource().sId.substring(12);
+
+          if (sId == "AddSysLiCompanyCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Add/company",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "AddSysLiSubdiaryCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Add/subdiary",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "AddSysLiAppliCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Add/appliCd",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "UpdateSysLiCompanyCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/company",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "UpdateSysLiSubdiaryCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/subdiary",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "UpdateSysLiAppliCd") {
+            this._h.mainView.setProperty(
+              "/SystemList/Update/appliCd",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "AddCodeLiCat01") {
+            this._h.mainView.setProperty(
+              "/CodeList/Add/cat01",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "AddCodeLiCat02") {
+            this._h.mainView.setProperty(
+              "/CodeList/Add/cat02",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "AddCodeLiCat03") {
+            this._h.mainView.setProperty(
+              "/CodeList/Add/cat03",
+              oEvent.getSource().getSelectedKey()
+            );
+          }
+        },
+
+        setUIChanges: function (oModel, bHasUIChanges) {
+          // Error : set true
+          // Model has pending changes : set true
+          if (this.checkError()) {
+            // There are technical errors, set ui change status to true
+            bHasUIChanges = true;
+          } else if (bHasUIChanges === undefined) {
+            // Check model pending changes exists. It has pending changes, then ui change status to true
+            if (oModel) {
+              bHasUIChanges = oModel.hasPendingChanges();
+            }
+          }
+
+          this._h.mainView.setProperty("/hasUIChanges", bHasUIChanges);
+        },
+
+        resetBindingChanges: function (oBinding) {
+          oBinding.resetChanges();
+          this.setError(false);
+          this.setUIChanges(oBinding.getModel(), false);
+
+          var aMessages = _.map(
+            this.oMessageModelBinding.getContexts(),
+            function (oContext) {
+              return oContext.getObject();
+            }
+          );
+
+          this.oMessageManager.removeMessages(aMessages);
+        },
+
+        resetModelChanges: function (oModel) {
+          oModel.resetChanges();
+          this.setError(false);
+          this.setUIChanges(oModel, false);
+
+          var aMessages = _.map(
+            this.oMessageModelBinding.getContexts(),
+            function (oContext) {
+              return oContext.getObject();
+            }
+          );
+
+          if (aMessages.length) {
+            this.oMessageManager.removeMessages(aMessages);
+          }
+        },
+
+        setError: function (bError) {
+          this._h.mainView.setProperty("/hasError", bError);
+        },
+
+        checkError: function () {
+          return this._h.mainView.getProperty("/hasError");
+        },
+
+        checkUIChanges: function () {
+          return this._h.mainView.getProperty("/hasUIChanges");
+        },
+
+        onMessageBindingChange: function (oEvent) {
+          var aContexts = oEvent.getSource().getContexts();
+
+          this.setError(false);
+
+          if (!aContexts.length) {
+            return;
+          } else {
+            var aErrorMessages = _.filter(aContexts, function (oContext) {
+              return oContext.getObject().type === "Error";
+            });
+
+            if (aErrorMessages.length) {
+              this.setUIChanges(null, true);
+              this.setError(true);
+              if (!this.sMessageType) {
+                this.showMessageToast("msgError11");
+              }
+            } else {
+              this.setUIChanges(null, false);
+            }
+          }
+        },
+
+        setMessageType: function (sType) {
+          this.sMessageType = sType;
+
+          this.oMessageManager.removeAllMessages();
+        },
+
+        showMessageByType: function (oEvent) {
+          var bError = false;
+
+          if (oEvent.getParameter("error")) {
+            bError = true;
+          }
+
+          if (this.bInit) {
+            return;
+          }
+
+          if (bError) {
+            switch (this.sMessageType) {
+              case this.MESSAGE_TYPE.CREATE:
+                this.showMessageToast("msgError07", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.REFRESH:
+                this.showMessageToast("msgError05", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.DELETE:
+                this.showMessageToast("msgError01", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.UPDATE:
+                this.showMessageToast("msgError06", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.SEARCH:
+                this.showMessageToast("msgError08", "20rem", []);
+                break;
+            }
+          } else {
+            switch (this.sMessageType) {
+              case this.MESSAGE_TYPE.CREATE:
+                this.showMessageToast("msgSuccess16", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.REFRESH:
+                this.showMessageToast("msgSuccess14", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.DELETE:
+                this.showMessageToast("msgSuccess05", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.UPDATE:
+                this.showMessageToast("msgSuccess15", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.SEARCH:
+                this.showMessageToast("msgSuccess17", "20rem", [
+                  oEvent.getSource().getLength(),
+                ]);
+                break;
+            }
+          }
+
+          this.sMessageType = "";
+        },
+
+        getDate: function (sDateTime) {
+          if (sDateTime) {
+            return moment(sDateTime).format("MM.DD.YYYY");
+          } else {
+            return "";
+          }
+        },
+
+        getDeletedIfIcon: function (iStatus) {
+          switch (iStatus) {
+            case "true":
+              return "sap-icon://delete";
+            case "false":
+              return "sap-icon://complete";
+            default:
+              return "sap-icon://complete";
+          }
+        },
+
+        getDeletedIfText: function (iStatus) {
+          switch (iStatus) {
+            case "true":
+              return "Deleted";
+            case "false":
+              return "Available";
+            default:
+              return "Available";
+          }
+        },
+
+        initMultiInput: function (self) {
+          var fcvalidator = function (args) {
+            var text = args.text;
+
+            return new Token({ key: text, text: text });
+          };
+
+          self.getView().byId("MIInterfaceName").addValidator(fcvalidator);
+          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
+          self.getView().byId("MISSystemName").addValidator(fcvalidator);
+          self.getView().byId("MISApplicationName").addValidator(fcvalidator);
+          self.getView().byId("MITSystemName").addValidator(fcvalidator);
+          self.getView().byId("MITApplicationName").addValidator(fcvalidator);
+          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
+          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
+          self.getView().byId("MISCIIf").addValidator(fcvalidator);
+          self.getView().byId("MISCIPackage").addValidator(fcvalidator);
+          self.getView().byId("MiSystemAppNm").addValidator(fcvalidator);
+          self.getView().byId("MCCDSoruceCd").addValidator(fcvalidator);
+        },
+        //------------------------- Common End -------------------------------------------
+
+        //------------------------- Interface List  Start -------------------------------------------
+
+        fcCancelInterfaceGeneratePopup: function (oEvent) {
+          this.closePopupFragment("RegisterInterface");
+        },
+        fcCreateIntefaceList: function (oEvent) {
+          this.callPopupFragment("RegisterInterface", oEvent);
         },
 
         fcSearchInterface: function (oEvent) {
@@ -561,361 +815,6 @@ sap.ui.define(
 
           oTable.getBinding("rows").filter(aMultiFilter);
           this.showMessageToast("msgSuccess120", "20rem", []);
-        },
-
-        // Code List Refresh Function
-        fcCodeRefresh: function (oEvent) {
-          var oTable = this.getControl(this.ControlID.tabCodeList);
-
-          var oBinding = oTable.getBinding("rows");
-
-          if (oBinding.hasPendingChanges()) {
-            this.showMessageToast("msgWarn02", "20rem", []);
-            return;
-          }
-
-          this.setMessageType(this.MESSAGE_TYPE.REFRESH);
-          oBinding.refresh();
-        },
-
-        // Code List Search Function
-        fcSearchCode: function (oEvent) {
-          var self = this;
-          // 명칭 필터 생성
-          var aCodeNameFilters = [];
-          // 구분 필터 생성
-          var aCAT01Filters = [];
-          var oCAT01Filter = null;
-          // 상세구분 필터 생성
-          var aCAT02Filters = [];
-          var oCAT02Filter = null;
-          // 기타구분 필터 생성
-          var aCAT03Filters = [];
-          var oCAT03Filter = null;
-
-          // 컨트롤
-          var oControl = this.getControl(this.ControlID.tabCodeList);
-          var oSCCat01 = this.getControl(this.ControlID.MCCDSoruceCt01);
-          var oSCCat02 = this.getControl(this.ControlID.MCCDSoruceCt02);
-          var oSCCat03 = this.getControl(this.ControlID.MCCDSoruceCt03);
-
-          // 선택 데이터 가져오기
-          var oSCCategory01 = oSCCat01.getSelectedKeys();
-          var oSCCategory02 = oSCCat02.getSelectedKeys();
-          var oSCCategory03 = oSCCat03.getSelectedKeys();
-
-          // 명칭 데이터 가져오기 ( Tokens 임포트 필요)
-          var oApplCdTokens = _.map(
-            this.getView().byId("MCCDSoruceCd").getTokens(),
-            (oData) => {
-              return oData.getKey();
-            }
-          );
-
-          //구분
-          if (oSCCategory01.length) {
-            aCAT01Filters = _.map(oSCCategory01, function (iStatus) {
-              return {
-                field: "CAT01",
-                op: self.OP.EQ,
-                from: iStatus,
-              };
-            });
-
-            oCAT01Filter = this.makeMultiFilter(aCAT01Filters, false);
-          }
-
-          //상세구분
-          if (oSCCategory02.length) {
-            aCAT02Filters = _.map(oSCCategory02, function (iStatus) {
-              return {
-                field: "CAT02",
-                op: self.OP.EQ,
-                from: iStatus,
-              };
-            });
-
-            oCAT02Filter = this.makeMultiFilter(aCAT02Filters, false);
-          }
-
-          //상세구분
-          if (oSCCategory03.length) {
-            aCAT03Filters = _.map(oSCCategory03, function (iStatus) {
-              return {
-                field: "CAT03",
-                op: self.OP.EQ,
-                from: iStatus,
-              };
-            });
-
-            oCAT03Filter = this.makeMultiFilter(aCAT03Filters, false);
-          }
-
-          //어플리케이션 명
-          if (oApplCdTokens.length > 0) {
-            aCodeNameFilters.push({
-              field: "CODE",
-              op: this.OP.CONTAINS,
-              from: oApplCdTokens,
-            });
-          }
-
-          // 통합 필터
-          var aFilterObjects = [];
-
-          // 구분 검색 필터 생성
-          if (oCAT01Filter) {
-            aFilterObjects.push(oCAT01Filter);
-          }
-
-          // 상세구분 검색 필터 생성
-          if (oCAT02Filter) {
-            aFilterObjects.push(oCAT02Filter);
-          }
-
-          // 기타구분 검색 필터 생성
-          if (oCAT03Filter) {
-            aFilterObjects.push(oCAT03Filter);
-          }
-
-          // 통합필터에 명칭 검색 필터 Push
-          if (aCodeNameFilters.length) {
-            aFilterObjects.push(this.makeMultiFilter(aCodeNameFilters, true));
-          }
-
-          this.setMessageType(this.MESSAGE_TYPE.SEARCH);
-
-          oControl.getBinding("rows").filter(aFilterObjects);
-        },
-
-        // 코드 생성 팝업 나타내기
-        fcCreateCode: function (oEvent) {
-          this._h.mainView.setProperty("/CodeList/Add", {
-            codeNm: "",
-            description: "",
-            detailDescription: "",
-          });
-
-          this.callPopupFragment("AddCodeList", oEvent);
-        },
-
-        // 코드 생성
-        fcAddCodeListPopup: function (oEvent) {
-          var self = this;
-          // 테이블 컨트롤러 호출
-          var oTable = this.getControl(this.ControlID.tabCodeList);
-          this.oMessageManager.removeAllMessages();
-
-          var bError = false;
-          var oInput = this._h.mainView.getProperty("/CodeList/Add");
-
-          if (!oInput.cat01) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Category01"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (!oInput.cat02) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Category02"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (!oInput.codeNm) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Code Name"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-          
-          if (bError) {
-            this.showMessageToast("msgError11", "20rem", []);
-            return;
-          }
-
-          var oBinding = oTable.getBinding("rows");
-
-          oBinding.create({
-            CAT01: oInput.cat01,
-            CAT02: oInput.cat02,
-            CAT03: oInput.cat03,
-            CODE: oInput.codeNm,
-            DESC01: oInput.description,
-            DESC02: oInput.detailDescription,
-          });
-
-          this.setMessageType(this.MESSAGE_TYPE.CREATE);
-
-          this._h.management.submitBatch(this.ControlID.codeListDataGroup).then(
-            function (oData) {
-              this.showMessageToast("msgSuccess13", "20rem", []);
-              this.closePopupFragment(this.ControlID.AddCodeList);
-            }.bind(this),
-            function (oError) {
-              this.resetBindingChanges(oBinding);
-              this.showMessageToast("msgError04", "20rem", [oError.message]);
-            }.bind(this)
-          );
-        },
-
-        // 코드 생성 팝업 닫기
-        fcCancelCodePopup: function (oEvent) {
-          this.oMessageManager.removeAllMessages();
-          this.closePopupFragment("AddCodeList");
-        },
-
-        // 코드 선택
-        fcSelectionChangeCodeList: function (oEvent) {
-          this._h.mainView.setProperty(
-            "/CodeList/selectedCount",
-            oEvent.getSource().getSelectedIndices().length
-          );
-        },
-
-        //System List
-        fcRefreshSystemList: function (oEvent) {
-          this.setUIChanges(this._h.management);
-
-          if (this.checkUIChanges()) {
-            this.showMessageToast("msgWarn02", "20rem", []);
-            return;
-          }
-
-          this.setMessageType(this.MESSAGE_TYPE.REFRESH);
-          this.getControl(this.ControlID.tabSystemList)
-            .getBinding("rows")
-            .refresh();
-        },
-
-        onChange: function (oEvent) {
-          var sId = oEvent.getSource().sId;
-
-          if (sId == "AddSysLiCompanyCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/company",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddSysLiSubdiaryCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/subdiary",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddSysLiAppliCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/appliCd",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddCodeLiCat01") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat01",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddCodeLiCat02") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat02",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddCodeLiCat03") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat03",
-              oEvent.getSource().getSelectedKey()
-            );
-          }
-        },
-
-        fcUpdateSystemListPopup: function (oEvent) {
-          var self = this;
-
-          this.setUIChanges(this._h.management);
-
-          if (this.checkUIChanges()) {
-            this._h.management.submitBatch("systemListDataGroup").then(
-              function () {
-                self.setUIChanges(self._h.management, false);
-                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-                self.closePopupFragment(self.ControlID.UpdateSystemList);
-                self._h.management.refresh();
-              },
-              function (oError) {
-                self.setUIChanges(self._h.management, false);
-                self.showMessageToast("msgError10", "20rem", [oError.message]);
-              }
-            );
-          } else {
-            this.closePopupFragment(this.ControlID.UpdateSystemList);
-            this.showMessageToast("msgInfo01", "20rem");
-          }
-        },
-
-        fcCancelUpdateSystemListPopUp: function (oEvent) {
-          this.resetBindingChanges(
-            this.getControl(this.ControlID.formUpdateSystemList)
-              .getBindingContext("management")
-              .getBinding()
-          );
-
-          if (this._h.management.hasPendingChanges()) {
-            this.getControl(this.ControlID.formUpdateSystemList)
-              .getBindingContext("management")
-              .getBinding()
-              .refresh();
-          }
-          this.closePopupFragment(this.ControlID.UpdateSystemList, oEvent);
-        },
-
-        // 코드 삭제
-        fcDeleteCodeList: function (oEvent) {
-          var self = this;
-          var oTable = this.getControl(this.ControlID.tabCodeList);
-          var oBinding = oTable.getBinding("rows");
-
-          if (oTable.getSelectedIndices().length === 0) {
-            self.showMessageToast("msgWarn03", "20rem", []);
-            return;
-          }
-
-          this.callPopupConfirm("msgAlert002", "alert", this.MSGBOXICON.WARNING)
-            .then(function (sAction) {
-              if (sAction === "OK") {
-                _.forEach(oTable.getSelectedIndices(), function (iIndex) {
-                  oTable
-                    .getContextByIndex(iIndex)
-                    .setProperty("isDeleted", true);
-                });
-
-                self.setMessageType(self.MESSAGE_TYPE.DELETE);
-
-                Promise.all(aPromises)
-                  .then(function (aResult) {
-                    self.showMessageToast("msgSuccess03", "20rem", []);
-                    self._h.mainView.setProperty(
-                      "/Modifications/totalModificationsCount",
-                      oSettingTable.getBinding("rows").getLength()
-                    );
-                  })
-                  .catch(function (sError) {
-                    self.showMessageToast("msgError01", "20rem", []);
-                  })
-                  .finally(function () {
-                    oSettingTable.clearSelection();
-                    oSettingTable.getBinding("rows").refresh();
-                  });
-              }
-            })
-            .catch(function (oError) {
-              console.log(oError);
-            });
         },
 
         ////// Value help
@@ -1316,26 +1215,290 @@ sap.ui.define(
           this.fragments["VHTSystemList"].setTokens([oToken]);
         },
 
-        fcMessage: function (oEvent) {
-          if (!this.fragments["Messages"]) {
-            var sFragmentName =
-              this._h.nameSpace + ".view.fragments." + "Messages";
-            this.fragments["Messages"] = sap.ui.xmlfragment(
-              sFragmentName,
-              this
-            );
-            this.getView().addDependent(this.fragments["Messages"]);
+        //------------------------- Interface List  End -------------------------------------------
+
+        //------------------------- Code List Start -------------------------------------------
+
+        // Code List Refresh Function
+        fcCodeRefresh: function (oEvent) {
+          var oTable = this.getControl(this.ControlID.tabCodeList);
+
+          var oBinding = oTable.getBinding("rows");
+
+          if (oBinding.hasPendingChanges()) {
+            this.showMessageToast("msgWarn02", "20rem", []);
+            return;
           }
-          this.fragments["Messages"].openBy(oEvent.getSource());
+
+          this.setMessageType(this.MESSAGE_TYPE.REFRESH);
+          oBinding.refresh();
         },
 
-        fcCreateIntefaceList: function (oEvent) {
-          this.callPopupFragment("RegisterInterface", oEvent);
+        // Code List Search Function
+        fcSearchCode: function (oEvent) {
+          var self = this;
+          // 명칭 필터 생성
+          var aCodeNameFilters = [];
+          // 구분 필터 생성
+          var aCAT01Filters = [];
+          var oCAT01Filter = null;
+          // 상세구분 필터 생성
+          var aCAT02Filters = [];
+          var oCAT02Filter = null;
+          // 기타구분 필터 생성
+          var aCAT03Filters = [];
+          var oCAT03Filter = null;
+
+          // 컨트롤
+          var oControl = this.getControl(this.ControlID.tabCodeList);
+          var oSCCat01 = this.getControl(this.ControlID.MCCDSoruceCt01);
+          var oSCCat02 = this.getControl(this.ControlID.MCCDSoruceCt02);
+          var oSCCat03 = this.getControl(this.ControlID.MCCDSoruceCt03);
+
+          // 선택 데이터 가져오기
+          var oSCCategory01 = oSCCat01.getSelectedKeys();
+          var oSCCategory02 = oSCCat02.getSelectedKeys();
+          var oSCCategory03 = oSCCat03.getSelectedKeys();
+
+          // 명칭 데이터 가져오기 ( Tokens 임포트 필요)
+          var oApplCdTokens = _.map(
+            this.getView().byId("MCCDSoruceCd").getTokens(),
+            (oData) => {
+              return oData.getKey();
+            }
+          );
+
+          //구분
+          if (oSCCategory01.length) {
+            aCAT01Filters = _.map(oSCCategory01, function (iStatus) {
+              return {
+                field: "CAT01",
+                op: self.OP.EQ,
+                from: iStatus,
+              };
+            });
+
+            oCAT01Filter = this.makeMultiFilter(aCAT01Filters, false);
+          }
+
+          //상세구분
+          if (oSCCategory02.length) {
+            aCAT02Filters = _.map(oSCCategory02, function (iStatus) {
+              return {
+                field: "CAT02",
+                op: self.OP.EQ,
+                from: iStatus,
+              };
+            });
+
+            oCAT02Filter = this.makeMultiFilter(aCAT02Filters, false);
+          }
+
+          //상세구분
+          if (oSCCategory03.length) {
+            aCAT03Filters = _.map(oSCCategory03, function (iStatus) {
+              return {
+                field: "CAT03",
+                op: self.OP.EQ,
+                from: iStatus,
+              };
+            });
+
+            oCAT03Filter = this.makeMultiFilter(aCAT03Filters, false);
+          }
+
+          //어플리케이션 명
+          if (oApplCdTokens.length > 0) {
+            aCodeNameFilters.push({
+              field: "CODE",
+              op: this.OP.CONTAINS,
+              from: oApplCdTokens,
+            });
+          }
+
+          // 통합 필터
+          var aFilterObjects = [];
+
+          // 구분 검색 필터 생성
+          if (oCAT01Filter) {
+            aFilterObjects.push(oCAT01Filter);
+          }
+
+          // 상세구분 검색 필터 생성
+          if (oCAT02Filter) {
+            aFilterObjects.push(oCAT02Filter);
+          }
+
+          // 기타구분 검색 필터 생성
+          if (oCAT03Filter) {
+            aFilterObjects.push(oCAT03Filter);
+          }
+
+          // 통합필터에 명칭 검색 필터 Push
+          if (aCodeNameFilters.length) {
+            aFilterObjects.push(this.makeMultiFilter(aCodeNameFilters, true));
+          }
+
+          this.setMessageType(this.MESSAGE_TYPE.SEARCH);
+
+          oControl.getBinding("rows").filter(aFilterObjects);
         },
 
-        fcCancelPopStorageLocation: function (oEvent) {
+        // 코드 생성 팝업 나타내기
+        fcCreateCode: function (oEvent) {
+          this._h.mainView.setProperty("/CodeList/Add", {
+            codeNm: "",
+            description: "",
+            detailDescription: "",
+          });
+
+          this.callPopupFragment("AddCodeList", oEvent);
+        },
+
+        // 코드 생성
+        fcAddCodeListPopup: function (oEvent) {
+          var self = this;
+          // 테이블 컨트롤러 호출
+          var oTable = this.getControl(this.ControlID.tabCodeList);
           this.oMessageManager.removeAllMessages();
-          this.closePopupFragment("RegisterStorageLocation");
+
+          var bError = false;
+          var oInput = this._h.mainView.getProperty("/CodeList/Add");
+
+          if (!oInput.cat01) {
+            bError = true;
+            var oMessage = new Message({
+              message: this.getI18nText("msgError09", ["Category01"]),
+              type: "Error",
+              processor: this._h.mainView,
+            });
+            this.oMessageManager.addMessages(oMessage);
+          }
+
+          if (!oInput.cat02) {
+            bError = true;
+            var oMessage = new Message({
+              message: this.getI18nText("msgError09", ["Category02"]),
+              type: "Error",
+              processor: this._h.mainView,
+            });
+            this.oMessageManager.addMessages(oMessage);
+          }
+
+          if (!oInput.codeNm) {
+            bError = true;
+            var oMessage = new Message({
+              message: this.getI18nText("msgError09", ["Code Name"]),
+              type: "Error",
+              processor: this._h.mainView,
+            });
+            this.oMessageManager.addMessages(oMessage);
+          }
+
+          if (bError) {
+            this.showMessageToast("msgError11", "20rem", []);
+            return;
+          }
+
+          var oBinding = oTable.getBinding("rows");
+
+          oBinding.create({
+            CAT01: oInput.cat01,
+            CAT02: oInput.cat02,
+            CAT03: oInput.cat03,
+            CODE: oInput.codeNm,
+            DESC01: oInput.description,
+            DESC02: oInput.detailDescription,
+          });
+
+          this.setMessageType(this.MESSAGE_TYPE.CREATE);
+
+          this._h.management.submitBatch(this.ControlID.codeListDataGroup).then(
+            function (oData) {
+              this.showMessageToast("msgSuccess13", "20rem", []);
+              this.closePopupFragment(this.ControlID.AddCodeList);
+            }.bind(this),
+            function (oError) {
+              this.resetBindingChanges(oBinding);
+              this.showMessageToast("msgError04", "20rem", [oError.message]);
+            }.bind(this)
+          );
+        },
+
+        // 코드 생성 팝업 닫기
+        fcCancelCodePopup: function (oEvent) {
+          this.oMessageManager.removeAllMessages();
+          this.closePopupFragment("AddCodeList");
+        },
+
+        // 코드 선택
+        fcSelectionChangeCodeList: function (oEvent) {
+          this._h.mainView.setProperty(
+            "/CodeList/selectedCount",
+            oEvent.getSource().getSelectedIndices().length
+          );
+        },
+
+        // 코드 삭제
+        fcDeleteCodeList: function (oEvent) {
+          var self = this;
+          var oTable = this.getControl(this.ControlID.tabCodeList);
+          var oBinding = oTable.getBinding("rows");
+
+          if (oTable.getSelectedIndices().length === 0) {
+            self.showMessageToast("msgWarn03", "20rem", []);
+            return;
+          }
+
+          this.callPopupConfirm("msgAlert002", "alert", this.MSGBOXICON.WARNING)
+            .then(function (sAction) {
+              if (sAction === "OK") {
+                _.forEach(oTable.getSelectedIndices(), function (iIndex) {
+                  oTable
+                    .getContextByIndex(iIndex)
+                    .setProperty("isDeleted", true);
+                });
+
+                self.setMessageType(self.MESSAGE_TYPE.DELETE);
+
+                Promise.all(aPromises)
+                  .then(function (aResult) {
+                    self.showMessageToast("msgSuccess03", "20rem", []);
+                    self._h.mainView.setProperty(
+                      "/Modifications/totalModificationsCount",
+                      oSettingTable.getBinding("rows").getLength()
+                    );
+                  })
+                  .catch(function (sError) {
+                    self.showMessageToast("msgError01", "20rem", []);
+                  })
+                  .finally(function () {
+                    oSettingTable.clearSelection();
+                    oSettingTable.getBinding("rows").refresh();
+                  });
+              }
+            })
+            .catch(function (oError) {
+              console.log(oError);
+            });
+        },
+
+        //------------------------- Code List End -------------------------------------------
+
+        //------------------------- System List Start -------------------------------------------
+
+        fcRefreshSystemList: function (oEvent) {
+          this.setUIChanges(this._h.management);
+
+          if (this.checkUIChanges()) {
+            this.showMessageToast("msgWarn02", "20rem", []);
+            return;
+          }
+
+          this.setMessageType(this.MESSAGE_TYPE.REFRESH);
+          this.getControl(this.ControlID.tabSystemList)
+            .getBinding("rows")
+            .refresh();
         },
 
         fcSearchSystemList: function (oEvent) {
@@ -1427,56 +1590,44 @@ sap.ui.define(
           this.callPopupFragment("AddSystemList", oEvent);
         },
 
-        //Combox Selection Change
-        onSelectionChange: function (oEvent) {
-          var sId = oEvent.getSource().sId.substring(12);
+        fcUpdateSystemListPopup: function (oEvent) {
+          var self = this;
 
-          if (sId == "AddSysLiCompanyCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/company",
-              oEvent.getSource().getSelectedKey()
+          this.setUIChanges(this._h.management);
+
+          if (this.checkUIChanges()) {
+            this._h.management.submitBatch("systemListDataGroup").then(
+              function () {
+                self.setUIChanges(self._h.management, false);
+                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
+                self.closePopupFragment(self.ControlID.UpdateSystemList);
+                self._h.management.refresh();
+              },
+              function (oError) {
+                self.setUIChanges(self._h.management, false);
+                self.showMessageToast("msgError10", "20rem", [oError.message]);
+              }
             );
-          } else if (sId == "AddSysLiSubdiaryCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/subdiary",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddSysLiAppliCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/appliCd",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "UpdateSysLiCompanyCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Update/company",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "UpdateSysLiSubdiaryCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Update/subdiary",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "UpdateSysLiAppliCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Update/appliCd",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddCodeLiCat01") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat01",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddCodeLiCat02") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat02",
-              oEvent.getSource().getSelectedKey()
-            );    
-          } else if (sId == "AddCodeLiCat03") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat03",
-              oEvent.getSource().getSelectedKey()
-            );                
+          } else {
+            this.closePopupFragment(this.ControlID.UpdateSystemList);
+            this.showMessageToast("msgInfo01", "20rem");
           }
+        },
+
+        fcCancelUpdateSystemListPopUp: function (oEvent) {
+          this.resetBindingChanges(
+            this.getControl(this.ControlID.formUpdateSystemList)
+              .getBindingContext("management")
+              .getBinding()
+          );
+
+          if (this._h.management.hasPendingChanges()) {
+            this.getControl(this.ControlID.formUpdateSystemList)
+              .getBindingContext("management")
+              .getBinding()
+              .refresh();
+          }
+          this.closePopupFragment(this.ControlID.UpdateSystemList, oEvent);
         },
 
         fcAddSystemListPopup: function (oEvent) {
@@ -1608,7 +1759,6 @@ sap.ui.define(
           });
         },
 
-        //Single Selection
         fcDeleteSystemList: function (oEvent) {
           var self = this;
           var oTable = this.getControl(this.ControlID.tabSystemList);
@@ -1653,204 +1803,8 @@ sap.ui.define(
             });
         },
 
-    /* ========================================================== */
-    /* Local Methods
-		/* ========================================================== */
-
-        setUIChanges: function (oModel, bHasUIChanges) {
-          // Error : set true
-          // Model has pending changes : set true
-          if (this.checkError()) {
-            // There are technical errors, set ui change status to true
-            bHasUIChanges = true;
-          } else if (bHasUIChanges === undefined) {
-            // Check model pending changes exists. It has pending changes, then ui change status to true
-            if (oModel) {
-              bHasUIChanges = oModel.hasPendingChanges();
-            }
-          }
-
-          this._h.mainView.setProperty("/hasUIChanges", bHasUIChanges);
-        },
-
-        resetBindingChanges: function (oBinding) {
-          oBinding.resetChanges();
-          this.setError(false);
-          this.setUIChanges(oBinding.getModel(), false);
-
-          var aMessages = _.map(
-            this.oMessageModelBinding.getContexts(),
-            function (oContext) {
-              return oContext.getObject();
-            }
-          );
-
-          this.oMessageManager.removeMessages(aMessages);
-        },
-
-        resetModelChanges: function (oModel) {
-          oModel.resetChanges();
-          this.setError(false);
-          this.setUIChanges(oModel, false);
-
-          var aMessages = _.map(
-            this.oMessageModelBinding.getContexts(),
-            function (oContext) {
-              return oContext.getObject();
-            }
-          );
-
-          if (aMessages.length) {
-            this.oMessageManager.removeMessages(aMessages);
-          }
-        },
-
-        setError: function (bError) {
-          this._h.mainView.setProperty("/hasError", bError);
-        },
-
-        checkError: function () {
-          return this._h.mainView.getProperty("/hasError");
-        },
-
-        checkUIChanges: function () {
-          return this._h.mainView.getProperty("/hasUIChanges");
-        },
-
-        onMessageBindingChange: function (oEvent) {
-          var aContexts = oEvent.getSource().getContexts();
-
-          this.setError(false);
-
-          if (!aContexts.length) {
-            return;
-          } else {
-            var aErrorMessages = _.filter(aContexts, function (oContext) {
-              return oContext.getObject().type === "Error";
-            });
-
-            if (aErrorMessages.length) {
-              this.setUIChanges(null, true);
-              this.setError(true);
-              if (!this.sMessageType) {
-                this.showMessageToast("msgError11");
-              }
-            } else {
-              this.setUIChanges(null, false);
-            }
-          }
-        },
-
-        setMessageType: function (sType) {
-          this.sMessageType = sType;
-
-          this.oMessageManager.removeAllMessages();
-        },
-
-        showMessageByType: function (oEvent) {
-          var bError = false;
-
-          if (oEvent.getParameter("error")) {
-            bError = true;
-          }
-
-          if (this.bInit) {
-            return;
-          }
-
-          if (bError) {
-            switch (this.sMessageType) {
-              case this.MESSAGE_TYPE.CREATE:
-                this.showMessageToast("msgError07", "20rem", []);
-                break;
-              case this.MESSAGE_TYPE.REFRESH:
-                this.showMessageToast("msgError05", "20rem", []);
-                break;
-              case this.MESSAGE_TYPE.DELETE:
-                this.showMessageToast("msgError01", "20rem", []);
-                break;
-              case this.MESSAGE_TYPE.UPDATE:
-                this.showMessageToast("msgError06", "20rem", []);
-                break;
-              case this.MESSAGE_TYPE.SEARCH:
-                this.showMessageToast("msgError08", "20rem", []);
-                break;
-            }
-          } else {
-            switch (this.sMessageType) {
-              case this.MESSAGE_TYPE.CREATE:
-                this.showMessageToast("msgSuccess16", "20rem", []);
-                break;
-              case this.MESSAGE_TYPE.REFRESH:
-                this.showMessageToast("msgSuccess14", "20rem", []);
-                break;
-              case this.MESSAGE_TYPE.DELETE:
-                this.showMessageToast("msgSuccess05", "20rem", []);
-                break;
-              case this.MESSAGE_TYPE.UPDATE:
-                this.showMessageToast("msgSuccess15", "20rem", []);
-                break;
-              case this.MESSAGE_TYPE.SEARCH:
-                this.showMessageToast("msgSuccess17", "20rem", [
-                  oEvent.getSource().getLength(),
-                ]);
-                break;
-            }
-          }
-
-          this.sMessageType = "";
-        },
-
-        getDate: function (sDateTime) {
-          if (sDateTime) {
-            return moment(sDateTime).format("MM.DD.YYYY");
-          } else {
-            return "";
-          }
-        },
-
-        getDeletedIfIcon: function (iStatus) {
-          switch (iStatus) {
-            case "true":
-              return "sap-icon://delete";
-            case "false":
-              return "sap-icon://complete";
-            default:
-              return "sap-icon://complete";
-          }
-        },
-
-        getDeletedIfText: function (iStatus) {
-          switch (iStatus) {
-            case "true":
-              return "Deleted";
-            case "false":
-              return "Available";
-            default:
-              return "Available";
-          }
-        },
-
-        initMultiInput: function (self) {
-          var fcvalidator = function (args) {
-            var text = args.text;
-
-            return new Token({ key: text, text: text });
-          };
-
-          self.getView().byId("MIInterfaceName").addValidator(fcvalidator);
-          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
-          self.getView().byId("MISSystemName").addValidator(fcvalidator);
-          self.getView().byId("MISApplicationName").addValidator(fcvalidator);
-          self.getView().byId("MITSystemName").addValidator(fcvalidator);
-          self.getView().byId("MITApplicationName").addValidator(fcvalidator);
-          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
-          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
-          self.getView().byId("MISCIIf").addValidator(fcvalidator);
-          self.getView().byId("MISCIPackage").addValidator(fcvalidator);
-          self.getView().byId("MiSystemAppNm").addValidator(fcvalidator);
-          self.getView().byId("MCCDSoruceCd").addValidator(fcvalidator);
-        },
+        //------------------------- System List End -------------------------------------------
+      
       }
     );
   }

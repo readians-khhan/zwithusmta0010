@@ -205,6 +205,8 @@ sap.ui.define(
             case "fcCreateInterfacePopup":
               this.fcCreateInterfacePopup(oEvent);
               break;
+            case "fcSearchInterface":
+              this.fcSearchInterface(oEvent);
 
             case "fcVHSSystem":
               this.fcVHSSystem(oEvent);

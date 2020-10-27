@@ -50,11 +50,9 @@ sap.ui.define(
           CBdeleted: "CBdeleted",
 
           ISourceSystem: "ISourceSystem",
-          ITargetSystem: "ITargetSystem",
 
           MCIFSorceCompanyCode: "MCIFSorceCompanyCode",
-          tabInterfaceList: "tabInterfaceList",
-          InterfaceDataGroup: "InterfaceDataGroup",
+          InterfaceList: "InterfaceList",
 
           // System List
           tabSystemList: "tabSystemList",
@@ -83,11 +81,6 @@ sap.ui.define(
           MCCDSoruceCt02: "MCCDSoruceCt02",
           MCCDSoruceCt03: "MCCDSoruceCt03",
           MCCDSoruceCd: "MCCDSoruceCd",
-          codeListDataGroup: "codeListDataGroup",
-          AddCodeList: "AddCodeList",
-          AddCodeLiCat01: "AddCodeLiCat01",
-          AddCodeLiCat02: "AddCodeLiCat02",
-          AddCodeLiCat03: "AddCodeLiCat03",
         },
 
         MESSAGE_TYPE: {
@@ -99,7 +92,6 @@ sap.ui.define(
         },
 
         /* 
-
 		========================================================== */
         /* Lifecyle
 		/* ========================================================== */
@@ -168,14 +160,6 @@ sap.ui.define(
           );
         },
 
-        onDR_CodeList: function (oEvent) {
-          this.showMessageByType(oEvent);
-          this._h.mainView.setProperty(
-            "/CodeList/totalCount",
-            oEvent.getSource().getLength()
-          );
-        },
-
         // side Navigation 컨트롤
         onCollapseExpandPress: function () {
           var oSideNavigation = this.byId("sideNavigation");
@@ -187,7 +171,6 @@ sap.ui.define(
         // URL Route Event Handler
         onPatternMatched: function (oEvent) {
           this.fcSearchInterface();
-          this.fcSearchCode();
         },
 
         // Event Handler
@@ -201,9 +184,6 @@ sap.ui.define(
               break;
             case "fcCreateIntefaceList":
               this.fcCreateIntefaceList(oEvent);
-              break;
-            case "fcCreateInterfacePopup":
-              this.fcCreateInterfacePopup(oEvent);
               break;
 
             case "fcVHSSystem":
@@ -223,17 +203,6 @@ sap.ui.define(
             case "fcCreateCode":
               this.fcCreateCode(oEvent);
               break;
-            case "fcSelectionChangeCodeList":
-              this.fcSelectionChangeCodeList(oEvent);
-              break;
-            case "fcSelectionChangeCodeList":
-              this.fcSelectionChangeCodeList(oEvent);
-              break;
-
-            // Code Create Popup
-            case "fcCancelCodePopup":
-              this.fcCancelCodePopup(oEvent);
-              break;
 
             //System List
             case "fcSearchSystemList":
@@ -246,8 +215,8 @@ sap.ui.define(
               this.fcSelectionChangeSystemList(oEvent);
               break;
             //---- Add Popup ----
-            case "fcCreateSystem":
-              this.fcCreateSystem(oEvent);
+            case "fcCreateSystemList":
+              this.fcCreateSystemList(oEvent);
               break;
             case "fcAddSystemListPopup":
               this.fcAddSystemListPopup(oEvent);
@@ -266,16 +235,8 @@ sap.ui.define(
               this.fcCancelUpdateSystemListPopUp(oEvent);
               break;
             //---- Delete ----
-            case "fcDeleteSystem":
-              this.fcDeleteSystem(oEvent);
-              break;
-            case "fcDeleteCodeList":
-              this.fcDeleteCodeList(oEvent);
-              break;
-
-            // Commons
-            case "fcMessage":
-              this.fcMessage(oEvent);
+            case "fcDeleteSystemList":
+              this.fcDeleteSystemList(oEvent);
               break;
 
             // Commons
@@ -285,43 +246,329 @@ sap.ui.define(
           }
         },
 
-
+        /* ========================================================== */
+        /* Local Methods
+		/* ========================================================== */
         // Data Received Event Hander=
-
-        //Value Help Logic
-        fcValueHelpOkPress: function (oEvent) {
-          var aTokens = oEvent.getParameter("tokens");
-          this._oInput.setSelectedKey(aTokens[0].getKey());
-          this._oValueHelpDialog.close();
+        onDR_InterfaceList: function (oEvent) {
+          this.showMessageByType(oEvent);
         },
 
-        fcValueHelpCancelPress: function () {
-          this._oValueHelpDialog.close();
+        onDR_CodeList: function (oEvent) {
+          this.showMessageByType(oEvent);
         },
 
-        fcValueHelpAfterClose: function () {
-          this._oValueHelpDialog.destroy();
+        // side Navigation 컨트롤
+        onCollapseExpandPress: function () {
+          var oSideNavigation = this.byId("sideNavigation");
+          var bExpanded = oSideNavigation.getExpanded();
+
+          oSideNavigation.setExpanded(!bExpanded);
+        },
+
+        // URL Route Event Handler
+        onPatternMatched: function (oEvent) {
+          this.fcSearchCode();
         },
 
         fcCancelInterfaceGeneratePopup: function (oEvent) {
           this.closePopupFragment("RegisterInterface");
         },
 
-        fcVHSystem: function (oEvent) {
-          this.callPopupFragment("ValueHelpSystem");
+        ////// Value help
+        // Source System
+        onVHSSystemCancel: function (oEvent) {
+          this.fragments["VHSSystemList"].close();
+        },
 
-          this.fragments["ValueHelpSystem"].getTableAsync().then(
-            function (oTable) {
-              oTable.setModel(this.oProductsModel);
-              oTable.setModel(this.oColModel, "columns");
+        onVHSSystemAfterClose: function () {
+          this.fragments["VHSSystemList"].destroy();
+        },
 
+        onVHSSystemOK: function (oEvent) {
+          var oInput = this.byId(this.ControlID.ISourceSystem);
+
+          var aTokens = oEvent.getParameter("tokens");
+          oInput.setSelectedKey(aTokens[0].getKey());
+          oInput.setValue(
+            aTokens[0]
+              .getText()
+              .slice(
+                0,
+                aTokens[0].getText().length - aTokens[0].getKey().length - 3
+              )
+          );
+          this.fragments["VHSSystemList"].close();
+        },
+
+        fcVHSSystem: function (oEvent) {
+          var self = this;
+
+          this.callPopupFragment("VHSSystemList");
+          var oInput = this.byId(this.ControlID.ISourceSystem);
+          // Column Settings
+
+          var oColID = new sap.ui.table.Column({
+            visible: false,
+            label: new sap.m.Label({
+              text: "{i18n>fldID}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>ID}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColCompany = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldCompanyCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>COMPANY_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColSubsidary = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSubsidaryCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>SUBSIDARY_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColSystem = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSystemNm}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>SYSTEM_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColApplication = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldApplNm}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>APPPLTYPE_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          this.fragments["VHSSystemList"]
+            .getTableAsync()
+            .then(function (oTable) {
+              // Model Setting to Table
+              oTable.setModel(self.getModel("management"));
+
+              // Rows Setting to Table
               if (oTable.bindRows) {
-                oTable.bindAggregation("rows", "managerment>/");
+                oTable.bindAggregation("rows", {
+                  path: "management>/SCI_VH_SYSTEMLIST_SRV",
+                });
               }
 
-              this._oValueHelpDialog.update();
-            }.bind(this)
+              if (oTable.getColumns().length <= 0) {
+                // Adding Column
+                oTable.addColumn(oColID);
+                oTable.addColumn(oColCompany);
+                oTable.addColumn(oColSubsidary);
+                oTable.addColumn(oColSystem);
+                oTable.addColumn(oColApplication);
+              }
+
+              self.fragments["VHSSystemList"].update();
+            });
+
+          var oToken = new Token();
+          oToken.setKey(oInput.getSelectedKey());
+          oToken.setText(oInput.getValue());
+          this.fragments["VHSSystemList"].setTokens([oToken]);
+        },
+
+        // Value Help - Target System
+        onVHTSystemCancel: function (oEvent) {
+          this.fragments["VHTSystemList"].close();
+        },
+
+        onVHTSystemAfterClose: function () {
+          this.fragments["VHTSystemList"].destroy();
+        },
+
+        onVHTSystemOK: function (oEvent) {
+          var oInput = this.byId(this.ControlID.ISourceSystem);
+
+          var aTokens = oEvent.getParameter("tokens");
+          oInput.setSelectedKey(aTokens[0].getKey());
+          oInput.setValue(
+            aTokens[0]
+              .getText()
+              .slice(
+                0,
+                aTokens[0].getText().length - aTokens[0].getKey().length - 3
+              )
           );
+          this.fragments["VHTSystemList"].close();
+        },
+
+        fcVHTSystem: function (oEvent) {
+          var self = this;
+
+          this.callPopupFragment("VHTSystemList");
+          var oInput = this.byId(this.ControlID.ISourceSystem);
+          // Column Settings
+
+          var oColID = new sap.ui.table.Column({
+            visible: false,
+            label: new sap.m.Label({
+              text: "{i18n>fldID}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>ID}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColCompany = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldCompanyCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>COMPANY_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColSubsidary = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSubsidaryCd}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>SUBSIDARY_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColSystem = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldSystemNm}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>SYSTEM_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          var oColApplication = new sap.ui.table.Column({
+            label: new sap.m.Label({
+              text: "{i18n>fldApplNm}",
+              textAlign: "Center",
+              width: "100%",
+            }),
+            template: new sap.m.Text({
+              text: "{management>APPPLTYPE_NM}",
+              textAlign: "Center",
+              width: "100%",
+              wrapping: false,
+            }),
+            width: "100px",
+          });
+
+          this.fragments["VHTSystemList"]
+            .getTableAsync()
+            .then(function (oTable) {
+              // Model Setting to Table
+              oTable.setModel(self.getModel("management"));
+
+              // Rows Setting to Table
+              if (oTable.bindRows) {
+                oTable.bindAggregation("rows", {
+                  path: "management>/SCI_VH_SYSTEMLIST_SRV",
+                });
+              }
+
+              if (oTable.getColumns().length <= 0) {
+                // Adding Column
+                oTable.addColumn(oColID);
+                oTable.addColumn(oColCompany);
+                oTable.addColumn(oColSubsidary);
+                oTable.addColumn(oColSystem);
+                oTable.addColumn(oColApplication);
+              }
+
+              self.fragments["VHTSystemList"].update();
+            });
+
+          var oToken = new Token();
+          oToken.setKey(oInput.getSelectedKey());
+          oToken.setText(oInput.getValue());
+          this.fragments["VHTSystemList"].setTokens([oToken]);
+        },
+
+        fcMessage: function (oEvent) {
+          if (!this.fragments["Messages"]) {
+            var sFragmentName =
+              this._h.nameSpace + ".view.fragments." + "Messages";
+            this.fragments["Messages"] = sap.ui.xmlfragment(
+              sFragmentName,
+              this
+            );
+            this.getView().addDependent(this.fragments["Messages"]);
+          }
+          this.fragments["Messages"].openBy(oEvent.getSource());
+        },
+
+        fcCreateIntefaceList: function (oEvent) {
+          this.callPopupFragment("RegisterInterface", oEvent);
         },
 
         fcItemSelect: function (oEvent) {
@@ -706,739 +953,9 @@ sap.ui.define(
           oControl.getBinding("rows").filter(aFilterObjects);
         },
 
-        fcMessage: function (oEvent) {
-          if (!this.fragments["Messages"]) {
-            var sFragmentName =
-              this._h.nameSpace + ".view.fragments." + "Messages";
-            this.fragments["Messages"] = sap.ui.xmlfragment(
-              sFragmentName,
-              this
-            );
-            this.getView().addDependent(this.fragments["Messages"]);
-          }
-          this.fragments["Messages"].openBy(oEvent.getSource());
-        },
-
-        fcCreateIntefaceList: function (oEvent) {
-          this.callPopupFragment("RegisterInterface", oEvent);
-        },
-
-        // 코드 생성 팝업 나타내기
         fcCreateCode: function (oEvent) {
-          this._h.mainView.setProperty("/CodeList/Add", {
-            codeNm: "",
-            description: "",
-            detailDescription: "",
-          });
+          console.log("생성");
 
-          this.callPopupFragment("AddCodeList", oEvent);
-        },
-
-        // 코드 생성
-        fcAddCodeListPopup: function (oEvent) {
-          var self = this;
-          // 테이블 컨트롤러 호출
-          var oTable = this.getControl(this.ControlID.tabCodeList);
-          this.oMessageManager.removeAllMessages();
-
-          var bError = false;
-          var oInput = this._h.mainView.getProperty("/CodeList/Add");
-
-          if (!oInput.cat01) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Category01"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (!oInput.cat02) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Category02"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (!oInput.cat03) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Category03"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (!oInput.codeNm) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Code Name"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (!oInput.description) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Description"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (!oInput.detailDescription) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Detail Description"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (bError) {
-            return;
-          }
-
-          var oBinding = oTable.getBinding("rows");
-
-          oBinding.create({
-            CAT01: oInput.cat01,
-            CAT02: oInput.cat02,
-            CAT03: oInput.cat03,
-            CODE: oInput.codeNm,
-            DESC01: oInput.description,
-            DESC02: oInput.detailDescription,
-          });
-
-          this.setMessageType(this.MESSAGE_TYPE.CREATE);
-
-          this._h.management.submitBatch(this.ControlID.codeListDataGroup).then(
-            function (oData) {
-              this.showMessageToast("msgSuccess13", "20rem", []);
-              this.closePopupFragment(this.ControlID.AddCodeList);
-            }.bind(this),
-            function (oError) {
-              this.resetBindingChanges(oBinding);
-              this.showMessageToast("msgError04", "20rem", [oError.message]);
-            }.bind(this)
-          );
-        },
-
-        // 코드 생성 팝업 닫기
-        fcCancelCodePopup: function (oEvent) {
-          this.oMessageManager.removeAllMessages();
-          this.closePopupFragment("AddCodeList");
-        },
-
-        // 코드 선택
-        fcSelectionChangeCodeList: function (oEvent) {
-          this._h.mainView.setProperty(
-            "/CodeList/selectedCount",
-            oEvent.getSource().getSelectedIndices().length
-          );
-        },
-
-        //System List
-        fcRefreshSystemList: function (oEvent) {
-          this.setUIChanges(this._h.management);
-
-          if (this.checkUIChanges()) {
-            this.showMessageToast("msgWarn02", "20rem", []);
-            return;
-          }
-
-          this.setMessageType(this.MESSAGE_TYPE.REFRESH);
-          this.getControl(this.ControlID.tabSystemList)
-            .getBinding("rows")
-            .refresh();
-        },
-
-        onChange: function (oEvent) {
-          var sId = oEvent.getSource().sId;
-
-          if (sId == "AddSysLiCompanyCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/company",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddSysLiSubdiaryCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/subdiary",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddSysLiAppliCd") {
-            this._h.mainView.setProperty(
-              "/SystemList/Add/appliCd",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddCodeLiCat01") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat01",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddCodeLiCat02") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat02",
-              oEvent.getSource().getSelectedKey()
-            );
-          } else if (sId == "AddCodeLiCat03") {
-            this._h.mainView.setProperty(
-              "/CodeList/Add/cat03",
-              oEvent.getSource().getSelectedKey()
-            );
-          }
-        },
-
-        fcUpdateSystemListPopup: function (oEvent) {
-          var self = this;
-
-          this.setUIChanges(this._h.management);
-
-          if (this.checkUIChanges()) {
-            this._h.management.submitBatch("systemListDataGroup").then(
-              function () {
-                self.setUIChanges(self._h.management, false);
-                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-                self.closePopupFragment(self.ControlID.UpdateSystemList);
-                self._h.management.refresh();
-              },
-              function (oError) {
-                self.setUIChanges(self._h.management, false);
-                self.showMessageToast("msgError10", "20rem", [oError.message]);
-              }
-            );
-          } else {
-            this.closePopupFragment(this.ControlID.UpdateSystemList);
-            this.showMessageToast("msgInfo01", "20rem");
-          }
-        },
-
-        fcCancelUpdateSystemListPopUp: function (oEvent) {
-          this.resetBindingChanges(
-            this.getControl(this.ControlID.formUpdateSystemList)
-              .getBindingContext("management")
-              .getBinding()
-          );
-
-          if (this._h.management.hasPendingChanges()) {
-            this.getControl(this.ControlID.formUpdateSystemList)
-              .getBindingContext("management")
-              .getBinding()
-              .refresh();
-          }
-          this.closePopupFragment(this.ControlID.UpdateSystemList, oEvent);
-        },
-
-        // 코드 삭제
-        fcDeleteCodeList: function (oEvent) {
-          var self = this;
-          var oTable = this.getControl(this.ControlID.tabCodeList);
-          var oBinding = oTable.getBinding("rows");
-
-          if (oTable.getSelectedIndices().length === 0) {
-            self.showMessageToast("msgWarn03", "20rem", []);
-            return;
-          }
-
-          this.callPopupConfirm("msgAlert002", "alert", this.MSGBOXICON.WARNING)
-            .then(function (sAction) {
-              if (sAction === "OK") {
-                _.forEach(oTable.getSelectedIndices(), function (iIndex) {
-                  oTable
-                    .getContextByIndex(iIndex)
-                    .setProperty("isDeleted", true);
-                });
-
-                self.setMessageType(self.MESSAGE_TYPE.DELETE);
-
-                Promise.all(aPromises)
-                  .then(function (aResult) {
-                    self.showMessageToast("msgSuccess03", "20rem", []);
-                    self._h.mainView.setProperty(
-                      "/Modifications/totalModificationsCount",
-                      oSettingTable.getBinding("rows").getLength()
-                    );
-                  })
-                  .catch(function (sError) {
-                    self.showMessageToast("msgError01", "20rem", []);
-                  })
-                  .finally(function () {
-                    oSettingTable.clearSelection();
-                    oSettingTable.getBinding("rows").refresh();
-                  });
-              }
-            })
-            .catch(function (oError) {
-              console.log(oError);
-            });
-        },
-
-        //Single Selection
-        fcDeleteSystemList: function (oEvent) {
-          var self = this;
-          var oTable = this.getControl(this.ControlID.tabSystemList);
-          var oBinding = oTable.getBinding("rows");
-
-          if (oTable.getSelectedIndices().length === 0) {
-            self.showMessageToast("msgWarn03", "20rem", []);
-            return;
-          }
-
-          this.callPopupConfirm("msgAlert03", "alert", this.MSGBOXICON.WARNING)
-            .then(function (sAction) {
-              if (sAction === "OK") {
-                _.forEach(oTable.getSelectedIndices(), function (iIndex) {
-                  oTable
-                    .getContextByIndex(iIndex)
-                    .setProperty("DELETED_TF", true);
-                });
-
-                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-
-                self._h.management
-                  .submitBatch(self.ControlID.systemListDataGroup)
-                  .then(
-                    // Success
-                    function (oData) {
-                      self._h.management.refresh();
-                      oTable.clearSelection();
-                    },
-                    // Fail
-                    function (oError) {
-                      self.resetBindingChanges(oBinding);
-                      self.showMessageToast("msgError10", "20rem", [
-                        oError.message,
-                      ]);
-                    }
-                  );
-              }
-            })
-            .catch(function (oError) {
-              console.log(oError);
-            });
-        },
-
-        ////// Value help
-        // Source System
-        onVHSSystemCancel: function (oEvent) {
-          this.fragments["VHSSystemList"].close();
-        },
-
-        onVHSSystemAfterClose: function () {},
-
-        onVHSSystemOK: function (oEvent) {
-          var oInput = this.byId(this.ControlID.ISourceSystem);
-
-          var aTokens = oEvent.getParameter("tokens");
-          oInput.setSelectedKey(aTokens[0].getKey());
-          oInput.setValue(
-            aTokens[0]
-              .getText()
-              .slice(
-                0,
-                aTokens[0].getText().length - aTokens[0].getKey().length - 3
-              )
-          );
-          oInput.getValue();
-          this.fragments["VHSSystemList"].close();
-        },
-
-        fcCreateInterfacePopup: function (oEvent) {
-          var self = this;
-          var oTable = this.getControl(this.ControlID.tabInterfaceList);
-          var oInput = this._h.mainView.getProperty("/Interface/Regist");
-          var sInputSSystem = this.byId(
-            this.ControlID.ISourceSystem
-          ).getSelectedKey();
-          var sInputTSystem = this.byId(
-            this.ControlID.ISourceSystem
-          ).getSelectedKey();
-
-          var oBinding = oTable.getBinding("rows");
-
-          oBinding.create({
-            IF_NM: oInput.Name,
-            IF_DESC: oInput.Description,
-            PAKCAGE_NM: oInput.Package,
-            PI_NM: oInput.IFName,
-            IF_ASIS: oInput.AsIsID,
-            IF_ASIS_NM: oInput.AsIsName,
-            IF_ASIS_DESC: oInput.AsIsDescription,
-            STATUS_CD_ID: oInput.StatusID,
-            SC_SYS_FK_ID: sInputSSystem,
-            SC_IFTYPE_CD_ID: oInput.SourceSystemTypeID,
-            TG_SYS_FK_ID: sInputTSystem,
-            TG_IFTYPE_CD_ID: oInput.TargetSystemTypeID,
-            RFC_NM: oInput.RFCName,
-            ENTERPRSIESERVICE_NM: oInput.ESName,
-            WEBSERVICE_NM: oInput.WSName,
-            WEBBINDING_NM: oInput.WSBName,
-            EXECUTION_CD_ID: oInput.typeID,
-          });
-
-          this._h.management
-            .submitBatch(this.ControlID.InterfaceDataGroup)
-            .then(
-              function (oData) {
-                if (!oBinding.hasPendingChanges()) {
-                  this.showMessageToast("msgSuccess13", "20rem", []);
-                  this.closePopupFragment("RegisterInterface");
-                } else {
-                  this.resetBindingChanges(oBinding);
-                  this.showMessageToast("msgError04", "20rem", [
-                    oError.message,
-                  ]);
-                }
-              }.bind(this),
-              function (oError) {
-                this.resetBindingChanges(oBinding);
-                this.showMessageToast("msgError04", "20rem", [oError.message]);
-              }.bind(this)
-            );
-
-          console.log("");
-        },
-
-        fcVHSSystem: function (oEvent) {
-          var self = this;
-
-          this.callPopupFragment("VHSSystemList");
-          var oInput = this.byId(this.ControlID.ISourceSystem);
-          // Column Settings
-
-          var oColID = new sap.ui.table.Column({
-            visible: false,
-            label: new sap.m.Label({
-              text: "{i18n>fldID}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>ID}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColCompany = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldCompanyCd}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>COMPANY_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColSubsidary = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldSubsidaryCd}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>SUBSIDARY_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColSystem = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldSystemNm}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>SYSTEM_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColApplication = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldApplNm}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>APPPLTYPE_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColApplType = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldApplTypeCd}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>APPPLTYPE_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "10rem",
-          });
-
-          var oColDescription = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldSystemDescription}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>DESCRIPTION}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "10rem",
-          });
-
-          this.fragments["VHSSystemList"]
-            .getTableAsync()
-            .then(function (oTable) {
-              // Model Setting to Table
-              oTable.setModel(self.getModel("management"));
-
-              // Rows Setting to Table
-              if (oTable.bindRows) {
-                oTable.bindAggregation("rows", {
-                  path: "management>/SCI_VH_SYSTEMLIST_SRV",
-                });
-              }
-
-              if (oTable.getColumns().length <= 0) {
-                // Adding Column
-                oTable.addColumn(oColID);
-                oTable.addColumn(oColCompany);
-                oTable.addColumn(oColSubsidary);
-                oTable.addColumn(oColSystem);
-                oTable.addColumn(oColApplication);
-                oTable.addColumn(oColApplType);
-                oTable.addColumn(oColDescription);
-              }
-
-              self.fragments["VHSSystemList"].update();
-            });
-
-          var oToken = new Token();
-          oToken.setKey(oInput.getSelectedKey());
-          oToken.setText(oInput.getValue());
-          this.fragments["VHSSystemList"].setTokens([oToken]);
-        },
-
-        // Value Help - Target System
-        onVHTSystemCancel: function (oEvent) {
-          this.fragments["VHTSystemList"].close();
-        },
-
-        onVHTSystemAfterClose: function () {},
-
-        onVHTSystemOK: function (oEvent) {
-          var oInput = this.byId(this.ControlID.ITargetSystem);
-
-          var aTokens = oEvent.getParameter("tokens");
-          oInput.setSelectedKey(aTokens[0].getKey());
-          oInput.setValue(
-            aTokens[0]
-              .getText()
-              .slice(
-                0,
-                aTokens[0].getText().length - aTokens[0].getKey().length - 3
-              )
-          );
-          oInput.getValue();
-          this.fragments["VHTSystemList"].close();
-        },
-
-        fcVHTSystem: function (oEvent) {
-          var self = this;
-
-          this.callPopupFragment("VHTSystemList");
-          var oInput = this.byId(this.ControlID.ITargetSystem);
-          // Column Settings
-
-          var oColID = new sap.ui.table.Column({
-            visible: false,
-            label: new sap.m.Label({
-              text: "{i18n>fldID}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>ID}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColCompany = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldCompanyCd}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>COMPANY_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColSubsidary = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldSubsidaryCd}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>SUBSIDARY_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColSystem = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldSystemNm}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>SYSTEM_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "100px",
-          });
-
-          var oColApplication = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldApplNm}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>APPL_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "10rem",
-          });
-
-          var oColApplType = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldApplTypeCd}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>APPPLTYPE_NM}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "10rem",
-          });
-
-          var oColDescription = new sap.ui.table.Column({
-            label: new sap.m.Label({
-              text: "{i18n>fldSystemDescription}",
-              textAlign: "Center",
-              width: "100%",
-            }),
-            template: new sap.m.Text({
-              text: "{management>DESCRIPTION}",
-              textAlign: "Center",
-              width: "100%",
-              wrapping: false,
-            }),
-            width: "10rem",
-          });
-
-          this.fragments["VHTSystemList"]
-            .getTableAsync()
-            .then(function (oTable) {
-              // Model Setting to Table
-              oTable.setModel(self.getModel("management"));
-
-              // Rows Setting to Table
-              if (oTable.bindRows) {
-                oTable.bindAggregation("rows", {
-                  path: "management>/SCI_VH_SYSTEMLIST_SRV",
-                });
-              }
-
-              if (oTable.getColumns().length <= 0) {
-                // Adding Column
-                oTable.addColumn(oColID);
-                oTable.addColumn(oColCompany);
-                oTable.addColumn(oColSubsidary);
-                oTable.addColumn(oColSystem);
-                oTable.addColumn(oColApplication);
-                oTable.addColumn(oColApplType);
-                oTable.addColumn(oColDescription);
-              }
-
-              self.fragments["VHTSystemList"].update();
-            });
-
-          var oToken = new Token();
-          oToken.setKey(oInput.getSelectedKey());
-          oToken.setText(oInput.getValue());
-
-          this.fragments["VHTSystemList"].setTokens([oToken]);
-        },
-
-        fcMessage: function (oEvent) {
-          if (!this.fragments["Messages"]) {
-            var sFragmentName =
-              this._h.nameSpace + ".view.fragments." + "Messages";
-            this.fragments["Messages"] = sap.ui.xmlfragment(
-              sFragmentName,
-              this
-            );
-            this.getView().addDependent(this.fragments["Messages"]);
-          }
-          this.fragments["Messages"].openBy(oEvent.getSource());
-        },
-
-        fcCreateIntefaceList: function (oEvent) {
           this.callPopupFragment("RegisterInterface", oEvent);
         },
 
@@ -1541,7 +1058,7 @@ sap.ui.define(
           );
         },
 
-        fcCreateSystem: function (oEvent) {
+        fcCreateSystemList: function (oEvent) {
           this._h.mainView.setProperty("/SystemList/Add", {
             appliNm: "",
             systemNm: "",

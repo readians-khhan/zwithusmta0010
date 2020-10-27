@@ -1,81 +1,134 @@
-<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <t:Table id="tabCodeList" selectionMode="Single" enableSelectAll="false" alternateRowColors="true" visibleRowCountMode="Auto" enableBusyIndicator="true" rows="{
+<core:FragmentDefinition xmlns:core="sap.ui.core" 
+    xmlns:mvc="sap.ui.core.mvc" 
+    xmlns="sap.m" 
+    xmlns:t="sap.ui.table" 
+    xmlns:l="sap.ui.layout" 
+    xmlns:f="sap.ui.layout.form" 
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <t:Table id="tabCodeList" 
+        selectionMode="Single" 
+        enableSelectAll="false" 
+        alternateRowColors="true" 
+        visibleRowCountMode="Auto" 
+        enableBusyIndicator="true" 
+        rows="{
             path: 'management>/SCI_MST_CODE_SRV',
             parameters: {
                 $count: true,
-                $$updateGroupId: 'codeListDataGroup'
+                $$updateGroupId: 'filesDataGroup'
             },
             events: {
                 dataReceived : '.onDR_CodeList'
             }
-        }" rowSelectionChange="onPAI" app:fcCode="fcSelectionChangeCodeList">
+        }" 
+        rowSelectionChange="onPAI" 
+        app:fcCode="fcFileSelectionChange">
         <t:extension>
             <OverflowToolbar>
                 <Title text="{i18n>tlTotalCount} { 
-                    path: 'mainView>/CodeList/totalCount',
-                    type: 'sap.ui.model.odata.type.Int32'}" wrapping="false" />
-                <Title text=" / {i18n>tlSelectedCount} { path: 'mainView>/CodeList/selectedCount', type: 'sap.ui.model.odata.type.Int32' }" />
-                <Button type="Transparent" icon="sap-icon://refresh" press="onPAI" app:fcCode="fcCodeRefresh" />
-                <ToolbarSpacer />
+                    path: 'mainView>/Files/totalCount',
+                    type: 'sap.ui.model.odata.type.Int32'}" 
+                    wrapping="false" />
+                <Button type="Transparent" 
+                    icon="sap-icon://refresh" 
+                    press="onPAI" 
+                    app:fcCode="fcCodeRefresh" />
+                <ToolbarSpacer/>
                 <!-- <Button text="{i18n>btnDownload}" 
                     icon="sap-icon://download" 
                     press="onPAI" 
                     app:fcCode="fcCreateInterface"/>                 -->
-                <Button text="{i18n>btnCreate}" icon="sap-icon://create" press="onPAI" app:fcCode="fcCreateCode" />
-                <Button text="{i18n>btnDelete}" icon="sap-icon://delete" type="Reject" enabled="{= ${mainView>/CodeList/selectedCount} > 0 ? true : false}" press="onPAI" app:fcCode="fcDeleteCodeList" />
+                <Button text="{i18n>btnCreate}" 
+                    icon="sap-icon://create" 
+                    press="onPAI" 
+                    app:fcCode="fcCreateCode"/>
+                <Button text="{i18n>btnDelete}" 
+                    icon="sap-icon://delete" 
+                    type="Reject" 
+                    enabled="{= ${mainView>/Files/selectedCount} > 0 ? true : false}"
+                    press="onPAI" 
+                    app:fcCode="fcDeleteInterface"/>
             </OverflowToolbar>
         </t:extension>
         <t:columns>
             <!-- 구분 -->
-            <t:Column width="11rem" autoResizable="true" sortProperty="codeCategory" filterProperty="codeCategory" hAlign="Center">
-                <Label text="{i18n>fldCodeSection}" textAlign="Center" width="100%" />
+            <t:Column width="11rem" 
+                autoResizable="true" 
+                sortProperty="codeCategory" 
+                filterProperty="codeCategory" 
+                hAlign="Center">
+                <Label text="{i18n>fldCodeCategory}" 
+                    textAlign="Center" 
+                    width="100%"/>
                 <t:template>
-                    <Text text="{management>CAT01}" textAlign="Begin" width="100%" wrapping="false" />
+                	<Text text="{management>CAT01}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
             <!-- 상세구분 -->
-            <t:Column width="15rem" autoResizable="true" sortProperty="codeDetailCategory" filterProperty="codeDetailCategory" hAlign="Center">
-                <Label text="{i18n>fldCodeDetailSection}" textAlign="Center" width="100%" />
+            <t:Column width="15rem" 
+                autoResizable="true" 
+                sortProperty="codeDetailCategory" 
+                filterProperty="codeDetailCategory" 
+                hAlign="Center">
+                <Label text="{i18n>fldCodeDetailCategory}" 
+                    textAlign="Center" 
+                    width="100%"/>
                 <t:template>
-                    <Text text="{management>CAT02}" textAlign="Begin" width="100%" wrapping="false" />
+                    <Text text="{management>CAT02}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
             <!-- 기타구분  -->
-            <t:Column hAlign="Center" width="10rem">
-                <Label text="{i18n>fldCodeEtcSection}" />
+            <t:Column hAlign="Center" 
+                width="10rem">
+                <Label text="{i18n>fldCodeEtcCategory}"/>
                 <t:template>
-                    <Text text="{management>CAT03}" textAlign="Begin" width="100%" wrapping="false" />
+                    <Text text="{management>CAT03}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
-            </t:Column>
+            </t:Column>            
             <!-- 명칭 -->
-            <t:Column sortProperty="fileCreatedDate" filterProperty="fileCreatedDate" hAlign="Center" width="15rem">
-                <Label text="{i18n>fldCodeName}" />
+            <t:Column                 
+                sortProperty="fileCreatedDate" 
+                filterProperty="fileCreatedDate" 
+                hAlign="Center" 
+                width="15rem">
+                <Label text="{i18n>fldCodeTitle}"/>
                 <t:template>
-                    <Text text="{management>CODE}" textAlign="Begin" width="100%" wrapping="false" />
+                    <Text text="{management>CODE}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
-            </t:Column>
+            </t:Column>            
             <!-- 설명 -->
-            <t:Column sortProperty="postingDate" filterProperty="postingDate" hAlign="Center" width="19rem">
-                <Label text="{i18n>fldCodeDescription}" />
+            <t:Column 
+                sortProperty="postingDate" 
+                filterProperty="postingDate" 
+                hAlign="Center" 
+                width="19rem">
+                <Label text="{i18n>fldCodeDescription}"/>
                 <t:template>
-                    <Text text="{management>DESC01}" textAlign="Begin" width="100%" wrapping="false" />
+                    <Text text="{management>DESC01}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
-            </t:Column>
+            </t:Column>            
             <!-- 상세설명 -->
-            <t:Column sortProperty="movementStatus" filterProperty="movementStatus" hAlign="Center" width="27rem">
-                <Label text="{i18n>fldCodeDetailDescription}" />
+            <t:Column sortProperty="movementStatus" 
+                filterProperty="movementStatus" 
+                hAlign="Center" 
+                width="27rem">
+                <Label text="{i18n>fldCodeDetailDescription}"/>
                 <t:template>
-                    <Text text="{management>DESC02}" textAlign="Begin" width="100%" wrapping="false" />
+                    <Text text="{management>DESC02}" textAlign="Begin" width="100%" wrapping="false"/>
                 </t:template>
             </t:Column>
             <!-- 삭제여부 -->
-            <t:Column sortProperty="movementStatus" filterProperty="movementStatus" hAlign="Center" width="5rem">
-                <Label text="{i18n>fldCodeDeleted}" />
-                <t:template>
-                    <Text text="{management>DELETED_TF}" textAlign="Begin" width="100%" wrapping="false" />
-                </t:template>
-            </t:Column>
+            <t:Column sortProperty="movementStatus" 
+            filterProperty="movementStatus" 
+            hAlign="Center" 
+            width="5rem">
+            <Label text="{i18n>fldCodeDeleted}"/>
+            <t:template>
+                <Text text="{management>DELETED_TF}" textAlign="Begin" width="100%" wrapping="false"/>
+            </t:template>
+        </t:Column>
         </t:columns>
-        <t:footer></t:footer>
+        <t:footer>
+        </t:footer>
     </t:Table>
 </core:FragmentDefinition>

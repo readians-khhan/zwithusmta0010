@@ -96,10 +96,6 @@ define entity SCI_MST0020_HIST : cuid, managed {
     SUBSIDARY_CD : Association to one SCI_MST0010;
     SYSTEM_NM    : String(50) not null;
     APPL_NM      : String(20) not null;
-    IP           : String(15);
-    HOST         : String(100);
-    PORT         : String(5);
-    ATHENTIC     : ATHENTIC_TYPE;
     APPPLTYPE_CD : Association to one SCI_MST0010 not null;
     DELETED_TF   : Boolean not null default false;
 }

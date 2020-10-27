@@ -70,6 +70,7 @@ sap.ui.define(
           //--- Update Pop Up ---
           UpdateSystemList: "UpdateSystemList",
           dialogUpdateSystemList: "dialogUpdateSystemList",
+          formUpdateSystemList: "formUpdateSystemList",
           UpdateSysLiCompanyCd: "UpdateSysLiCompanyCd",
           UpdateSysLiSubdiaryCd: "UpdateSysLiSubdiaryCd",
           UpdateSysLiAppliCd: "UpdateSysLiAppliCd",
@@ -92,7 +93,7 @@ sap.ui.define(
 
         /* 
 		========================================================== */
-		/* Lifecyle
+        /* Lifecyle
 		/* ========================================================== */
         // Initialization
         onInit: function () {
@@ -102,21 +103,6 @@ sap.ui.define(
 
           // View Data Initialization
           this.sMessageType = "";
-
-          // Register Message Model
-          this.oMessageManager = sap.ui.getCore().getMessageManager();
-
-          // View Model
-          this._h.mainView = this.createJSONModel();
-          this._h.mainView.setData(this._h.mainViewInitData);
-
-          // Register Event
-          this.getRouter()
-            .getRoute("main")
-            .attachPatternMatched(this.onPatternMatched, this);
-
-          this.getView().setModel(this._h.mainView, "mainView");
-          this.getView().setModel(this._h.mainMessage, "mainMessage");
 
           // Register Message Model
           this.oMessageManager = sap.ui.getCore().getMessageManager();
@@ -132,6 +118,18 @@ sap.ui.define(
             this
           );
           this.oMessageManager.registerObject(this.getView(), true);
+
+          // View Model
+          this._h.mainView = this.createJSONModel();
+          this._h.mainView.setData(this._h.mainViewInitData);
+
+          // Register Event
+          this.getRouter()
+            .getRoute("main")
+            .attachPatternMatched(this.onPatternMatched, this);
+
+          this.getView().setModel(this._h.mainView, "mainView");
+          this.getView().setModel(this._h.mainMessage, "mainMessage");
 
           // Multi Input Initialization
           this.initMultiInput(this);
@@ -239,6 +237,11 @@ sap.ui.define(
             //---- Delete ----
             case "fcDeleteSystemList":
               this.fcDeleteSystemList(oEvent);
+              break;
+
+            // Commons
+            case "fcMessage":
+              this.fcMessage(oEvent);
               break;
           }
         },
@@ -549,6 +552,19 @@ sap.ui.define(
           oToken.setKey(oInput.getSelectedKey());
           oToken.setText(oInput.getValue());
           this.fragments["VHTSystemList"].setTokens([oToken]);
+        },
+
+        fcMessage: function (oEvent) {
+          if (!this.fragments["Messages"]) {
+            var sFragmentName =
+              this._h.nameSpace + ".view.fragments." + "Messages";
+            this.fragments["Messages"] = sap.ui.xmlfragment(
+              sFragmentName,
+              this
+            );
+            this.getView().addDependent(this.fragments["Messages"]);
+          }
+          this.fragments["Messages"].openBy(oEvent.getSource());
         },
 
         fcCreateIntefaceList: function (oEvent) {
@@ -1054,38 +1070,40 @@ sap.ui.define(
 
         //Combox Selection Change
         onSelectionChange: function (oEvent) {
-		  var sId = oEvent.getSource().sId.substring(12);
+          var sId = oEvent.getSource().sId.substring(12);
 
-          if (sId == "AddSysLiCompanyCd") {			  
+          if (sId == "AddSysLiCompanyCd") {
             this._h.mainView.setProperty(
               "/SystemList/Add/company",
               oEvent.getSource().getSelectedKey()
-			);
+            );
           } else if (sId == "AddSysLiSubdiaryCd") {
+			console.log(oEvent.getSource().getSelectedKey());
             this._h.mainView.setProperty(
               "/SystemList/Add/subdiary",
               oEvent.getSource().getSelectedKey()
-			);
+            );
           } else if (sId == "AddSysLiAppliCd") {
             this._h.mainView.setProperty(
               "/SystemList/Add/appliCd",
               oEvent.getSource().getSelectedKey()
-			);
+            );
           } else if (sId == "UpdateSysLiCompanyCd") {
             this._h.mainView.setProperty(
               "/SystemList/Update/company",
               oEvent.getSource().getSelectedKey()
-			);
+            );
           } else if (sId == "UpdateSysLiSubdiaryCd") {
+            console.log(oEvent.getSource().getSelectedKey());
             this._h.mainView.setProperty(
               "/SystemList/Update/subdiary",
               oEvent.getSource().getSelectedKey()
-			);
+            );
           } else if (sId == "UpdateSysLiAppliCd") {
             this._h.mainView.setProperty(
               "/SystemList/Update/appliCd",
               oEvent.getSource().getSelectedKey()
-			);
+            );
           }
         },
 
@@ -1150,7 +1168,18 @@ sap.ui.define(
             this.oMessageManager.addMessages(oMessage);
           }
 
+          if (!oInput.description) {
+            bError = true;
+            var oMessage = new Message({
+              message: this.getI18nText("msgError09", ["Description"]),
+              type: "Error",
+              processor: this._h.mainView,
+            });
+            this.oMessageManager.addMessages(oMessage);
+          }
+
           if (bError) {
+            this.showMessageToast("msgError11", "20rem", []);
             return;
           }
 
@@ -1208,7 +1237,8 @@ sap.ui.define(
         },
 
         fcUpdateSystemListPopup: function (oEvent) {
-          var self = this;
+		  var self = this;
+
           this.setUIChanges(this._h.management);
 
           if (this.checkUIChanges()) {
@@ -1231,6 +1261,18 @@ sap.ui.define(
         },
 
         fcCancelUpdateSystemListPopUp: function (oEvent) {
+          this.resetBindingChanges(
+            this.getControl(this.ControlID.formUpdateSystemList)
+              .getBindingContext("management")
+              .getBinding()
+          );
+
+          if (this._h.management.hasPendingChanges()) {
+            this.getControl(this.ControlID.formUpdateSystemList)
+              .getBindingContext("management")
+              .getBinding()
+              .refresh();
+          }
           this.closePopupFragment(this.ControlID.UpdateSystemList, oEvent);
         },
 
@@ -1251,7 +1293,7 @@ sap.ui.define(
                 _.forEach(oTable.getSelectedIndices(), function (iIndex) {
                   oTable
                     .getContextByIndex(iIndex)
-                    .setProperty("isDeleted", true);
+                    .setProperty("DELETED_TF", true);
                 });
 
                 self.setMessageType(self.MESSAGE_TYPE.UPDATE);
@@ -1261,7 +1303,7 @@ sap.ui.define(
                   .then(
                     // Success
                     function (oData) {
-                      self._h.mesData.refresh();
+                      self._h.management.refresh();
                       oTable.clearSelection();
                     },
                     // Fail
@@ -1283,157 +1325,201 @@ sap.ui.define(
         /* Local Methods
 		/* ========================================================== */
 
-			if (aMessages.length) {
-				this.oMessageManager.removeMessages(aMessages);
-			}
-		},
+        setUIChanges: function (oModel, bHasUIChanges) {
+          // Error : set true
+          // Model has pending changes : set true
+          if (this.checkError()) {
+            // There are technical errors, set ui change status to true
+            bHasUIChanges = true;
+          } else if (bHasUIChanges === undefined) {
+            // Check model pending changes exists. It has pending changes, then ui change status to true
+            if (oModel) {
+              bHasUIChanges = oModel.hasPendingChanges();
+            }
+          }
 
-		setError: function (bError) {
-			this._h.mainView.setProperty("/hasError", bError);
-		},
+          this._h.mainView.setProperty("/hasUIChanges", bHasUIChanges);
+        },
 
-		checkError: function () {
-			return this._h.mainView.getProperty("/hasError");
-		},
+        resetBindingChanges: function (oBinding) {
+          oBinding.resetChanges();
+          this.setError(false);
+          this.setUIChanges(oBinding.getModel(), false);
 
-		checkUIChanges: function () {
-			return this._h.mainView.getProperty("/hasUIChanges");
-		},
+          var aMessages = _.map(
+            this.oMessageModelBinding.getContexts(),
+            function (oContext) {
+              return oContext.getObject();
+            }
+          );
 
-		onMessageBindingChange: function (oEvent) {
-			var aContexts = oEvent.getSource().getContexts();
+          this.oMessageManager.removeMessages(aMessages);
+        },
 
-			this.setError(false);
+        resetModelChanges: function (oModel) {
+          oModel.resetChanges();
+          this.setError(false);
+          this.setUIChanges(oModel, false);
 
-			if (!aContexts.length) {
-				return;
-			} else {
-				var aErrorMessages = _.filter(aContexts, function (oContext) {
-					return oContext.getObject().type === "Error";
-				});
+          var aMessages = _.map(
+            this.oMessageModelBinding.getContexts(),
+            function (oContext) {
+              return oContext.getObject();
+            }
+          );
 
-				if (aErrorMessages.length) {
-					this.setUIChanges(null, true);
-					this.setError(true);
-					if (!this.sMessageType) {
-						this.showMessageToast("msgError11");
-					}
-				} else {
-					this.setUIChanges(null, false);
-				}
-			}
-		},
+          if (aMessages.length) {
+            this.oMessageManager.removeMessages(aMessages);
+          }
+        },
 
-		setMessageType: function (sType) {
-			this.sMessageType = sType;
+        setError: function (bError) {
+          this._h.mainView.setProperty("/hasError", bError);
+        },
 
-			this.oMessageManager.removeAllMessages();
-		},
+        checkError: function () {
+          return this._h.mainView.getProperty("/hasError");
+        },
 
-		showMessageByType: function (oEvent) {
+        checkUIChanges: function () {
+          return this._h.mainView.getProperty("/hasUIChanges");
+        },
 
-			var bError = false;
+        onMessageBindingChange: function (oEvent) {
+          var aContexts = oEvent.getSource().getContexts();
 
-			if (oEvent.getParameter('error')) {
-				bError = true;
-			}
+          this.setError(false);
 
-			if (this.bInit) {
-				return;
-			}
+          if (!aContexts.length) {
+            return;
+          } else {
+            var aErrorMessages = _.filter(aContexts, function (oContext) {
+              return oContext.getObject().type === "Error";
+            });
 
-			if (bError) {
-				switch (this.sMessageType) {
-					case this.MESSAGE_TYPE.CREATE:
-						this.showMessageToast('msgError07', '20rem', []);
-						break;
-					case this.MESSAGE_TYPE.REFRESH:
-						this.showMessageToast('msgError05', '20rem', []);
-						break;
-					case this.MESSAGE_TYPE.DELETE:
-						this.showMessageToast('msgError01', '20rem', []);
-						break;
-					case this.MESSAGE_TYPE.UPDATE:
-						this.showMessageToast('msgError06', '20rem', []);
-						break;
-					case this.MESSAGE_TYPE.SEARCH:
-						this.showMessageToast('msgError08', '20rem', []);
-						break;
-				}
-			} else {
-				switch (this.sMessageType) {
-					case this.MESSAGE_TYPE.CREATE:
-						this.showMessageToast('msgSuccess16', '20rem', []);
-						break;
-					case this.MESSAGE_TYPE.REFRESH:
-						this.showMessageToast('msgSuccess14', '20rem', []);
-						break;
-					case this.MESSAGE_TYPE.DELETE:
-						this.showMessageToast('msgSuccess05', '20rem', []);
-						break;
-					case this.MESSAGE_TYPE.UPDATE:
-						this.showMessageToast('msgSuccess15', '20rem', []);
-						break;
-					case this.MESSAGE_TYPE.SEARCH:
-						this.showMessageToast('msgSuccess17', '20rem', [oEvent.getSource().getLength()]);
-						break;
-				}
-			}
+            if (aErrorMessages.length) {
+              this.setUIChanges(null, true);
+              this.setError(true);
+              if (!this.sMessageType) {
+                this.showMessageToast("msgError11");
+              }
+            } else {
+              this.setUIChanges(null, false);
+            }
+          }
+        },
 
-			this.sMessageType = '';
-		},
+        setMessageType: function (sType) {
+          this.sMessageType = sType;
 
+          this.oMessageManager.removeAllMessages();
+        },
 
-		getDate: function (sDateTime) {
-			if (sDateTime) {
-				return moment(sDateTime).format("MM.DD.YYYY");
-			} else {
-				return "";
-			}
-		},
+        showMessageByType: function (oEvent) {
+          var bError = false;
 
-		getDeletedIfIcon: function (iStatus) {
-			switch (iStatus) {
-				case "true":
-					return "sap-icon://delete";
-				case "false":
-					return "sap-icon://complete";
-				default:
-					return "sap-icon://complete";
-			}
-		},
+          if (oEvent.getParameter("error")) {
+            bError = true;
+          }
 
-		getDeletedIfText: function (iStatus) {
-			switch (iStatus) {
-				case "true":
-					return "Deleted";
-				case "false":
-					return "Available";
-				default:
-					return "Available";
-			}
-		},
+          if (this.bInit) {
+            return;
+          }
 
-		initMultiInput: function (self) {
+          if (bError) {
+            switch (this.sMessageType) {
+              case this.MESSAGE_TYPE.CREATE:
+                this.showMessageToast("msgError07", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.REFRESH:
+                this.showMessageToast("msgError05", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.DELETE:
+                this.showMessageToast("msgError01", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.UPDATE:
+                this.showMessageToast("msgError06", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.SEARCH:
+                this.showMessageToast("msgError08", "20rem", []);
+                break;
+            }
+          } else {
+            switch (this.sMessageType) {
+              case this.MESSAGE_TYPE.CREATE:
+                this.showMessageToast("msgSuccess16", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.REFRESH:
+                this.showMessageToast("msgSuccess14", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.DELETE:
+                this.showMessageToast("msgSuccess05", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.UPDATE:
+                this.showMessageToast("msgSuccess15", "20rem", []);
+                break;
+              case this.MESSAGE_TYPE.SEARCH:
+                this.showMessageToast("msgSuccess17", "20rem", [
+                  oEvent.getSource().getLength(),
+                ]);
+                break;
+            }
+          }
 
-			var fcvalidator = function (args) {
-				var text = args.text;
+          this.sMessageType = "";
+        },
 
-				return new Token({ key: text, text: text });
-			}
+        getDate: function (sDateTime) {
+          if (sDateTime) {
+            return moment(sDateTime).format("MM.DD.YYYY");
+          } else {
+            return "";
+          }
+        },
 
-			self.getView().byId('MIInterfaceName').addValidator(fcvalidator);
-			self.getView().byId('MIInterfaceNumber').addValidator(fcvalidator);
-			self.getView().byId('MISSystemName').addValidator(fcvalidator);
-			self.getView().byId('MISApplicationName').addValidator(fcvalidator);
-			self.getView().byId('MITSystemName').addValidator(fcvalidator);
-			self.getView().byId('MITApplicationName').addValidator(fcvalidator);
-			self.getView().byId('MIInterfaceNumber').addValidator(fcvalidator);
-			self.getView().byId('MIInterfaceNumber').addValidator(fcvalidator);
-			self.getView().byId('MISCIIf').addValidator(fcvalidator);
-			self.getView().byId('MISCIPackage').addValidator(fcvalidator);
-			self.getView().byId('MiSystemAppNm').addValidator(fcvalidator);
-			self.getView().byId("MCCDSoruceCd").addValidator(fcvalidator);
-		}
-	});
-});
+        getDeletedIfIcon: function (iStatus) {
+          switch (iStatus) {
+            case "true":
+              return "sap-icon://delete";
+            case "false":
+              return "sap-icon://complete";
+            default:
+              return "sap-icon://complete";
+          }
+        },
+
+        getDeletedIfText: function (iStatus) {
+          switch (iStatus) {
+            case "true":
+              return "Deleted";
+            case "false":
+              return "Available";
+            default:
+              return "Available";
+          }
+        },
+
+        initMultiInput: function (self) {
+          var fcvalidator = function (args) {
+            var text = args.text;
+
+            return new Token({ key: text, text: text });
+          };
+
+          self.getView().byId("MIInterfaceName").addValidator(fcvalidator);
+          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
+          self.getView().byId("MISSystemName").addValidator(fcvalidator);
+          self.getView().byId("MISApplicationName").addValidator(fcvalidator);
+          self.getView().byId("MITSystemName").addValidator(fcvalidator);
+          self.getView().byId("MITApplicationName").addValidator(fcvalidator);
+          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
+          self.getView().byId("MIInterfaceNumber").addValidator(fcvalidator);
+          self.getView().byId("MISCIIf").addValidator(fcvalidator);
+          self.getView().byId("MISCIPackage").addValidator(fcvalidator);
+          self.getView().byId("MiSystemAppNm").addValidator(fcvalidator);
+          self.getView().byId("MCCDSoruceCd").addValidator(fcvalidator);
+        },
+      }
+    );
+  }
+);

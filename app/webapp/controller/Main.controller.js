@@ -418,7 +418,7 @@ sap.ui.define(
             this.ControlID.CBdeleted
           ).getSelected();
 
-          var oTable = this.getControl(this.ControlID.InterfaceList);
+          var oTable = this.getControl(this.ControlID.tabInterfaceList);
 
           // Created Date Descending 초기화
           if (aInterfaceName.length > 0) {

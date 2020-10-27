@@ -46,9 +46,20 @@
             </VBox>
         </content>
         <buttons>
-            <Button text="Create" press="onPAI" app:fcCode="fcAddCodeListPopup" />
+            <Button text="{i18n>btnMessage} : {= ${message>/}.length }"
+                press="onPAI"
+                type="Critical"
+                visible="{mainView>/hasError}"
+                app:fcCode="fcMessage" />
 
-            <Button text="Cancel" press="onPAI" app:fcCode="fcCancelCodePopup" />
+            <Button text="Create" 
+                press="onPAI" 
+                app:fcCode="fcAddCodeListPopup" />
+
+            <Button text="Cancel" 
+                press="onPAI" 
+                app:fcCode="fcCancelCodePopup" />
+
         </buttons>
     </Dialog>
 </core:FragmentDefinition>

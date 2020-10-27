@@ -249,8 +249,8 @@ sap.ui.define(
               this.fcSelectionChangeSystemList(oEvent);
               break;
             //---- Add Popup ----
-            case "fcCreateSystem":
-              this.fcCreateSystem(oEvent);
+            case "fcCreateSystemList":
+              this.fcCreateSystemList(oEvent);
               break;
             case "fcAddSystemListPopup":
               this.fcAddSystemListPopup(oEvent);
@@ -282,7 +282,6 @@ sap.ui.define(
               break;
           }
         },
-
 
         // Data Received Event Hander=
 
@@ -1416,7 +1415,7 @@ sap.ui.define(
           );
         },
 
-        fcCreateSystem: function (oEvent) {
+        fcCreateSystemList: function (oEvent) {
           this._h.mainView.setProperty("/SystemList/Add", {
             appliNm: "",
             systemNm: "",
@@ -1425,7 +1424,7 @@ sap.ui.define(
 
           this.callPopupFragment("AddSystemList", oEvent);
         },
-        
+
         //Combox Selection Change
         onSelectionChange: function (oEvent) {
           var sId = oEvent.getSource().sId.substring(12);
@@ -1652,8 +1651,8 @@ sap.ui.define(
             });
         },
 
-        /* ========================================================== */
-        /* Local Methods
+    /* ========================================================== */
+    /* Local Methods
 		/* ========================================================== */
 
         setUIChanges: function (oModel, bHasUIChanges) {

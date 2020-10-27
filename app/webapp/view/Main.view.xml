@@ -1,5 +1,7 @@
-<mvc:View id="mainView" controllerName="withus.sci.management.SCIManagement.controller.Main"												
-	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+<mvc:View id="mainView"
+	controllerName="withus.sci.management.SCIManagement.controller.Main"
+	xmlns:mvc="sap.ui.core.mvc"
+	displayBlock="true"
 	xmlns:core="sap.ui.core"
 	xmlns:t="sap.ui.table"
 	xmlns="sap.m"
@@ -8,7 +10,9 @@
 	xmlns:l="sap.ui.layout"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-	<tnt:ToolPage class="sapUiDemoToolPage" id="idToolPageMain" sideExpanded="{mainView>/sideExpanded}">
+	<tnt:ToolPage class="sapUiDemoToolPage"
+		id="idToolPageMain"
+		sideExpanded="{mainView>/sideExpanded}">
 		<tnt:header>
 			<!--페이지 헤더 -->
 			<tnt:ToolHeader>
@@ -16,17 +20,29 @@
 				<html:div class="sk_siltron_logo"/>
 				<Text text="{i18n>tlMainHeadTitle}" />
 				<ToolbarSpacer />
-				<Button visible="true" class="sapUiTinyMarginEnd" type="Default" text="{i18n>btnLogout}" press="onPAI" app:fcCode="fcLogout" />
+				<Button visible="true"
+					class="sapUiTinyMarginEnd"
+					type="Default"
+					text="{i18n>btnLogout}"
+					press="onPAI"
+					app:fcCode="fcLogout" />
 			</tnt:ToolHeader>
 		</tnt:header>
 		<!-- Side Menu -->
 		<tnt:sideContent class="side-navigation">
-			<tnt:SideNavigation id="sideNavigation" selectedKey="subItem3" itemSelect="onPAI" app:fcCode="fcItemSelect">
+			<tnt:SideNavigation id="sideNavigation"
+				selectedKey="subItem3"
+				itemSelect="onPAI"
+				app:fcCode="fcItemSelect">
 				<tnt:NavigationList>
 					<!-- 메뉴 버튼 열고 닫기 -->
-					<tnt:NavigationListItem key="menu" text="{i18n>sideExpand}" icon="sap-icon://collapse" />
+					<tnt:NavigationListItem key="menu"
+						text="{i18n>sideExpand}"
+						icon="sap-icon://collapse" />
 					<!-- 인터페이스 리스트 -->
-					<tnt:NavigationListItem key="interfaceList" text="{i18n>SideInterfaceList}" icon="sap-icon://overview-chart"></tnt:NavigationListItem>
+					<tnt:NavigationListItem key="interfaceList"
+						text="{i18n>SideInterfaceList}"
+						icon="sap-icon://overview-chart"></tnt:NavigationListItem>
 					<!-- 모니터링 차트 -->
 					<!--				<tnt:NavigationListItem key="monitoringChart" text="{i18n>SideMonioringChart}" icon="sap-icon://overview-chart"></tnt:NavigationListItem>					-->
 					<!-- 모니터링 테이블 -->
@@ -35,9 +51,13 @@
 				<tnt:fixedItem>
 					<tnt:NavigationList>
 						<!-- 코드리스트 -->
-						<tnt:NavigationListItem key="codeList" text="{i18n>sideCdodeList}" icon="sap-icon://bar-code" />
+						<tnt:NavigationListItem key="codeList"
+							text="{i18n>sideCdodeList}"
+							icon="sap-icon://bar-code" />
 						<!-- 시스템 리스트 -->
-						<tnt:NavigationListItem key="systemList" text="{i18n>sideSystemList}" icon="sap-icon://it-system" />
+						<tnt:NavigationListItem key="systemList"
+							text="{i18n>sideSystemList}"
+							icon="sap-icon://it-system" />
 					</tnt:NavigationList>
 				</tnt:fixedItem>
 			</tnt:SideNavigation>
@@ -45,30 +65,46 @@
 		<tnt:mainContents>
 			<NavContainer id="navConMain">
 				<!-- 인터페이스 리스트 -->
-				<f:DynamicPage id="dp-interface" class="sapUiNoContentPadding" fitContent="true" headerExpanded="true" showFooter="true">
+				<f:DynamicPage id="dp-interface"
+					class="sapUiNoContentPadding"
+					fitContent="true"
+					headerExpanded="true"
+					showFooter="true">
 					<f:title>
 						<f:DynamicPageTitle backgroundDesign="Transparent">
 							<f:heading>
 								<Title text="{i18n>mcInterfaceTitle}" />
 							</f:heading>
 							<f:actions>
-								<Button text="{i18n>btnSearch}" width="5rem" type="Accept" press="onPAI" app:fcCode="fcSearchInterface" />
+								<Button text="{i18n>btnSearch}"
+									width="5rem"
+									type="Accept"
+									press="onPAI"
+									app:fcCode="fcSearchInterface" />
 							</f:actions>
 						</f:DynamicPageTitle>
 					</f:title>
 					<f:header>
 						<f:DynamicPageHeader pinnable="false">
 							<f:content>
-								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderInterfaceList" type="XML"/>
+								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderInterfaceList"
+									type="XML"/>
 							</f:content>
 						</f:DynamicPageHeader>
 					</f:header>
 					<f:content>
-						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideInterfaceList" type="XML" />
+						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideInterfaceList"
+							type="XML" />
 					</f:content>
 					<f:footer>
 						<OverflowToolbar>
-							<Button icon="sap-icon://alert" text="{i18n>btnMessage} : {= ${message>/}.length }" visible="true" type="Critical" enabled="{= ${message>/}.length === 0 ? false : true }" press="onPAI" app:fcCode="fcMessage"/>
+							<Button icon="sap-icon://alert"
+								text="{i18n>btnMessage} : {= ${message>/}.length }"
+								visible="true"
+								type="Critical"
+								enabled="{= ${message>/}.length === 0 ? false : true }"
+								press="onPAI"
+								app:fcCode="fcMessage"/>
 							<ToolbarSpacer/>
 						</OverflowToolbar>
 					</f:footer>
@@ -124,50 +160,64 @@
 -->
 
 				<!--코드리스트 -->
-				<f:DynamicPage id="dp-code" class="sapUiNoContentPadding">
+				<f:DynamicPage id="dp-code"
+					class="sapUiNoContentPadding">
 					<f:title>
 						<f:DynamicPageTitle backgroundDesign="Transparent">
 							<f:heading>
 								<Title text="{i18n>mcCodeListTitle}" />
 							</f:heading>
 							<f:actions>
-								<Button text="{i18n>btnSearch}" width="5rem" type="Accept" press="onPAI" app:fcCode="fcSearchCode" />
+								<Button text="{i18n>btnSearch}"
+									width="5rem"
+									type="Accept"
+									press="onPAI"
+									app:fcCode="fcSearchCode" />
 							</f:actions>
 						</f:DynamicPageTitle>
 					</f:title>
 					<f:header>
 						<f:DynamicPageHeader pinnable="false">
 							<f:content>
-								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderCode" type="XML"/>
+								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderCode"
+									type="XML"/>
 							</f:content>
 						</f:DynamicPageHeader>
 					</f:header>
 					<f:content>
-						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideCodes" type="XML" />
+						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideCodes"
+							type="XML" />
 					</f:content>
 				</f:DynamicPage>
 
 				<!--시스템 리스트-->
-				<f:DynamicPage id="dp-system" class="sapUiNoContentPadding">
+				<f:DynamicPage id="dp-system"
+					class="sapUiNoContentPadding">
 					<f:title>
 						<f:DynamicPageTitle backgroundDesign="Transparent">
 							<f:heading>
 								<Title text="{i18n>mcSystemListTitle}" />
 							</f:heading>
 							<f:actions>
-								<Button text="{i18n>btnSearch}" width="5rem" type="Accept" press="onPAI" app:fcCode="fcSearchSystemList" />
+								<Button text="{i18n>btnSearch}"
+									width="5rem"
+									type="Accept"
+									press="onPAI"
+									app:fcCode="fcSearchSystemList" />
 							</f:actions>
 						</f:DynamicPageTitle>
 					</f:title>
 					<f:header>
 						<f:DynamicPageHeader pinnable="false">
 							<f:content>
-								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderSystem" type="XML"/>
+								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderSystem"
+									type="XML"/>
 							</f:content>
 						</f:DynamicPageHeader>
 					</f:header>
 					<f:content>
-						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideSystem" type="XML" />
+						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideSystem"
+							type="XML" />
 					</f:content>
 				</f:DynamicPage>
 			</NavContainer>

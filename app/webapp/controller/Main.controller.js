@@ -252,6 +252,9 @@ sap.ui.define(
             case "fcCancelCodePopup":
               this.fcCancelCodePopup(oEvent);
               break;
+            case "fcAddCodeListPopup":
+              this.fcAddCodeListPopup(oEvent);
+            
 
             //System List
             case "fcSearchSystemList":
@@ -760,16 +763,6 @@ sap.ui.define(
             this.oMessageManager.addMessages(oMessage);
           }
 
-          if (!oInput.cat03) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Category03"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
           if (!oInput.codeNm) {
             bError = true;
             var oMessage = new Message({
@@ -779,28 +772,9 @@ sap.ui.define(
             });
             this.oMessageManager.addMessages(oMessage);
           }
-
-          if (!oInput.description) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Description"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
-          if (!oInput.detailDescription) {
-            bError = true;
-            var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Detail Description"]),
-              type: "Error",
-              processor: this._h.mainView,
-            });
-            this.oMessageManager.addMessages(oMessage);
-          }
-
+          
           if (bError) {
+            this.showMessageToast("msgError11", "20rem", []);
             return;
           }
 
@@ -1581,6 +1555,21 @@ sap.ui.define(
               "/SystemList/Update/appliCd",
               oEvent.getSource().getSelectedKey()
             );
+          } else if (sId == "AddCodeLiCat01") {
+            this._h.mainView.setProperty(
+              "/CodeList/Add/cat01",
+              oEvent.getSource().getSelectedKey()
+            );
+          } else if (sId == "AddCodeLiCat02") {
+            this._h.mainView.setProperty(
+              "/CodeList/Add/cat02",
+              oEvent.getSource().getSelectedKey()
+            );    
+          } else if (sId == "AddCodeLiCat03") {
+            this._h.mainView.setProperty(
+              "/CodeList/Add/cat03",
+              oEvent.getSource().getSelectedKey()
+            );                
           }
         },
 

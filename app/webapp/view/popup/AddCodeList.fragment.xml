@@ -6,17 +6,17 @@
                     <f:content>
 
                         <Label text="{i18n>fldCodeSection}" />
-                        <ComboBox id="AddCodeLiCat01" items="{path: 'management>/SCI_VH_CODE_CAT01_SRV'}" selectionChange="onChange" required="true">
+                        <ComboBox id="AddCodeLiCat01" items="{path: 'management>/SCI_VH_CODE_CAT01_SRV'}" selectionChange="onSelectionChange" required="true">
                             <core:Item text="{management>CAT01}" key="{management>CAT01}" />
                         </ComboBox>
 
                         <Label text="{i18n>fldCodeDetailSection}" />
-                        <ComboBox id="AddCodeLiCat02" items="{path: 'management>/SCI_VH_CODE_CAT02_SRV'}" selectionChange="onChange" required="true">
+                        <ComboBox id="AddCodeLiCat02" items="{path: 'management>/SCI_VH_CODE_CAT02_SRV'}" selectionChange="onSelectionChange" required="true">
                             <core:Item text="{management>CAT02}" key="{management>CAT02}" />
                         </ComboBox>
 
                         <Label text="{i18n>fldCodeEtcSection}" />
-                        <ComboBox id="AddCodeLiCat03" items="{path: 'management>/SCI_VH_CODE_CAT03_SRV'}" selectionChange="onChange">
+                        <ComboBox id="AddCodeLiCat03" items="{path: 'management>/SCI_VH_CODE_CAT03_SRV'}" selectionChange="onSelectionChange">
                             <core:Item text="{management>CAT03}" key="{management>CAT03}" />
                         </ComboBox>
 

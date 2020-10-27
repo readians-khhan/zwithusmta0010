@@ -106,12 +106,6 @@
             </VBox>
         </content>
         <buttons>
-            <Button text="{i18n>btnMessage} : {= ${message>/}.length }"
-                press="onPAI"
-                type="Critical"
-                visible="{mainView>/hasError}"
-                app:fcCode="fcMessage" />
-                
             <Button text="Save"
                 press="onPAI"
                 app:fcCode="fcAddSystemListPopup" />

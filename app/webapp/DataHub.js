@@ -32,7 +32,6 @@ sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (
 
 			mainViewInitData: {
 				busy: false,
-				hasUIChanges: false,
 				search: "",
 				bpSearch: "",
 				condition: {
@@ -41,6 +40,7 @@ sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (
 					toDate: null,
 				},
 				action: "",
+				hasUIChanges: false,
 				hasError: false,
 				stickyOptions: ["HeaderToolbar", "ColumnHeaders"],
 				statusCount: {

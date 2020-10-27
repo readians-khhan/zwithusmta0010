@@ -5,7 +5,7 @@
     xmlns:l="sap.ui.layout"
     xmlns:f="sap.ui.layout.form"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <t:Table id="InterfaceList"
+    <t:Table id="tabInterfaceList"
         selectionMode="Single"
         enableSelectAll="false"
         alternateRowColors="true"
@@ -15,7 +15,7 @@
             path: 'management>/SCI_TP_INTERFACELIST_SRV',
             parameters: {   
                 $count: true,
-                $$updateGroupId: 'filesDataGroup'
+                $$updateGroupId: 'InterfaceDataGroup'
             }
         }"
         rowSelectionChange="onPAI"

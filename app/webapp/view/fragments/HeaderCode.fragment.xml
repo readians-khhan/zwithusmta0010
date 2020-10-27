@@ -7,10 +7,9 @@
             <f:formContainers>
                 <!-- 구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldCodeCategory}">
+                    <f:FormElement label="{i18n>fldCodeSection}">
                         <f:fields>
-                            <MultiComboBox id="MCCDSoruceCt01" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT01' }
-                                                                }">
+                            <MultiComboBox id="MCCDSoruceCt01" items="{path: 'management>/SCI_VH_CODE_CAT01_SRV'}">
                                 <core:Item text="{management>CAT01}" key="{management>CAT01}" />
                             </MultiComboBox>
                         </f:fields>
@@ -18,10 +17,9 @@
                 </f:FormContainer>
                 <!-- 상세구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldCodeDetailCategory}">
+                    <f:FormElement label="{i18n>fldCodeDetailSection}">
                         <f:fields>
-                            <MultiComboBox id="MCCDSoruceCt02" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT02'}
-                                                }">
+                            <MultiComboBox id="MCCDSoruceCt02" items="{path: 'management>/SCI_VH_CODE_CAT02_SRV'}">
                                 <core:Item text="{management>CAT02}" key="{management>CAT02}" />
                             </MultiComboBox>
                         </f:fields>
@@ -29,10 +27,9 @@
                 </f:FormContainer>
                 <!-- 기타구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldCodeEtcCategory}">
+                    <f:FormElement label="{i18n>fldCodeEtcSection}">
                         <f:fields>
-                            <MultiComboBox id="MCCDSoruceCt03" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT03'}
-                                                }">
+                            <MultiComboBox id="MCCDSoruceCt03" items="{path: 'management>/SCI_VH_CODE_CAT03_SRV'}">
                                 <core:Item id="" text="{management>CAT03}" key="{management>CAT03}" />
                             </MultiComboBox>
                         </f:fields>
@@ -40,7 +37,7 @@
                 </f:FormContainer>
                 <!-- 명칭 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldCodeTitle}">
+                    <f:FormElement label="{i18n>fldCodeName}">
                         <f:fields>
                             <MultiInput id="MCCDSoruceCd" showValueHelp="false" />
                         </f:fields>

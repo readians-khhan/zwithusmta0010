@@ -44,11 +44,11 @@
       "db": {
         "kind": "sqlite",
         "credentials": {
-          "database": "sci.db"
+          "database": "scimonitoring.db"
         }
       },
-      "SCIDEV.sap.hci.api": {
-        "kind": "rest",
+      "SCI_API.sap.hci.api": {
+        "kind": "odata",
         "credentials": {
           "url": "https://sk-dev.it-cpi006.cfapps.jp10.hana.ondemand.com/api/v1",
           "username": "astro@sk.com",

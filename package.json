@@ -43,15 +43,12 @@
     "requires": {
       "db": {
         "kind": "sqlite",
+        "model": "*",
         "credentials": {
           "database": "scimonitoring.db"
-        },
-        "pool": {
-          "min": 1,
-          "max": 10
         }
       },
-      "SCIDEV.sap.hci.api": {
+      "SCI_API.sap.hci.api": {
         "kind": "odata",
         "credentials": {
           "url": "https://sk-dev.it-cpi006.cfapps.jp10.hana.ondemand.com/api/v1",

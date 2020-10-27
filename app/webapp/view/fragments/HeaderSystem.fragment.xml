@@ -1,47 +1,51 @@
-<core:FragmentDefinition xmlns="sap.m"
-    xmlns:l="sap.ui.layout"
-    xmlns:f="sap.ui.layout.form"
-    xmlns:core="sap.ui.core"
-    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
     <Panel class="sapUiNoContentPadding" backgroundDesign="Transparent">
         <f:Form editable="true" width="100%">
             <f:layout>
                 <f:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="4" columnsL="4" columnsM="2" singleContainerFullSize="true" />
             </f:layout>
             <f:formContainers>
-                <!-- 회사 -->
+                <!-- 구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldCompany}">
+                    <f:FormElement label="{i18n>fldCodeCategory}">
                         <f:fields>
-                            <MultiComboBox id="McSLSorceCompanyCd" items="{path: 'management>/SCI_VH_CODE_COMPANY_SRV'}">
-                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            <MultiComboBox id="MCCDSoruceCt01" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT01' }
+                                                                }">
+                                <core:Item text="{management>CAT01}" key="{management>CAT01}" />
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>
-                <!-- 자회사 -->
+                <!-- 상세구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldSubsidiaryCompany}">
+                    <f:FormElement label="{i18n>fldCodeDetailCategory}">
                         <f:fields>
-                            <MultiComboBox id="McSLSorceSubsidiaryCd" items="{path: 'management>/SCI_VH_CODE_SUBSIDARY_SRV'}">
-                                <core:Item text="{management>DESC01}" key="{management>CODE}"/>
+                            <MultiComboBox id="MCCDSoruceCt02" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT02'}
+                                                }">
+                                <core:Item text="{management>CAT02}" key="{management>CAT02}" />
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>
-                <!-- 어플리케이션 명 -->
+                <!-- 기타구분 -->
                 <f:FormContainer>
-                    <f:FormElement label="{i18n>fldApplicationName}">
+                    <f:FormElement label="{i18n>fldCodeEtcCategory}">
                         <f:fields>
-                             <MultiInput id="MiSystemAppNm"
-                                showValueHelp="false"
-                                suggestionItems="{path: 'management>/SCI_MST_SYSTEMLIST_SRV'}">
-                                <core:Item key="{management>APPL_NM}"
-                                    text="{management>APPL_NM}" />
-                            </MultiInput>
+                            <MultiComboBox id="MCCDSoruceCt03" items="{path: 'management>/SCI_MST_CODE_SRV', sorter : {path : 'management>CAT03'}
+                                                }">
+                                <core:Item id="" text="{management>CAT03}" key="{management>CAT03}" />
+                            </MultiComboBox>
                         </f:fields>
                     </f:FormElement>
-                </f:FormContainer>                
+                </f:FormContainer>
+                <!-- 명칭 -->
+                <f:FormContainer>
+                    <f:FormElement label="{i18n>fldCodeTitle}">
+                        <f:fields>
+                            <MultiInput id="MCCDSoruceCd" showValueHelp="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
             </f:formContainers>
         </f:Form>
     </Panel>

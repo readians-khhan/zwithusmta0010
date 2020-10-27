@@ -112,9 +112,6 @@ sap.ui.define(
           // View Data Initialization
           this.sMessageType = "";
 
-          // Register Message Model
-          this.oMessageManager = sap.ui.getCore().getMessageManager();
-
           // View Model
           this._h.mainView = this.createJSONModel();
           this._h.mainView.setData(this._h.mainViewInitData);
@@ -141,21 +138,6 @@ sap.ui.define(
 
           this.getView().setModel(this._h.mainView, "mainView");
           this.getView().setModel(this._h.mainMessage, "mainMessage");
-
-          // Register Message Model
-          this.oMessageManager = sap.ui.getCore().getMessageManager();
-          this.oMessageModel = this.oMessageManager.getMessageModel();
-          this.oMessageModelBinding = this.oMessageModel.bindList(
-            "/",
-            undefined,
-            []
-          );
-          this.getView().setModel(this.oMessageModel, "message");
-          this.oMessageModelBinding.attachChange(
-            this.onMessageBindingChange,
-            this
-          );
-          this.oMessageManager.registerObject(this.getView(), true);
 
           // Multi Input Initialization
           this.initMultiInput(this);
@@ -284,8 +266,8 @@ sap.ui.define(
               this.fcCancelUpdateSystemListPopUp(oEvent);
               break;
             //---- Delete ----
-            case "fcDeleteSystem":
-              this.fcDeleteSystem(oEvent);
+            case "fcDeleteSystemList":
+              this.fcDeleteSystemList(oEvent);
               break;
             case "fcDeleteCodeList":
               this.fcDeleteCodeList(oEvent);
@@ -318,23 +300,6 @@ sap.ui.define(
 
         fcCancelInterfaceGeneratePopup: function (oEvent) {
           this.closePopupFragment("RegisterInterface");
-        },
-
-        fcVHSystem: function (oEvent) {
-          this.callPopupFragment("ValueHelpSystem");
-
-          this.fragments["ValueHelpSystem"].getTableAsync().then(
-            function (oTable) {
-              oTable.setModel(this.oProductsModel);
-              oTable.setModel(this.oColModel, "columns");
-
-              if (oTable.bindRows) {
-                oTable.bindAggregation("rows", "managerment>/");
-              }
-
-              this._oValueHelpDialog.update();
-            }.bind(this)
-          );
         },
 
         fcItemSelect: function (oEvent) {
@@ -978,51 +943,6 @@ sap.ui.define(
             });
         },
 
-        //Single Selection
-        fcDeleteSystemList: function (oEvent) {
-          var self = this;
-          var oTable = this.getControl(this.ControlID.tabSystemList);
-          var oBinding = oTable.getBinding("rows");
-
-          if (oTable.getSelectedIndices().length === 0) {
-            self.showMessageToast("msgWarn03", "20rem", []);
-            return;
-          }
-
-          this.callPopupConfirm("msgAlert03", "alert", this.MSGBOXICON.WARNING)
-            .then(function (sAction) {
-              if (sAction === "OK") {
-                _.forEach(oTable.getSelectedIndices(), function (iIndex) {
-                  oTable
-                    .getContextByIndex(iIndex)
-                    .setProperty("DELETED_TF", true);
-                });
-
-                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-
-                self._h.management
-                  .submitBatch(self.ControlID.systemListDataGroup)
-                  .then(
-                    // Success
-                    function (oData) {
-                      self._h.management.refresh();
-                      oTable.clearSelection();
-                    },
-                    // Fail
-                    function (oError) {
-                      self.resetBindingChanges(oBinding);
-                      self.showMessageToast("msgError10", "20rem", [
-                        oError.message,
-                      ]);
-                    }
-                  );
-              }
-            })
-            .catch(function (oError) {
-              console.log(oError);
-            });
-        },
-
         ////// Value help
         // Source System
         onVHSSystemCancel: function (oEvent) {
@@ -1443,21 +1363,6 @@ sap.ui.define(
           this.closePopupFragment("RegisterStorageLocation");
         },
 
-        //System List
-        fcRefreshSystemList: function (oEvent) {
-          this.setUIChanges(this._h.management);
-
-          if (this.checkUIChanges()) {
-            this.showMessageToast("msgWarn02", "20rem", []);
-            return;
-          }
-
-          this.setMessageType(this.MESSAGE_TYPE.REFRESH);
-          this.getControl(this.ControlID.tabSystemList)
-            .getBinding("rows")
-            .refresh();
-        },
-
         fcSearchSystemList: function (oEvent) {
           var self = this;
           var aFilters = [];
@@ -1546,7 +1451,7 @@ sap.ui.define(
 
           this.callPopupFragment("AddSystemList", oEvent);
         },
-
+        
         //Combox Selection Change
         onSelectionChange: function (oEvent) {
           var sId = oEvent.getSource().sId.substring(12);

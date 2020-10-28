@@ -40,7 +40,7 @@
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </ComboBox>
 
@@ -49,7 +49,7 @@
                         <Input value="{mainView>/Interface/Regist/Name}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -58,7 +58,7 @@
                         <Input value="{mainView>/Interface/Regist/Description}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -67,7 +67,7 @@
                         <Input value="{mainView>/Interface/Regist/Package}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -76,7 +76,7 @@
                         <Input value="{mainView>/Interface/Regist/IFName}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -85,7 +85,7 @@
                         <Input value="{mainView>/Interface/Regist/AsIsID}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -94,7 +94,7 @@
                         <Input value="{mainView>/Interface/Regist/AsIsName}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -103,7 +103,7 @@
                         <Input value="{mainView>/Interface/Regist/AsIsDescription}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -117,7 +117,7 @@
                             <core:Item key="{mainView>/Interface/Regist/SourceSystemID}"
                                 text="{mainView>/Interface/Regist/SourceSystemDESC}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -128,7 +128,7 @@
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </ComboBox>
 
@@ -142,7 +142,7 @@
                             <core:Item key="{mainView>/Interface/Regist/TargetSystemID}"
                                 text="{mainView>/Interface/Regist/TargetSystemDESC}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -153,7 +153,7 @@
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </ComboBox>
 
@@ -162,7 +162,7 @@
                         <Input value="{mainView>/Interface/Regist/RFCName}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -171,7 +171,7 @@
                         <Input value="{mainView>/Interface/Regist/ESName}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -180,7 +180,7 @@
                         <Input value="{mainView>/Interface/Regist/WSName}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -189,7 +189,7 @@
                         <Input value="{mainView>/Interface/Regist/WSBName}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </Input>
 
@@ -200,7 +200,7 @@
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M10 S10" />
+                                <l:GridData span="XL6 L8 M9 S9" />
                             </layoutData>
                         </ComboBox>
 
@@ -225,22 +225,22 @@
                                     <Text text="{i18n>fldbcExecType}"/>
                                 </Column>
                                 <Column width="4rem">
-                                    <Text text="{i18n>fldbcCycle}"/>
-                                </Column>
-                                <Column width="4rem">
                                     <Text text="{i18n>fldbcRecurrecny}"/>
                                 </Column>
                                 <Column width="4rem">
-                                    <Text text="{i18n>fldbcOnTime}"/>
+                                    <Text text="{i18n>fldbcOnDate}"/>
+                                </Column>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldbcCycle}"/>
                                 </Column>
                                 <Column width="4rem">
                                     <Text text="{i18n>fldbcTimeInterval}"/>
                                 </Column>
                                 <Column width="4rem">
-                                    <Text text="{i18n>fldbcOnFrDate}"/>
+                                    <Text text="{i18n>fldbcOnFrTime}"/>
                                 </Column>
                                 <Column width="4rem">
-                                    <Text text="{i18n>fldbcOnToDate}"/>
+                                    <Text text="{i18n>fldbcOnToTime}"/>
                                 </Column>
                                 <Column width="4rem">
                                     <Text text="{i18n>fldbcTimezone}"/>
@@ -249,15 +249,10 @@
                             <items>
                                 <ColumnListItem>
                                     <cells>
-                                        <ComboBox selectionChange="onPAI"
+                                        <ComboBox showSecondaryValues="true" selectionChange="onPAI"
                                         app:fcCode="fcChangeCbcExecType" id="CbcExecType"
                                             items="{path: 'management>/SCI_VH_CODE_BATCHEXEC_SRV'}">
-                                            <core:Item additionalText="{management>DESC01}" text="{management>CODE}"
-                                                key="{management>ID}"/>
-                                        </ComboBox>
-                                        <ComboBox id="CbcCycle"
-                                            items="{path: 'management>/SCI_VH_CODE_BATCHCYCLE_SRV'}">
-                                            <core:Item text="{management>DESC01}"
+                                            <core:ListItem additionalText="{management>CODE}" text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
                                         <ComboBox id="CbcRecurrecn"
@@ -265,25 +260,30 @@
                                             <core:Item text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <TimePicker id="TPOntime"
-                                            valueFormat="HH:mm"
-                                            displayFormat="HH:mm"
+                                       <DatePicker id="DPOnDate"
+                                            valueFormat="yyyy-MM-dd"
+                                            displayFormat="yyyy-MM-dd"
                                             change="handleChange"
-                                            placeholder="Enter  the time"/>
-                                        <ComboBox items="{path: 'management>/SCI_VH_CODE_BATCHTIMEINTERVAL_SRV'}">
+                                            class="sapUiSmallMarginBottom"/>
+                                        <ComboBox id="CbcCycle" showSecondaryValues="true"  selectionChange="onPAI"
+                                        app:fcCode="fcChangeCbcCycle" items="{path: 'management>/SCI_VH_CODE_BATCHCYCLE_SRV'}">
+                                            <core:ListItem additionalText="{management>CODE}" text="{management>DESC01}"
+                                                key="{management>ID}"/>
+                                        </ComboBox>
+                                        <ComboBox id="CbcInterval" items="{path: 'management>/SCI_VH_CODE_BATCHTIMEINTERVAL_SRV'}">
                                             <core:Item text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <DatePicker id="DPFrdate"
-                                            valueFormat="yyyy-MM-dd"
-                                            displayFormat="long"
+                                        <TimePicker id="TPFrTime"
+                                            valueFormat="HH:mm"
+                                            displayFormat="HH:mm"
                                             change="handleChange"
-                                            class="sapUiSmallMarginBottom"/>
-                                        <DatePicker id="DPTodate"
-                                            valueFormat="yyyy-MM-dd"
-                                            displayFormat="long"
+                                            placeholder="Enter the time to start"/>
+                                        <TimePicker id="TPToTime"
+                                            valueFormat="HH:mm"
+                                            displayFormat="HH:mm"
                                             change="handleChange"
-                                            class="sapUiSmallMarginBottom"/>
+                                            placeholder="Enter the time to finish"/>
                                         <Input id="ITimezone"
                                             value="{mainView>/Interface/Regist/Timezone}"
                                             required="true">

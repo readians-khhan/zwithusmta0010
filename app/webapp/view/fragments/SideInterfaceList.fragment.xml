@@ -6,6 +6,7 @@
     xmlns:f="sap.ui.layout.form"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
     <t:Table id="tabInterfaceList"
+        busy="false"
         selectionMode="Single"
         enableSelectAll="false"
         alternateRowColors="true"
@@ -29,7 +30,7 @@
                 <Button type="Transparent"
                     icon="sap-icon://refresh"
                     press="onPAI"
-                    app:fcCode="fcFilesRefresh" />
+                    app:fcCode="fcInterfaceRefresh" />
                 <ToolbarSpacer/>
                 <Button text="{i18n>btnCreate}"
                     icon="sap-icon://create"
@@ -184,7 +185,7 @@
                 sortProperty="IF_DESC"
                 filterProperty="IF_DESC"
                 hAlign="Center">
-                <Label text="{i18n>fldaAsIsID}"
+                <Label text="{i18n>fldAsIsID}"
                     textAlign="Center"
                     width="100%"/>
                 <t:template>
@@ -200,7 +201,7 @@
                 sortProperty="IF_DESC"
                 filterProperty="IF_DESC"
                 hAlign="Center">
-                <Label text="{i18n>fldaAsIsName}"
+                <Label text="{i18n>fldAsIsName}"
                     textAlign="Center"
                     width="100%"/>
                 <t:template>
@@ -216,7 +217,7 @@
                 sortProperty="IF_DESC"
                 filterProperty="IF_DESC"
                 hAlign="Center">
-                <Label text="{i18n>fldaAsIsDesc}"
+                <Label text="{i18n>fldAsIsDesc}"
                     textAlign="Center"
                     width="100%"/>
                 <t:template>

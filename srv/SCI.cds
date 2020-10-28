@@ -9,7 +9,7 @@ service SCIService {
     };
 
     entity MessageProcessingErrorLogs  as select from SCI.MessageProcessingLogs {
-        MessageGuid, 
+        key MessageGuid, 
         LogStart, 
         LogEnd, 
         Status, 
@@ -21,7 +21,7 @@ service SCIService {
 
     @readonly
     entity MessageProcessingLogs       as projection on SCI.MessageProcessingLogs {
-        MessageGuid, 
+        key MessageGuid, 
         LogStart, 
         LogEnd, 
         Status, 

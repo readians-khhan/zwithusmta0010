@@ -56,6 +56,7 @@ sap.ui.define(
 
           MCIFSorceCompanyCode: "MCIFSorceCompanyCode",
           tabInterfaceList: "tabInterfaceList",
+          tabBatchList: "tabBatchList",
           InterfaceDataGroup: "InterfaceDataGroup",
 
           //-------------------------------------------------------------------------------------------
@@ -209,14 +210,26 @@ sap.ui.define(
             case "fcCreateInterfacePopup":
               this.fcCreateInterfacePopup(oEvent);
               break;
+            case "fcCancelInterfacePopup":
+              this.fcCancelInterfacePopup(oEvent);
+              break;
             case "fcSearchInterface":
               this.fcSearchInterface(oEvent);
-
+              break;
             case "fcVHSSystem":
               this.fcVHSSystem(oEvent);
               break;
             case "fcVHTSystem":
               this.fcVHTSystem(oEvent);
+              break;
+            case "fcInterfaceRefresh":
+              this.fcInterfaceRefresh(oEvent);
+              break;
+            case "fcAddBatchList":
+              this.fcAddBatchList(oEvent);
+              break;
+            case "fcChangeCbcExecType":
+              this.fcChangeCbcExecType(oEvent);
               break;
 
             // Code List
@@ -286,6 +299,22 @@ sap.ui.define(
               this.fcMessage(oEvent);
               break;
           }
+        },
+
+        fcChangeCbcExecType: function (oEvent){
+          oEvent;
+        },
+
+        fcAddBatchList: function (oEvent) {
+          var oList = this.byId(this.ControlID.tabBatchList);
+          var oItems = oList
+            .getBinding("items")
+            .getModel()
+            .getProperty("/Interface/Regist/Batch");
+          oItems.push({
+            EXECUTION: null,
+          });
+          this._h.mainView.refresh();
         },
 
         fcItemSelect: function (oEvent) {
@@ -416,6 +445,19 @@ sap.ui.define(
           this.setError(false);
           this.setUIChanges(oModel, false);
 
+          var aMessages = _.map(
+            this.oMessageModelBinding.getContexts(),
+            function (oContext) {
+              return oContext.getObject();
+            }
+          );
+
+          if (aMessages.length) {
+            this.oMessageManager.removeMessages(aMessages);
+          }
+        },
+
+        resetMessageManger: function () {
           var aMessages = _.map(
             this.oMessageModelBinding.getContexts(),
             function (oContext) {
@@ -577,12 +619,20 @@ sap.ui.define(
         //------------------------- Common End -------------------------------------------
 
         //------------------------- Interface List  Start -------------------------------------------
-
-        fcCancelInterfaceGeneratePopup: function (oEvent) {
-          this.closePopupFragment("RegisterInterface");
+        fcInterfaceRefresh: function (oEvent) {
+          this.setBusy(this._h.mainView, true);
+          this._h.management.refresh();
+          this.setBusy(this._h.mainView, false);
+          this.showMessageToast("msgSuccess14", "20rem", []);
         },
+
+        fcCancelInterfacePopup: function (oEvent) {
+          this.resetMessageManger();
+          this.closePopupFragment("AddInterface");
+        },
+
         fcCreateIntefaceList: function (oEvent) {
-          this.callPopupFragment("RegisterInterface", oEvent);
+          this.callPopupFragment("AddInterface", oEvent);
         },
 
         fcSearchInterface: function (oEvent) {
@@ -814,7 +864,7 @@ sap.ui.define(
           var aMultiFilter = this.makeMultiFilter(aFilters, true);
 
           oTable.getBinding("rows").filter(aMultiFilter);
-          this.showMessageToast("msgSuccess120", "20rem", []);
+          this.showMessageToast("msgSuccess14", "20rem", []);
         },
 
         ////// Value help
@@ -854,7 +904,6 @@ sap.ui.define(
           ).getSelectedKey();
 
           var oBinding = oTable.getBinding("rows");
-
           oBinding.create({
             IF_NM: oInput.Name,
             IF_DESC: oInput.Description,
@@ -881,21 +930,22 @@ sap.ui.define(
               function (oData) {
                 if (!oBinding.hasPendingChanges()) {
                   this.showMessageToast("msgSuccess13", "20rem", []);
-                  this.closePopupFragment("RegisterInterface");
+                  this.closePopupFragment("AddInterface");
                 } else {
-                  this.resetBindingChanges(oBinding);
-                  this.showMessageToast("msgError04", "20rem", [
-                    oError.message,
-                  ]);
+                  this.setError(true);
+                  this.showMessageToast("msgError019", "20rem");
+                  oBinding.resetChanges();
                 }
-              }.bind(this),
+              }.bind(this)
+            )
+            .catch(
               function (oError) {
-                this.resetBindingChanges(oBinding);
+                this.setError(true);
+                oBinding.resetChanges();
                 this.showMessageToast("msgError04", "20rem", [oError.message]);
               }.bind(this)
-            );
-
-          console.log("");
+            )
+            .finally(() => {});
         },
 
         fcVHSSystem: function (oEvent) {
@@ -1804,7 +1854,6 @@ sap.ui.define(
         },
 
         //------------------------- System List End -------------------------------------------
-      
       }
     );
   }

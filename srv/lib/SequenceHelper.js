@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const bf = require("./BaseFunction");
 
 module.exports = class SequenceHelper {
 	constructor(options) {
@@ -27,7 +28,11 @@ module.exports = class SequenceHelper {
 				case "sql":
 				case "sqlite":
 					let aNextNumber = await this.db.run(`SELECT MAX("${this.field}") as nextNumber FROM "${this.table}"`);
-					iNextNumber = aNextNumber[0].nextNumber;
+					if (bf.IsNotValid(aNextNumber[0].nextNumber)) {
+						iNextNumber = 1
+					} else {
+						iNextNumber = aNextNumber[0].nextNumber + 1;
+					}
 					resolve(iNextNumber);
 					break;
 				default:

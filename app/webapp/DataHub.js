@@ -170,8 +170,11 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
             WSName: '',
             WSBName: '',
             typeID: '',
+            Batch: [],
           },
         },
+
+        BatchList : [],
 
          // Code List
          CodeList: {

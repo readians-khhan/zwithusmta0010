@@ -71,7 +71,7 @@ sap.ui.define(
           AddCodeLiCat01: "AddCodeLiCat01",
           AddCodeLiCat02: "AddCodeLiCat02",
           AddCodeLiCat03: "AddCodeLiCat03",
-
+        
           //-------------------------------------------------------------------------------------------
 
           // System List
@@ -149,13 +149,13 @@ sap.ui.define(
         },
 
         // Before Rendering
-        onBeforeRendering: function () {},
+        onBeforeRendering: function () { },
 
         // After Rendering
-        onAfterRendering: function (oEvent) {},
+        onAfterRendering: function (oEvent) { },
 
         // Destory Program
-        onExit: function () {},
+        onExit: function () { },
 
         /* ========================================================== */
         /* Events */
@@ -247,19 +247,28 @@ sap.ui.define(
             case "fcSelectionChangeCodeList":
               this.fcSelectionChangeCodeList(oEvent);
               break;
-            case "fcSelectionChangeCodeList":
-              this.fcSelectionChangeCodeList(oEvent);
-              break;
             case "fcDeleteCodeList":
               this.fcDeleteCodeList(oEvent);
               break;
+            case "fcUpdateCodeList":
+              this.fcUpdateCodeList(oEvent);
+              break;
 
             // Code Create Popup
-            case "fcCancelCodePopup":
-              this.fcCancelCodePopup(oEvent);
+            case "fcCancelAddCodePopup":
+              this.fcCancelAddCodePopup(oEvent);
               break;
-            case "fcAddCodeListPopup":
-              this.fcAddCodeListPopup(oEvent);
+            case "fcConfirmAddCodePopup":
+              this.fcConfirmAddCodePopup(oEvent);
+              break;
+
+            // Code Update Popup 
+            case "fcCancelUpdateCodePopup":
+              this.fcCancelUpdateCodePopup(oEvent);
+              break;
+            case "fcConfirmUpdateCodePopup":
+              this.fcConfirmUpdateCodePopup(oEvent);
+              break;
 
             //System List
             case "fcSearchSystemList":
@@ -906,7 +915,7 @@ sap.ui.define(
           this.fragments["VHSSystemList"].close();
         },
 
-        onVHSSystemAfterClose: function () {},
+        onVHSSystemAfterClose: function () { },
 
         onVHSSystemOK: function (oEvent) {
           var oInput = this.byId(this.ControlID.ISourceSystem);
@@ -1132,7 +1141,7 @@ sap.ui.define(
           this.fragments["VHTSystemList"].close();
         },
 
-        onVHTSystemAfterClose: function () {},
+        onVHTSystemAfterClose: function () { },
 
         onVHTSystemOK: function (oEvent) {
           var oInput = this.byId(this.ControlID.ITargetSystem);
@@ -1302,22 +1311,31 @@ sap.ui.define(
 
         //------------------------- Code List Start -------------------------------------------
 
-        // Code List Refresh Function
+        // 코드 리스트 새로고침
         fcCodeRefresh: function (oEvent) {
-          var oTable = this.getControl(this.ControlID.tabCodeList);
+          this.setUIChanges(this._h.management);
 
-          var oBinding = oTable.getBinding("rows");
-
-          if (oBinding.hasPendingChanges()) {
-            this.showMessageToast("msgWarn02", "20rem", []);
+          if (this.checkUIChanges()) {
+            this.showMessageToast('msgWarn02', '20rem', []);
             return;
           }
 
           this.setMessageType(this.MESSAGE_TYPE.REFRESH);
-          oBinding.refresh();
+          this.getControl(this.ControlID.tabCodeList).getBinding('rows').refresh();
         },
 
-        // Code List Search Function
+        // 코드 리스트 소팅
+        sortCategories: function (oEvent) {
+          var oView = this.getView();
+          var oTable = oView.byId("row");
+          var oCategoriesColumn = oView.byId("codeCategory");
+
+          oTable.sort(oCategoriesColumn, this._bSortColumnDescending ? SortOrder.Descending : SortOrder.Ascending, /*extend existing sorting*/true);
+          this._bSortColumnDescending = !this._bSortColumnDescending;
+        },
+
+
+        // 코드 리스트 검색
         fcSearchCode: function (oEvent) {
           var self = this;
           // 명칭 필터 생성
@@ -1428,18 +1446,17 @@ sap.ui.define(
         },
 
         // 코드 생성 팝업 나타내기
-        fcCreateCode: function (oEvent) {
+        fcCreateCode: function (oEvent) {          
           this._h.mainView.setProperty("/CodeList/Add", {
             codeNm: "",
             description: "",
             detailDescription: "",
           });
-
           this.callPopupFragment("AddCodeList", oEvent);
         },
 
-        // 코드 생성
-        fcAddCodeListPopup: function (oEvent) {
+        // 코드 생성 확정 
+        fcConfirmAddCodePopup: function (oEvent) {
           var self = this;
           // 테이블 컨트롤러 호출
           var oTable = this.getControl(this.ControlID.tabCodeList);
@@ -1509,9 +1526,38 @@ sap.ui.define(
         },
 
         // 코드 생성 팝업 닫기
-        fcCancelCodePopup: function (oEvent) {
-          this.oMessageManager.removeAllMessages();
+        fcCancelAddCodePopup: function (oEvent) {
+          this.oMessageManager.removeAllMessages();          
           this.closePopupFragment("AddCodeList");
+        },
+
+        // 코드 수정 팝업 나타내기
+        fcUpdateCodeList: function (oEvent) {
+          console.log("코드 팝업 ")
+          this._h.mainView.setProperty("/CodeList/Add", {
+            codeNm: "",
+            description: "",
+            detailDescription: "",
+          });
+          this.callPopupFragment("UpdateCodeList", oEvent);
+        },
+
+        // 코드 수정 확정 
+        fcConfirmUpdateCodePopup: function (oEvent){
+          console.log("코드 수정 확정")
+
+          var self = this;
+          var oView = this.getView();
+    
+          // Select context
+          var oContext = oEvent.getSource().getParent().getParent().getBindingContext('management');
+        },
+
+        // 코드 수정 팝업 닫기
+        fcCancelUpdateCodePopup: function (oEvent) {
+          console.log("코드 수정 팝업 닫기")
+          this.oMessageManager.removeAllMessages();
+          this.closePopupFragment("UpdateCodeList");
         },
 
         // 코드 선택
@@ -1528,42 +1574,39 @@ sap.ui.define(
           var oTable = this.getControl(this.ControlID.tabCodeList);
           var oBinding = oTable.getBinding("rows");
 
-          if (oTable.getSelectedIndices().length === 0) {
-            self.showMessageToast("msgWarn03", "20rem", []);
+          if (!this._h.mainView.getProperty('/CodeList/selectedCount')) {
+            this.showMessage(this.MSGTYPE.WARNING, 'Error', this.getI18nText('tlDeleteSetting'));
             return;
           }
 
-          this.callPopupConfirm("msgAlert002", "alert", this.MSGBOXICON.WARNING)
+          this.callPopupConfirm('msgAlert002', 'alert', this.MSGBOXICON.WARNING)
             .then(function (sAction) {
-              if (sAction === "OK") {
+              if (sAction === 'OK') {
                 _.forEach(oTable.getSelectedIndices(), function (iIndex) {
-                  oTable
-                    .getContextByIndex(iIndex)
-                    .setProperty("isDeleted", true);
+                  oTable.getContextByIndex(iIndex).setProperty('DELETED_TF', true);
                 });
 
-                self.setMessageType(self.MESSAGE_TYPE.DELETE);
+                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
 
-                Promise.all(aPromises)
-                  .then(function (aResult) {
-                    self.showMessageToast("msgSuccess03", "20rem", []);
-                    self._h.mainView.setProperty(
-                      "/Modifications/totalModificationsCount",
-                      oSettingTable.getBinding("rows").getLength()
-                    );
-                  })
-                  .catch(function (sError) {
-                    self.showMessageToast("msgError01", "20rem", []);
-                  })
-                  .finally(function () {
-                    oSettingTable.clearSelection();
-                    oSettingTable.getBinding("rows").refresh();
-                  });
+                self._h.management.submitBatch('codeListDataGroup').then(
+                  // Success
+                  function (oData) {
+                    self._h.management.refresh();
+                    oTable.clearSelection();
+                    self.showMessageToast("msgSuccess040", "20rem", []);
+                  },
+                  // Fail
+                  function (oError) {
+                    self.resetBindingChanges(oBinding);
+                    self.showMessageToast('msgError10', '20rem', [oError.message]);
+                  }
+                )
               }
             })
             .catch(function (oError) {
               console.log(oError);
             });
+
         },
 
         //------------------------- Code List End -------------------------------------------

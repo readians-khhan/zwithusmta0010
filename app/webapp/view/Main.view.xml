@@ -161,7 +161,10 @@
 
 				<!--코드리스트 -->
 				<f:DynamicPage id="dp-code"
-					class="sapUiNoContentPadding">
+					class="sapUiNoContentPadding"
+					fitContent="true"
+					headerExpanded="true"
+					showFooter="true">
 					<f:title>
 						<f:DynamicPageTitle backgroundDesign="Transparent">
 							<f:heading>
@@ -188,6 +191,18 @@
 						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideCodes"
 							type="XML" />
 					</f:content>
+					<f:footer>
+						<OverflowToolbar>
+							<Button icon="sap-icon://alert"
+								text="{i18n>btnMessage} : {= ${message>/}.length }"
+								visible="true"
+								type="Critical"
+								enabled="{= ${message>/}.length === 0 ? false : true }"
+								press="onPAI"
+								app:fcCode="fcMessage"/>
+							<ToolbarSpacer/>
+						</OverflowToolbar>
+					</f:footer>		
 				</f:DynamicPage>
 
 				<!--시스템 리스트-->

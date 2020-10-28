@@ -51,6 +51,17 @@ sap.ui.define(
 
           CBdeleted: "CBdeleted",
 
+          CbcCycle: "CbcCycle",
+          CbcRecurrecn: "CbcRecurrecn",
+          CbcInterval: "CbcInterval",
+
+          DPOnDate: "DPOnDate",
+
+          TPFrTime: "TPFrTime",
+          TPToTime: "TPToTime",
+
+          ITimezone: "ITimezone",
+
           ISourceSystem: "ISourceSystem",
           ITargetSystem: "ITargetSystem",
 
@@ -233,6 +244,9 @@ sap.ui.define(
             case "fcChangeCbcExecType":
               this.fcChangeCbcExecType(oEvent);
               break;
+            case "fcChangeCbcCycle":
+              this.fcChangeCbcCycle(oEvent);
+              break;
 
             // Code List
             case "fcSearchCode":
@@ -306,8 +320,161 @@ sap.ui.define(
           }
         },
 
-        fcChangeCbcExecType: function (oEvent){
-          oEvent;
+        fcChangeCbcCycle: function (oEvent) {
+          var sExec = oEvent.getSource().getSelectedItem().getAdditionalText();
+
+          var sEventSorceID = oEvent.getSource().getId();
+          var sViewID = this.getView().getId();
+          var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
+          var oCbcCycleID = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcCycle +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          var oCbcRecurrecn = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcRecurrecn +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oCbcInterval = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcInterval +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oDPOnDate = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.DPOnDate +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oTPFrTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.TPFrTime +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oTPToTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.TPToTime +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oITimezone = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.ITimezone +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          switch (sExec) {
+            case "ONTIME":
+              oTPToTime.setEnabled(false);
+              oCbcInterval.setEnabled(false);
+              break;
+            case "EVERY":
+              oTPToTime.setEnabled(true);
+              oCbcInterval.setEnabled(true);
+              break;
+            default:
+              break;
+          }
+        },
+
+        fcChangeCbcExecType: function (oEvent) {
+          var sExec = oEvent.getSource().getSelectedItem().getAdditionalText();
+
+          var sEventSorceID = oEvent.getSource().getId();
+          var sViewID = this.getView().getId();
+          var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
+          var oCbcCycleID = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcCycle +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          var oCbcInterval = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcInterval +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          var oCbcRecurrecn = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcRecurrecn +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oDPOnDate = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.DPOnDate +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oTPFrTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.TPFrTime +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oTPToTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.TPToTime +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oITimezone = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.ITimezone +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          switch (sExec) {
+            case "DAY":
+              oCbcRecurrecn.setEnabled(false);
+              oDPOnDate.setEnabled(true);
+              break;
+            case "RECUR":
+              oCbcRecurrecn.setEnabled(true);
+              oDPOnDate.setEnabled(false);
+              break;
+            default:
+              break;
+          }
         },
 
         fcAddBatchList: function (oEvent) {

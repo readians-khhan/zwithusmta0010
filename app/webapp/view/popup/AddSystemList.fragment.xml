@@ -70,21 +70,65 @@
                         <Label text="{i18n>fldSystemDescription}" />
                         <Input value="{mainView>/SystemList/Add/description}"
                             required="true"/>
+
                         <!-- 담당자 이름 -->
                         <Label text="{i18n>fldSystemManager}" />
                         <Input value="{mainView>/SystemList/Add/managerName}"
                             required="true"/>
                         <!-- 연락처 -->
                         <Label text="{i18n>fldSystemManagerContact}" />
-                        <Input value="{mainView>/SystemList/Add/contact}"
+                        <Input type="Tel"
+                            value="{mainView>/SystemList/Add/contact}"
+                            placeholder="Enter phone number"
                             required="true"/>
                         <!-- 이메일 -->
                         <Label text="{i18n>fldSystemManagerEmail}" />
-                        <Input value="{mainView>/SystemList/Add/email}"
+                        <Input type="Email"
+                            value="{mainView>/SystemList/Add/email}"
+                            placeholder="Enter Email"
                             required="true"/>
+
+                        <!-- <Table id="tbSystemManager" inset="false">
+                            <headerToolbar>
+                                <OverflowToolbar >
+                                    <content>
+                                        <Title text="{i18n>fldSystemManager}" level="H2"/>
+                                        <ToolbarSpacer />
+                                        <Button text="{i18n>btnAdd}" press="onPAI" app:fcCode="fcAddManager"/>
+                                    </content>
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerName}"/>
+                                </Column>
+                            </columns>
+                            <columns>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerContact}"/>
+                                </Column>
+                            </columns>
+                            <columns>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerEmail}"/>
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Input value="{mainView>/SystemList/Add/managerName}" editable="true" />
+                                        <Input value="{mainView>/SystemList/Add/contact}" editable="true"/>
+                                        <Input value="{mainView>/SystemList/Add/email}" editable="true"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table> -->
+
                         <!-- 시스템 IP -->
                         <Label text="{i18n>fldSystemIp}" />
-                        <Input value="{mainView>/SystemList/Add/systemIP}"
+                        <Input type="Number"
+                            value="{mainView>/SystemList/Add/systemIP}"
+                            placeholder="Enter IP address"
                             required="true"/>
                         <!-- 시스템 HOST -->
                         <Label text="{i18n>fldSystemHost}" />
@@ -92,7 +136,9 @@
                             required="true"/>
                         <!-- 시스템 PORT -->
                         <Label text="{i18n>fldSystemPort}" />
-                        <Input value="{mainView>/SystemList/Add/systemPort}"
+                        <Input type="Number"
+                            value="{mainView>/SystemList/Add/systemPort}"
+                            placeholder="Enter a port"
                             required="true"/>
                         <!-- 시스템 인증방식 -->
                         <Label text="{i18n>fldSystemCerti}" />
@@ -111,7 +157,7 @@
                 type="Critical"
                 visible="{mainView>/hasError}"
                 app:fcCode="fcMessage" />
-                
+
             <Button text="Save"
                 press="onPAI"
                 app:fcCode="fcAddSystemListPopup" />

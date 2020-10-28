@@ -14,7 +14,7 @@
         rows="{            
             path: 'management>/SCI_MST_SYSTEMLIST_SRV',
             parameters: {
-                $count: true,                
+                $count: true,          
                 $$updateGroupId: 'systemListDataGroup'
             },
             events: {

@@ -111,7 +111,12 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
             appliCd: '',
             appliNm: '',
             systemNm: '',
-            description: '',
+            description: '',            
+            Manager: [{
+              name: '',
+              contact: '',
+              email: ''
+            }],
             managerName: '',
             contact: '',
             email: '',
@@ -127,6 +132,11 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
             appliNm: '',
             systemNm: '',
             description: '',
+            Manager: [{
+              name: '',
+              contact: '',
+              email: ''
+            }],  
             managerName: '',
             contact: '',
             email: '',
@@ -205,6 +215,7 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
 
         SAPURL: '',
       },
+      managerList: [],
     }
   );
 });

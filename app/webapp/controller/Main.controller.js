@@ -77,6 +77,7 @@ sap.ui.define(
           // System List
           tabSystemList: "tabSystemList",
           tabSystemList__bDelete: "tabSystemList__bDelete",
+          tbSystemManager: "tbSystemManager",
           systemListDataGroup: "systemListDataGroup",
           McSLSorceCompanyCd: "McSLSorceCompanyCd",
           McSLSorceSubsidiaryCd: "McSLSorceSubsidiaryCd",
@@ -193,6 +194,7 @@ sap.ui.define(
         onPatternMatched: function (oEvent) {
           this.fcSearchInterface();
           this.fcSearchCode();
+          this.fcSearchSystemList();
         },
 
         // Event Handler
@@ -279,6 +281,9 @@ sap.ui.define(
             case "fcCancelAddSystemListPopUp":
               this.fcCancelAddSystemListPopUp(oEvent);
               break;
+            case "fcAddManager":
+              this.fcAddManager(oEvent);
+              break;
             //---- Update Popup ----
             case "fcUpdateSystemList":
               this.fcUpdateSystemList(oEvent);
@@ -335,6 +340,7 @@ sap.ui.define(
             case "systemList":
               this.getView().byId("tabSystemList__bDelete").setEnabled(false);
               oNavConMain.to(this.getControl("dp-system"), "slide");
+              this.fcInitSystemList();
               break;
             case "exception":
               oNavConMain.to(this.getControl("dp-exception"), "slide");
@@ -575,10 +581,19 @@ sap.ui.define(
         },
 
         getDeletedIfIcon: function (iStatus) {
+          // switch (iStatus) {
+          //   case 'true':
+          //     return "sap-icon://delete";
+          //   case 'false':
+          //     return "sap-icon://complete";
+          //   default:
+          //     return "sap-icon://complete";
+          // }
+
           switch (iStatus) {
-            case "true":
+            case "예":
               return "sap-icon://delete";
-            case "false":
+            case "아니오":
               return "sap-icon://complete";
             default:
               return "sap-icon://complete";
@@ -586,10 +601,19 @@ sap.ui.define(
         },
 
         getDeletedIfText: function (iStatus) {
+          // switch (iStatus) {
+          //   case 'true':
+          //     return "Deleted";
+          //   case 'false':
+          //     return "Available";
+          //   default:
+          //     return "Available";
+          // }
+
           switch (iStatus) {
-            case "true":
+            case "예":
               return "Deleted";
-            case "false":
+            case "아니오":
               return "Available";
             default:
               return "Available";
@@ -1537,6 +1561,8 @@ sap.ui.define(
 
         //------------------------- System List Start -------------------------------------------
 
+        fcInitSystemList: function (oEvent) {},
+
         fcRefreshSystemList: function (oEvent) {
           this.setUIChanges(this._h.management);
 
@@ -1551,6 +1577,21 @@ sap.ui.define(
             .refresh();
         },
 
+        fcSelectionChangeSystemList: function (oEvent) {
+          this._h.mainView.setProperty(
+            "/SystemList/selectedCount",
+            oEvent.getSource().getSelectedIndices().length
+          );
+        },
+
+        //refresh table
+        refreshTb: function () {
+          console.log("refresh in");
+
+          console.log("refresh out");
+        },
+
+        //Search
         fcSearchSystemList: function (oEvent) {
           var self = this;
           var aFilters = [];
@@ -1620,64 +1661,26 @@ sap.ui.define(
           }
 
           this.setMessageType(this.MESSAGE_TYPE.SEARCH);
+
           oControl.getBinding("rows").filter(aFilterObjects);
         },
 
-        fcSelectionChangeSystemList: function (oEvent) {
-          this._h.mainView.setProperty(
-            "/SystemList/selectedCount",
-            oEvent.getSource().getSelectedIndices().length
-          );
-        },
-
+        //Create
         fcCreateSystemList: function (oEvent) {
           this._h.mainView.setProperty("/SystemList/Add", {
             appliNm: "",
             systemNm: "",
+            description: "",
+            managerName: "",
+            contact: "",
+            email: "",
+            systemIP: "",
+            systemHost: "",
+            systemPort: "",
             systemCerti: "0",
           });
 
           this.callPopupFragment("AddSystemList", oEvent);
-        },
-
-        fcUpdateSystemListPopup: function (oEvent) {
-          var self = this;
-
-          this.setUIChanges(this._h.management);
-
-          if (this.checkUIChanges()) {
-            this._h.management.submitBatch("systemListDataGroup").then(
-              function () {
-                self.setUIChanges(self._h.management, false);
-                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-                self.closePopupFragment(self.ControlID.UpdateSystemList);
-                self._h.management.refresh();
-              },
-              function (oError) {
-                self.setUIChanges(self._h.management, false);
-                self.showMessageToast("msgError10", "20rem", [oError.message]);
-              }
-            );
-          } else {
-            this.closePopupFragment(this.ControlID.UpdateSystemList);
-            this.showMessageToast("msgInfo01", "20rem");
-          }
-        },
-
-        fcCancelUpdateSystemListPopUp: function (oEvent) {
-          this.resetBindingChanges(
-            this.getControl(this.ControlID.formUpdateSystemList)
-              .getBindingContext("management")
-              .getBinding()
-          );
-
-          if (this._h.management.hasPendingChanges()) {
-            this.getControl(this.ControlID.formUpdateSystemList)
-              .getBindingContext("management")
-              .getBinding()
-              .refresh();
-          }
-          this.closePopupFragment(this.ControlID.UpdateSystemList, oEvent);
         },
 
         fcAddSystemListPopup: function (oEvent) {
@@ -1792,12 +1795,30 @@ sap.ui.define(
                 this.showMessageToast("msgError04", "20rem", [oError.message]);
               }.bind(this)
             );
+
+          this.refreshTb();
+        },
+
+        //manager add btn
+        fcAddManager: function (oEvent) {
+          var oList = this.byId(this.ControlID.tbSystemManager);
+          var oItems = oList
+            .getBinding("items")
+            .getModel()
+            .getProperty("/managerList");
+          oItems.push({
+            managerName: "",
+            managerContact: "",
+            managerEmail: "",
+          });
+          this._h.management.refresh();
         },
 
         fcCancelAddSystemListPopUp: function (oEvent) {
           this.closePopupFragment(this.ControlID.AddSystemList, oEvent);
         },
 
+        //Update
         fcUpdateSystemList: function (oEvent) {
           this.callPopupFragment(this.ControlID.UpdateSystemList, oEvent);
 
@@ -1809,41 +1830,92 @@ sap.ui.define(
           });
         },
 
+        fcUpdateSystemListPopup: function (oEvent) {
+          var self = this;
+
+          this.setUIChanges(this._h.management);
+
+          if (this.checkUIChanges()) {
+            console.log(this.checkUIChanges());
+            this._h.management
+              .submitBatch(this.ControlID.systemListDataGroup)
+              .then(
+                function () {
+                  self.setUIChanges(self._h.management, false);
+                  self.setMessageType(self.MESSAGE_TYPE.UPDATE);
+                  self.closePopupFragment(self.ControlID.UpdateSystemList);
+                  self._h.management.refresh();
+                },
+                function (oError) {
+                  self.setUIChanges(self._h.management, false);
+                  self.showMessageToast("msgError10", "20rem", [
+                    oError.message,
+                  ]);
+                }
+              );
+          } else {
+            this.closePopupFragment(this.ControlID.UpdateSystemList);
+            this.showMessageToast("msgInfo01", "20rem");
+          }
+        },
+
+        fcCancelUpdateSystemListPopUp: function (oEvent) {
+          this.resetBindingChanges(
+            this.getControl(this.ControlID.formUpdateSystemList)
+              .getBindingContext("management")
+              .getBinding()
+          );
+
+          if (this._h.management.hasPendingChanges()) {
+            this.getControl(this.ControlID.formUpdateSystemList)
+              .getBindingContext("management")
+              .getBinding()
+              .refresh();
+          }
+          this.closePopupFragment(this.ControlID.UpdateSystemList, oEvent);
+        },
+
+        //Delete
         fcDeleteSystemList: function (oEvent) {
           var self = this;
           var oTable = this.getControl(this.ControlID.tabSystemList);
           var oBinding = oTable.getBinding("rows");
 
           if (oTable.getSelectedIndices().length === 0) {
-            self.showMessageToast("msgWarn03", "20rem", []);
+            this.showMessageToast("msgWarn03", "20rem", []);
             return;
           }
 
           this.callPopupConfirm("msgAlert03", "alert", this.MSGBOXICON.WARNING)
             .then(function (sAction) {
               if (sAction === "OK") {
+                //table index
                 _.forEach(oTable.getSelectedIndices(), function (iIndex) {
                   oTable
                     .getContextByIndex(iIndex)
                     .setProperty("DELETED_TF", true);
                 });
 
-                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-
+                //batch
                 self._h.management
                   .submitBatch(self.ControlID.systemListDataGroup)
                   .then(
                     // Success
                     function (oData) {
                       self._h.management.refresh();
+                      oBinding.refresh();
                       oTable.clearSelection();
-                    },
+                    }, // Fail
+                    function (oError) {
+                      self.resetBindingChanges(oBinding);
+                      self.showMessageToast("msgError10", "20rem", [oError]);
+                    }
+                  )
+                  .catch(
                     // Fail
                     function (oError) {
                       self.resetBindingChanges(oBinding);
-                      self.showMessageToast("msgError10", "20rem", [
-                        oError.message,
-                      ]);
+                      self.showMessageToast("msgError10", "20rem", [oError]);
                     }
                   );
               }
@@ -1852,7 +1924,6 @@ sap.ui.define(
               console.log(oError);
             });
         },
-
         //------------------------- System List End -------------------------------------------
       }
     );

@@ -306,7 +306,7 @@ sap.ui.define(
           }
         },
 
-        fcChangeCbcExecType: function (oEvent){
+        fcChangeCbcExecType: function (oEvent) {
           oEvent;
         },
 
@@ -617,6 +617,15 @@ sap.ui.define(
               return "Available";
             default:
               return "Available";
+          }
+        },
+
+        getCertiText: function (iStatus) {
+          switch(iStatus) {
+            case '0':
+            return "Basic";
+            case '1':
+            return "oAuth2.0";
           }
         },
 
@@ -1584,13 +1593,6 @@ sap.ui.define(
           );
         },
 
-        //refresh table
-        refreshTb: function () {
-          console.log("refresh in");
-
-          console.log("refresh out");
-        },
-
         //Search
         fcSearchSystemList: function (oEvent) {
           var self = this;
@@ -1795,8 +1797,6 @@ sap.ui.define(
                 this.showMessageToast("msgError04", "20rem", [oError.message]);
               }.bind(this)
             );
-
-          this.refreshTb();
         },
 
         //manager add btn
@@ -1823,6 +1823,8 @@ sap.ui.define(
           this.callPopupFragment(this.ControlID.UpdateSystemList, oEvent);
 
           var oPath = this.getListItemContext(oEvent, "management").sPath;
+          var oD = this.getListItemContext(oEvent, "management");
+          console.log(oD);
 
           this.fragments["UpdateSystemList"].bindElement({
             path: oPath,
@@ -1832,21 +1834,25 @@ sap.ui.define(
 
         fcUpdateSystemListPopup: function (oEvent) {
           var self = this;
-
           this.setUIChanges(this._h.management);
 
+          console.log(this.setUIChanges(this._h.management));
+
           if (this.checkUIChanges()) {
-            console.log(this.checkUIChanges());
             this._h.management
               .submitBatch(this.ControlID.systemListDataGroup)
               .then(
+                //success
                 function () {
+                  console.log("success inin");
                   self.setUIChanges(self._h.management, false);
                   self.setMessageType(self.MESSAGE_TYPE.UPDATE);
                   self.closePopupFragment(self.ControlID.UpdateSystemList);
                   self._h.management.refresh();
                 },
+                //fail
                 function (oError) {
+                  console.log("fail inin");
                   self.setUIChanges(self._h.management, false);
                   self.showMessageToast("msgError10", "20rem", [
                     oError.message,
@@ -1854,6 +1860,7 @@ sap.ui.define(
                 }
               );
           } else {
+            console.log("else inin");
             this.closePopupFragment(this.ControlID.UpdateSystemList);
             this.showMessageToast("msgInfo01", "20rem");
           }

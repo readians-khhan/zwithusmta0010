@@ -95,7 +95,6 @@
                 </t:template>
             </t:Column>
 
-
             <!-- Company Name : 회사 -->
             <t:Column width="8rem"
                 autoResizable="true"
@@ -166,14 +165,6 @@
                 </t:template>
             </t:Column>
 
-            <!-- Deleted :  삭제여부 -->
-            <!-- <t:Column sortProperty="DELETED_TF" filterProperty="DELETED_TF" hAlign="Center" width="10rem" autoResizable="true">
-                <Label text="{i18n>fldDeletedIf}"/>
-                <t:template>
-                    <Text text="{management>DELETED_TF}"/>
-                </t:template>
-            </t:Column> -->
-
             <!-- Created Dt : 생성날짜 -->
             <t:Column sortProperty="createdAt"
                 filterProperty="createdAt"
@@ -220,6 +211,67 @@
                     <Text text="{management>modifiedBy}"/>
                 </t:template>
             </t:Column>
+
+            <!-- Description -->
+            <t:Column sortProperty="DESCRIPTION"
+                filterProperty="DESCRIPTION"
+                hAlign="Center"
+                width="12rem"
+                autoResizable="true">
+                <Label text="{i18n>fldSystemDescription}"/>
+                <t:template>
+                    <Text text="{management>DESCRIPTION}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- IP -->
+            <t:Column sortProperty="IP"
+                filterProperty="IP"
+                hAlign="Center"
+                width="12rem"
+                autoResizable="true">
+                <Label text="{i18n>fldSystemIp}"/>
+                <t:template>
+                    <Text text="{management>IP}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Host -->
+            <t:Column sortProperty="HOST"
+                filterProperty="HOST"
+                hAlign="Center"
+                width="12rem"
+                autoResizable="true">
+                <Label text="{i18n>fldSystemHost}"/>
+                <t:template>
+                    <Text text="{management>HOST}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Port -->
+            <t:Column sortProperty="PORT"
+                filterProperty="PORT"
+                hAlign="Center"
+                width="12rem"
+                autoResizable="true">
+                <Label text="{i18n>fldSystemPort}"/>
+                <t:template>
+                    <Text text="{management>PORT}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Certi -->
+            <t:Column sortProperty="ATHENTIC_TYPE"
+                filterProperty="ATHENTIC_TYPE"
+                hAlign="Center"
+                width="12rem"
+                autoResizable="true">
+                <Label text="{i18n>fldSystemCerti}"/>
+                <t:template>
+                    <Text text="{parts: [{ path: 'management>ATHENTIC_TYPE'}], formatter: '.getCertiText'}" />
+                </t:template>
+            </t:Column>
+
         </t:columns>
         <t:footer>
         </t:footer>

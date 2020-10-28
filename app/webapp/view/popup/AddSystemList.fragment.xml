@@ -79,7 +79,7 @@
                         <Label text="{i18n>fldSystemManagerContact}" />
                         <Input type="Tel"
                             value="{mainView>/SystemList/Add/contact}"
-                            placeholder="Enter phone number"
+                            placeholder="Enter phone number, Only number please"
                             required="true"/>
                         <!-- 이메일 -->
                         <Label text="{i18n>fldSystemManagerEmail}" />

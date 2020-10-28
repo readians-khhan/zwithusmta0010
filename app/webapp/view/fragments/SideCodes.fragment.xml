@@ -84,6 +84,12 @@
                     <Text text="{management>DELETED_TF}" textAlign="Begin" width="100%" wrapping="false" />
                 </t:template>
             </t:Column>
+            <!-- ID - hidden -->
+            <t:Column visible="false">
+                <t:template>
+                    <Text text="{management>ID}" textAlign="Center" width="100%" wrapping="false" />
+                </t:template>
+            </t:Column>
         </t:columns>
         <t:footer></t:footer>
     </t:Table>

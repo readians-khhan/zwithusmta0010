@@ -70,7 +70,7 @@ sap.ui.define(
           AddCodeLiCat01: "AddCodeLiCat01",
           AddCodeLiCat02: "AddCodeLiCat02",
           AddCodeLiCat03: "AddCodeLiCat03",
-
+        
           //-------------------------------------------------------------------------------------------
 
           // System List
@@ -1363,7 +1363,7 @@ sap.ui.define(
         },
 
         // 코드 생성 팝업 나타내기
-        fcCreateCode: function (oEvent) {
+        fcCreateCode: function (oEvent) {          
           this._h.mainView.setProperty("/CodeList/Add", {
             codeNm: "",
             description: "",
@@ -1444,7 +1444,7 @@ sap.ui.define(
 
         // 코드 생성 팝업 닫기
         fcCancelAddCodePopup: function (oEvent) {
-          this.oMessageManager.removeAllMessages();
+          this.oMessageManager.removeAllMessages();          
           this.closePopupFragment("AddCodeList");
         },
 
@@ -1462,6 +1462,12 @@ sap.ui.define(
         // 코드 수정 확정 
         fcConfirmUpdateCodePopup: function (oEvent){
           console.log("코드 수정 확정")
+
+          var self = this;
+          var oView = this.getView();
+    
+          // Select context
+          var oContext = oEvent.getSource().getParent().getParent().getBindingContext('management');
         },
 
         // 코드 수정 팝업 닫기

@@ -54,11 +54,11 @@
 
             <Button text="Create" 
                 press="onPAI" 
-                app:fcCode="fcConfirmAddCodePopup" />
+                app:fcCode="fcConfirmUpdateCodePopup" />
 
             <Button text="Cancel" 
                 press="onPAI" 
-                app:fcCode="fcCancelAddCodePopup" />
+                app:fcCode="fcCancelUpdateCodePopup" />
 
         </buttons>
     </Dialog>

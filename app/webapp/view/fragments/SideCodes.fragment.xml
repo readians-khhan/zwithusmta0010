@@ -27,14 +27,14 @@
         </t:extension>
         <t:columns>
             <!-- 구분 -->
-            <t:Column width="11rem" autoResizable="true" sortProperty="codeCategory" filterProperty="codeCategory" hAlign="Center">
+            <t:Column id="categories" width="11rem" autoResizable="true" sortProperty="CAT01" filterProperty="CAT01" hAlign="Center">
                 <Label text="{i18n>fldCodeSection}" textAlign="Center" width="100%" />
                 <t:template>
                     <Text text="{management>CAT01}" textAlign="Begin" width="100%" wrapping="false" />
                 </t:template>
             </t:Column>
             <!-- 상세구분 -->
-            <t:Column width="15rem" autoResizable="true" sortProperty="codeDetailCategory" filterProperty="codeDetailCategory" hAlign="Center">
+            <t:Column width="15rem" autoResizable="true" sortProperty="CAT02" filterProperty="CAT02" hAlign="Center">
                 <Label text="{i18n>fldCodeDetailSection}" textAlign="Center" width="100%" />
                 <t:template>
                     <Text text="{management>CAT02}" textAlign="Begin" width="100%" wrapping="false" />
@@ -48,28 +48,37 @@
                 </t:template>
             </t:Column>
             <!-- 명칭 -->
-            <t:Column sortProperty="fileCreatedDate" filterProperty="fileCreatedDate" hAlign="Center" width="15rem">
+            <t:Column sortProperty="CODE" filterProperty="CODE" hAlign="Center" width="15rem">
                 <Label text="{i18n>fldCodeName}" />
                 <t:template>
                     <Text text="{management>CODE}" textAlign="Begin" width="100%" wrapping="false" />
                 </t:template>
             </t:Column>
             <!-- 설명 -->
-            <t:Column sortProperty="postingDate" filterProperty="postingDate" hAlign="Center" width="19rem">
+            <t:Column hAlign="Center" width="16rem">
                 <Label text="{i18n>fldCodeDescription}" />
                 <t:template>
                     <Text text="{management>DESC01}" textAlign="Begin" width="100%" wrapping="false" />
                 </t:template>
             </t:Column>
             <!-- 상세설명 -->
-            <t:Column sortProperty="movementStatus" filterProperty="movementStatus" hAlign="Center" width="27rem">
+            <t:Column hAlign="Center" width="25rem">
                 <Label text="{i18n>fldCodeDetailDescription}" />
                 <t:template>
                     <Text text="{management>DESC02}" textAlign="Begin" width="100%" wrapping="false" />
                 </t:template>
             </t:Column>
+            <!-- 수정 -->
+            <t:Column hAlign="Center" width="5rem" autoResizable="true">
+                <Label text="{i18n>fldCodeEdit}" />
+                <t:template>
+                    <HBox justifyContent="Center">
+                        <Button icon="sap-icon://edit" press="onPAI" app:fcCode="fcUpdateCodeList" app:keyData="{management>ID}" />
+                    </HBox>
+                </t:template>
+            </t:Column>
             <!-- 삭제여부 -->
-            <t:Column sortProperty="movementStatus" filterProperty="movementStatus" hAlign="Center" width="5rem">
+            <t:Column sortProperty="DELETED_TF" filterProperty="DELETED_TF" hAlign="Center" width="5rem">
                 <Label text="{i18n>fldCodeDeleted}" />
                 <t:template>
                     <Text text="{management>DELETED_TF}" textAlign="Begin" width="100%" wrapping="false" />

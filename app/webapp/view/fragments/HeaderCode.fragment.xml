@@ -30,7 +30,7 @@
                     <f:FormElement label="{i18n>fldCodeEtcSection}">
                         <f:fields>
                             <MultiComboBox id="MCCDSoruceCt03" items="{path: 'management>/SCI_VH_CODE_CAT03_SRV'}">
-                                <core:Item id="" text="{management>CAT03}" key="{management>CAT03}" />
+                                <core:Item text="{management>CAT03}" key="{management>CAT03}" />
                             </MultiComboBox>
                         </f:fields>
                     </f:FormElement>

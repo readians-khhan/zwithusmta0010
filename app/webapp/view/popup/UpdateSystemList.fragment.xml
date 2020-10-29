@@ -75,18 +75,54 @@
                         <Input value="{management>DESCRIPTION}"
                             required="true" />
                         <!-- <Input value="{mainView>/SystemList/Update/description}" required="true"/> -->
-                        <!-- 담당자 이름 -->
-                        <Label text="{i18n>fldSystemManager}" />
-                        <Input value="{mainView>/SystemList/Update/managerName}"
-                            required="true"/>
-                        <!-- 연락처 -->
-                        <Label text="{i18n>fldSystemManagerContact}" />
-                        <Input value="{mainView>/SystemList/Update/contact}"
-                            required="true"/>
-                        <!-- 이메일 -->
-                        <Label text="{i18n>fldSystemManagerEmail}" />
-                        <Input value="{mainView>/SystemList/Update/email}"
-                            required="true"/>
+
+                        <!-- MANAGER INFO -->
+                        <Table id="tabUpdateMangerList"
+                            inset="false"
+                            items="{mainView>/SystemList/Update/Manager}">
+                            <headerToolbar>
+                                <OverflowToolbar >
+                                    <content>
+                                        <Label text="{i18n>fldSystemManager}" />
+                                        <ToolbarSpacer/>
+                                        <Button icon="sap-icon://add"
+                                            text="{i18n>btnAdd}"
+                                            press="onPAI"
+                                            app:fcCode="fcUpdateManager"/>
+                                    </content>
+                                </OverflowToolbar>
+                            </headerToolbar>
+                            <columns>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerName}" />
+                                </Column>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerContact}" />
+                                </Column>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerEmail}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Input value="{mainView>/NAME}"
+                                            placeholder="Name"
+                                            required="true">
+                                        </Input>
+                                        <Input value="{mainView>/PHONE}"
+                                            placeholder="Contact"
+                                            required="true">
+                                        </Input>
+                                        <Input value="{mainView>/EMAIL}"
+                                            placeholder="Email"
+                                            required="true">
+                                        </Input>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+
                         <!-- 시스템 IP -->
                         <Label text="{i18n>fldSystemIp}" />
                         <Input value="{management>IP}"
@@ -104,12 +140,9 @@
                         <!-- <Input value="{mainView>/SystemList/Update/systemPort}" required="true"/> -->
                         <!-- 시스템 인증방식 -->
                         <Label text="{i18n>fldSystemCerti}" />
-                        <!-- <ComboBox items="{path: 'mainView>/SystemList/AccessCerti', sorter: {path: 'type'}}" selectedKey="{mainView>/SystemList/Add/systemCerti}">
-                            <core:Item text="{mainView>typeName}" key="{mainView>type}"/>
-                        </ComboBox> -->
                         <ComboBox id="UpdateSysLiCerti"
                             items="{path: 'mainView>/SystemList/AccessCerti'}"
-                            selectedKey="{management>ATHENTIC_TYPE}, mode : 'OneWay'"
+                            selectedKey="{path: 'management>ATHENTIC_TYPE', mode: 'OneWay'}"
                             selectionChange="onSelectionChange"
                             required="true">
                             <core:Item text="{mainView>typeName}"

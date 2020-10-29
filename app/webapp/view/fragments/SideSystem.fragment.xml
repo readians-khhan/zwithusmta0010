@@ -37,6 +37,7 @@
                 <ToolbarSpacer/>
                 <Button text="{i18n>btnCreate}"
                     icon="sap-icon://create"
+                    type="Accept"
                     press="onPAI"
                     app:fcCode="fcCreateSystemList"/>
                 <!-- <Button text="{i18n>btnUpdate}" icon="sap-icon://edit" press="onPAI" enabled="{= ${mainView>/SystemList/selectedCount} > 0 ? true : false}" app:fcCode="fcUpdateSystemList" /> -->
@@ -50,15 +51,16 @@
             </OverflowToolbar>
         </t:extension>
         <t:columns>
-            <!-- Action -->
+            <!-- Update -->
             <t:Column hAlign="Center"
                 width="5rem"
                 autoResizable="true">
-                <Label text="{i18n>fldAction}"/>
+                <Label text="{i18n>fldUpdate}"/>
                 <t:template>
                     <HBox justifyContent="Center">
                         <Button icon="sap-icon://edit"
                             press="onPAI"
+                            type="Attention"
                             app:fcCode="fcUpdateSystemList"
                             app:keyData="{management>ID}" />
                     </HBox>

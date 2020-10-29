@@ -71,58 +71,52 @@
                         <Input value="{mainView>/SystemList/Add/description}"
                             required="true"/>
 
-                        <!-- 담당자 이름 -->
-                        <Label text="{i18n>fldSystemManager}" />
-                        <Input value="{mainView>/SystemList/Add/managerName}"
-                            required="true"/>
-                        <!-- 연락처 -->
-                        <Label text="{i18n>fldSystemManagerContact}" />
-                        <Input type="Tel"
-                            value="{mainView>/SystemList/Add/contact}"
-                            placeholder="Enter phone number, Only number please"
-                            required="true"/>
-                        <!-- 이메일 -->
-                        <Label text="{i18n>fldSystemManagerEmail}" />
-                        <Input type="Email"
-                            value="{mainView>/SystemList/Add/email}"
-                            placeholder="Enter Email"
-                            required="true"/>
-
-                        <!-- <Table id="tbSystemManager" inset="false">
+                        <!-- MANAGER INFO -->
+                        <Table id="tabAddMangerList"
+                            inset="false"
+                            items="{mainView>/SystemList/Add/Manager}">
                             <headerToolbar>
                                 <OverflowToolbar >
                                     <content>
-                                        <Title text="{i18n>fldSystemManager}" level="H2"/>
-                                        <ToolbarSpacer />
-                                        <Button text="{i18n>btnAdd}" press="onPAI" app:fcCode="fcAddManager"/>
+                                        <Label text="{i18n>fldSystemManager}" />
+                                        <ToolbarSpacer/>
+                                        <Button icon="sap-icon://add"
+                                            text="{i18n>btnAdd}"
+                                            press="onPAI"
+                                            app:fcCode="fcAddManager"/>
                                     </content>
                                 </OverflowToolbar>
                             </headerToolbar>
                             <columns>
                                 <Column width="4rem">
-                                    <Text text="{i18n>fldSystemManagerName}"/>
+                                    <Text text="{i18n>fldSystemManagerName}" />
                                 </Column>
-                            </columns>
-                            <columns>
                                 <Column width="4rem">
-                                    <Text text="{i18n>fldSystemManagerContact}"/>
+                                    <Text text="{i18n>fldSystemManagerContact}" />
                                 </Column>
-                            </columns>
-                            <columns>
                                 <Column width="4rem">
-                                    <Text text="{i18n>fldSystemManagerEmail}"/>
+                                    <Text text="{i18n>fldSystemManagerEmail}" />
                                 </Column>
                             </columns>
                             <items>
                                 <ColumnListItem>
                                     <cells>
-                                        <Input value="{mainView>/SystemList/Add/managerName}" editable="true" />
-                                        <Input value="{mainView>/SystemList/Add/contact}" editable="true"/>
-                                        <Input value="{mainView>/SystemList/Add/email}" editable="true"/>
+                                        <Input value="{mainView>/NAME}"
+                                            placeholder="Name"
+                                            required="true">
+                                        </Input>
+                                        <Input value="{mainView>/PHONE}"
+                                            placeholder="Contact"
+                                            required="true">
+                                        </Input>
+                                        <Input value="{mainView>/EMAIL}"
+                                            placeholder="Email"
+                                            required="true">
+                                        </Input>
                                     </cells>
                                 </ColumnListItem>
                             </items>
-                        </Table> -->
+                        </Table>
 
                         <!-- 시스템 IP -->
                         <Label text="{i18n>fldSystemIp}" />

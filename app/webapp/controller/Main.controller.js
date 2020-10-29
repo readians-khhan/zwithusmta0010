@@ -104,6 +104,7 @@ sap.ui.define(
           AddSysLiCompanyCd: "AddSysLiCompanyCd",
           AddSysLiSubdiaryCd: "AddSysLiSubdiaryCd",
           AddSysLiAppliCd: "AddSysLiAppliCd",
+          tabAddMangerList: "tabAddMangerList",
 
           //--- Update Pop Up ---
           UpdateSystemList: "UpdateSystemList",
@@ -112,6 +113,7 @@ sap.ui.define(
           UpdateSysLiCompanyCd: "UpdateSysLiCompanyCd",
           UpdateSysLiSubdiaryCd: "UpdateSysLiSubdiaryCd",
           UpdateSysLiAppliCd: "UpdateSysLiAppliCd",
+          tabUpdateMangerList: "tabUpdateMangerList",
         },
 
         MESSAGE_TYPE: {
@@ -336,6 +338,9 @@ sap.ui.define(
             case "fcCancelUpdateSystemListPopUp":
               this.fcCancelUpdateSystemListPopUp(oEvent);
               break;
+            case "fcUpdateManager":
+              this.fcUpdateManager(oEvent);
+              break;
             //---- Delete ----
             case "fcDeleteSystemList":
               this.fcDeleteSystemList(oEvent);
@@ -393,6 +398,7 @@ sap.ui.define(
 
         //Combox Selection Change
         onSelectionChange: function (oEvent) {
+          //__xmlview0 앞에 붙어서 substring
           var sId = oEvent.getSource().sId.substring(12);
 
           if (sId == "AddSysLiCompanyCd") {
@@ -2011,9 +2017,7 @@ sap.ui.define(
             appliNm: "",
             systemNm: "",
             description: "",
-            managerName: "",
-            contact: "",
-            email: "",
+            Manager: [],
             systemIP: "",
             systemHost: "",
             systemPort: "",
@@ -2021,6 +2025,21 @@ sap.ui.define(
           });
 
           this.callPopupFragment("AddSystemList", oEvent);
+        },
+
+        //manager add btn
+        fcAddManager: function (oEvent) {
+          var oList = this.byId(this.ControlID.tabAddMangerList);
+          var oItems = oList
+            .getBinding("items")
+            .getModel()
+            .getProperty("/SystemList/Add/Manager");
+          oItems.push({
+            NAME: "",
+            PHONE: "",
+            EMAIL: ""
+          });
+          this._h.management.refresh();
         },
 
         fcAddSystemListPopup: function (oEvent) {
@@ -2108,12 +2127,12 @@ sap.ui.define(
             APPL_NM: oInput.appliNm,
             SYSTEM_NM: oInput.systemNm,
             DESCRIPTION: oInput.description,
-            MANAGER: [
-              {
-                NAME: oInput.managerName,
-                PHONE: oInput.contact,
-                EMAIL: oInput.email,
-              },
+            MANAGER: [ oInput.Manager
+              // {
+              //   NAME: oInput.NAME,
+              //   PHONE: oInput.PHONE,
+              //   EMAIL: oInput.EMAIL,
+              // },
             ],
             IP: oInput.systemIP,
             HOST: oInput.systemHost,
@@ -2135,22 +2154,7 @@ sap.ui.define(
                 this.showMessageToast("msgError04", "20rem", [oError.message]);
               }.bind(this)
             );
-        },
-
-        //manager add btn
-        fcAddManager: function (oEvent) {
-          var oList = this.byId(this.ControlID.tbSystemManager);
-          var oItems = oList
-            .getBinding("items")
-            .getModel()
-            .getProperty("/managerList");
-          oItems.push({
-            managerName: "",
-            managerContact: "",
-            managerEmail: "",
-          });
-          this._h.management.refresh();
-        },
+        },        
 
         fcCancelAddSystemListPopUp: function (oEvent) {
           this.closePopupFragment(this.ControlID.AddSystemList, oEvent);
@@ -2161,8 +2165,6 @@ sap.ui.define(
           this.callPopupFragment(this.ControlID.UpdateSystemList, oEvent);
 
           var oPath = this.getListItemContext(oEvent, "management").sPath;
-          var oD = this.getListItemContext(oEvent, "management");
-          console.log(oD);
 
           this.fragments["UpdateSystemList"].bindElement({
             path: oPath,
@@ -2170,11 +2172,24 @@ sap.ui.define(
           });
         },
 
+        //manager update(add)
+        fcUpdateManager: function (oEvent) {
+          var oList = this.byId(this.ControlID.tabUpdateMangerList);
+          var oItems = oList
+            .getBinding("items")
+            .getModel()
+            .getProperty("/SystemList/Update/Manager");
+          oItems.push({
+            NAME: "",
+            PHONE: "",
+            EMAIL: ""
+          });
+          this._h.management.refresh();
+        },
+
         fcUpdateSystemListPopup: function (oEvent) {
           var self = this;
           this.setUIChanges(this._h.management);
-
-          console.log(this.setUIChanges(this._h.management));
 
           if (this.checkUIChanges()) {
             this._h.management

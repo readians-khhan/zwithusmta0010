@@ -36,7 +36,9 @@
                         <!--Interface Status-->
                         <Label text="{i18n>fldStatus}" />
                         <ComboBox selectedKey="{mainView>/Interface/Regist/StatusID}"
-                            items="{path: 'management>/SCI_VH_CODE_IFSTATUS_SRV', sorter: {path: 'DESC01'}}">
+                            items="{path: 'management>/SCI_VH_CODE_IFSTATUS_SRV', sorter: {path: 'DESC01'}}"
+                            change="onPAI"
+                            app:fcCode="fcCheckCHOnlyInputKey">
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
@@ -124,7 +126,8 @@
                             selectionChange="onPAI"
                             app:fcCode="fcChangeSystem"
                             selectedKey="{mainView>/Interface/Regist/SourceSystemTypeID}"
-                            items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV', sorter: {path: 'DESC01'}}">
+                            items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV', sorter: {path: 'DESC01'}}"
+                            change="fcCheckCHOnlyInputKey">
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
@@ -152,7 +155,8 @@
                             selectionChange="onPAI"
                             app:fcCode="fcChangeSystem"
                             selectedKey="{mainView>/Interface/Regist/TargetSystemTypeID}"
-                            items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV', sorter: {path: 'DESC01'}}">
+                            items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV', sorter: {path: 'DESC01'}}"
+                            change="fcCheckCHOnlyInputKey">
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
@@ -163,7 +167,8 @@
                         <!--RFC Name -->
                         <Label text="{i18n>fldRFCName}" />
                         <Input id="IRFC"
-                            value="{mainView>/Interface/Regist/RFCName}">
+                            value="{mainView>/Interface/Regist/RFCName}"
+                            enabled="false">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -172,7 +177,8 @@
                         <!--Enterprise Service Name -->
                         <Label text="{i18n>fldESName}" />
                         <Input id="IES"
-                            value="{mainView>/Interface/Regist/ESName}">
+                            value="{mainView>/Interface/Regist/ESName}"
+                            enabled="false">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -181,7 +187,8 @@
                         <!--Web Service Name -->
                         <Label text="{i18n>fldWSName}" />
                         <Input id="IWS"
-                            value="{mainView>/Interface/Regist/WSName}">
+                            value="{mainView>/Interface/Regist/WSName}"
+                            enabled="false">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -190,7 +197,8 @@
                         <!--Web Binding Name -->
                         <Label text="{i18n>fldWSBName}" />
                         <Input id="IWSB"
-                            value="{mainView>/Interface/Regist/WSBName}">
+                            value="{mainView>/Interface/Regist/WSBName}"
+                            enabled="false">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -202,7 +210,8 @@
                             items="{path: 'management>/SCI_VH_CODE_IFEXECUTION_SRV', sorter: {path: 'DESC01'}}"
                             selectedKey="{mainView>/Interface/Regist/typeID}"
                             selectionChange="onPAI"
-                            app:fcCode="fcChangeBatch">
+                            app:fcCode="fcChangeBatch"
+                            change="fcCheckCHOnlyInputKey">
                             <core:ListItem additionalText="{management>CODE}"
                                 text="{management>DESC01}"
                                 key="{management>ID}"/>
@@ -221,6 +230,7 @@
                                 <OverflowToolbar >
                                     <content>
                                         <Button visible="{= !${detailView>/review} }"
+                                            icon="sap-icon://add-equipment"
                                             text="{i18n>btnAdd}"
                                             press="onPAI"
                                             app:fcCode="fcAddBatchList"/>
@@ -228,10 +238,13 @@
                                 </OverflowToolbar>
                             </headerToolbar>
                             <columns>
-                                <Column width="4rem">
+                                <Column width="1rem">
+                                    <Text text="{i18n>fldBatchDelete}"/>
+                                </Column>
+                                <Column width="3rem">
                                     <Text text="{i18n>fldbcExecType}"/>
                                 </Column>
-                                <Column width="4rem">
+                                <Column width="3rem">
                                     <Text text="{i18n>fldbcRecurrecny}"/>
                                 </Column>
                                 <Column width="4rem">
@@ -240,65 +253,84 @@
                                 <Column width="4rem">
                                     <Text text="{i18n>fldbcCycle}"/>
                                 </Column>
-                                <Column width="4rem">
+                                <Column width="2rem">
                                     <Text text="{i18n>fldbcTimeInterval}"/>
                                 </Column>
-                                <Column width="4rem">
+                                <Column width="3rem">
                                     <Text text="{i18n>fldbcOnFrTime}"/>
                                 </Column>
-                                <Column width="4rem">
+                                <Column width="3rem">
                                     <Text text="{i18n>fldbcOnToTime}"/>
                                 </Column>
-                                <Column width="4rem">
+                                <Column width="3rem">
                                     <Text text="{i18n>fldbcTimezone}"/>
                                 </Column>
                             </columns>
                             <items>
                                 <ColumnListItem>
                                     <cells>
+                                        <Button text="{i18N>fldBatchDelete}"
+                                            icon="sap-icon://delete"
+                                            press="onPAI"
+                                            app:fcCode="fcCreateInterfacePopupElementDelete" />
                                         <ComboBox showSecondaryValues="true"
                                             selectionChange="onPAI"
                                             app:fcCode="fcChangeCbcExecType"
                                             id="CbcExecType"
-                                            items="{path: 'management>/SCI_VH_CODE_BATCHEXEC_SRV'}" selectedKey="{mainView>EXECUTION_CD_ID}">
+                                            items="{path: 'management>/SCI_VH_CODE_BATCHEXEC_SRV'}"
+                                            selectedKey="{mainView>EXECUTION_CD_ID}"
+                                            change="fcCheckCHOnlyInputKey">
                                             <core:ListItem additionalText="{management>CODE}"
                                                 text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <ComboBox id="CbcRecurrecn" selectedKey="{mainView>RECUR_CD_ID}"
-                                            items="{path: 'management>/SCI_VH_CODE_BATCHRECUR_SRV'}">
+                                        <ComboBox id="CbcRecurrecn"
+                                            selectedKey="{mainView>RECUR_CD_ID}"
+                                            items="{path: 'management>/SCI_VH_CODE_BATCHRECUR_SRV'}"
+                                            enabled="false"
+                                            change="fcCheckCHOnlyInputKey">
                                             <core:Item text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <DatePicker id="DPOnDate" value="{mainView>ONDATE_D}"
+                                        <DatePicker id="DPOnDate"
+                                            value="{mainView>ONDATE_D}"
                                             valueFormat="yyyy-MM-dd"
                                             displayFormat="yyyy-MM-dd"
                                             change="handleChange"
-                                            class="sapUiSmallMarginBottom"/>
-                                        <ComboBox id="CbcCycle" selectedKey="{mainView>CYCLE_CD_ID}"
+                                            class="sapUiSmallMarginBottom"
+                                            enabled="false"/>
+                                        <ComboBox id="CbcCycle"
+                                            selectedKey="{mainView>CYCLE_CD_ID}"
                                             showSecondaryValues="true"
                                             selectionChange="onPAI"
                                             app:fcCode="fcChangeCbcCycle"
+                                            change="fcCheckCHOnlyInputKey"
                                             items="{path: 'management>/SCI_VH_CODE_BATCHCYCLE_SRV'}">
                                             <core:ListItem additionalText="{management>CODE}"
                                                 text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <ComboBox id= "CbcInterval" selectedKey="{mainView>TIMEINTERVAL_CD_ID}"
-                                            items="{path: 'management>/SCI_VH_CODE_BATCHTIMEINTERVAL_SRV'}">
+                                        <ComboBox id= "CbcInterval"
+                                            change="fcCheckCHOnlyInputKey"
+                                            selectedKey="{mainView>TIMEINTERVAL_CD_ID}"
+                                            items="{path: 'management>/SCI_VH_CODE_BATCHTIMEINTERVAL_SRV'}"
+                                            enabled="false">
                                             <core:Item text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <TimePicker id="TPFrTime" value="{mainView>ONFRTIME_T}" 
+                                        <TimePicker id="TPFrTime"
+                                            value="{mainView>ONFRTIME_T}"
                                             valueFormat="HH:mm"
                                             displayFormat="HH:mm"
                                             change="handleChange"
                                             placeholder="Enter the time to start"/>
-                                        <TimePicker id="TPToTime" value="{mainView>ONTOTIME_T}"
+                                        <TimePicker id="TPToTime"
+                                            value="{mainView>ONTOTIME_T}"
                                             valueFormat="HH:mm"
                                             displayFormat="HH:mm"
                                             change="handleChange"
-                                            placeholder="Enter the time to finish"/>
+                                            placeholder="Enter the time to finish"
+                                            enabled="false"/>
                                         <Input id="ITimezone"
                                             value="{mainView>TIMEZONE}"
                                             required="true"

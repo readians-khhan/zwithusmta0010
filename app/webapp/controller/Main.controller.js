@@ -54,6 +54,8 @@ sap.ui.define(
           CbcCycle: "CbcCycle",
           CbcRecurrecn: "CbcRecurrecn",
           CbcInterval: "CbcInterval",
+          CSSType: "CSSType",
+          CTSType: "CTSType",
 
           DPOnDate: "DPOnDate",
 
@@ -61,6 +63,10 @@ sap.ui.define(
           TPToTime: "TPToTime",
 
           ITimezone: "ITimezone",
+          IRFC: "IRFC",
+          IES: "IES",
+          IWS: "IWS",
+          IWSB: "IWSB",
 
           ISourceSystem: "ISourceSystem",
           ITargetSystem: "ITargetSystem",
@@ -82,7 +88,7 @@ sap.ui.define(
           AddCodeLiCat01: "AddCodeLiCat01",
           AddCodeLiCat02: "AddCodeLiCat02",
           AddCodeLiCat03: "AddCodeLiCat03",
-        
+
           //-------------------------------------------------------------------------------------------
 
           // System List
@@ -160,13 +166,13 @@ sap.ui.define(
         },
 
         // Before Rendering
-        onBeforeRendering: function () { },
+        onBeforeRendering: function () {},
 
         // After Rendering
-        onAfterRendering: function (oEvent) { },
+        onAfterRendering: function (oEvent) {},
 
         // Destory Program
-        onExit: function () { },
+        onExit: function () {},
 
         /* ========================================================== */
         /* Events */
@@ -208,6 +214,19 @@ sap.ui.define(
           this.fcSearchSystemList();
         },
 
+        //Value Help event Handler
+        onValueHelp: function (oEvent) {
+          var sCode = this.getCustomData(oEvent, "vhCode");
+          switch (sCode) {
+            case "fcVHSSystem":
+              this.fcVHSSystem(oEvent);
+              break;
+            case "fcVHTSystem":
+              this.fcVHTSystem(oEvent);
+              break;
+          }
+        },
+
         // Event Handler
         onPAI: function (oEvent) {
           var sCode = this.getCustomData(oEvent, "fcCode");
@@ -229,12 +248,6 @@ sap.ui.define(
             case "fcSearchInterface":
               this.fcSearchInterface(oEvent);
               break;
-            case "fcVHSSystem":
-              this.fcVHSSystem(oEvent);
-              break;
-            case "fcVHTSystem":
-              this.fcVHTSystem(oEvent);
-              break;
             case "fcInterfaceRefresh":
               this.fcInterfaceRefresh(oEvent);
               break;
@@ -246,6 +259,12 @@ sap.ui.define(
               break;
             case "fcChangeCbcCycle":
               this.fcChangeCbcCycle(oEvent);
+              break;
+            case "fcChangeSystem":
+              this.fcChangeSystem(oEvent);
+              break;
+            case "fcChangeBatch":
+              this.fcChangeBatch(oEvent);
               break;
 
             // Code List
@@ -276,7 +295,7 @@ sap.ui.define(
               this.fcConfirmAddCodePopup(oEvent);
               break;
 
-            // Code Update Popup 
+            // Code Update Popup
             case "fcCancelUpdateCodePopup":
               this.fcCancelUpdateCodePopup(oEvent);
               break;
@@ -329,174 +348,7 @@ sap.ui.define(
           }
         },
 
-        fcChangeCbcCycle: function (oEvent) {
-          var sExec = oEvent.getSource().getSelectedItem().getAdditionalText();
-
-          var sEventSorceID = oEvent.getSource().getId();
-          var sViewID = this.getView().getId();
-          var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
-          var oCbcCycleID = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcCycle +
-                sEventSorceID.match(rRegex)[0]
-            );
-
-          var oCbcRecurrecn = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcRecurrecn +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oCbcInterval = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcInterval +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oDPOnDate = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.DPOnDate +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPFrTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPFrTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPToTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPToTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oITimezone = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.ITimezone +
-                sEventSorceID.match(rRegex)[0]
-            );
-
-          switch (sExec) {
-            case "ONTIME":
-              oTPToTime.setEnabled(false);
-              oCbcInterval.setEnabled(false);
-              break;
-            case "EVERY":
-              oTPToTime.setEnabled(true);
-              oCbcInterval.setEnabled(true);
-              break;
-            default:
-              break;
-          }
-        },
-
-        fcChangeCbcExecType: function (oEvent) {
-          var sExec = oEvent.getSource().getSelectedItem().getAdditionalText();
-
-          var sEventSorceID = oEvent.getSource().getId();
-          var sViewID = this.getView().getId();
-          var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
-          var oCbcCycleID = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcCycle +
-                sEventSorceID.match(rRegex)[0]
-            );
-
-          var oCbcInterval = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcInterval +
-                sEventSorceID.match(rRegex)[0]
-            );
-
-          var oCbcRecurrecn = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcRecurrecn +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oDPOnDate = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.DPOnDate +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPFrTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPFrTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPToTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPToTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oITimezone = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.ITimezone +
-                sEventSorceID.match(rRegex)[0]
-            );
-
-          switch (sExec) {
-            case "DAY":
-              oCbcRecurrecn.setEnabled(false);
-              oDPOnDate.setEnabled(true);
-              break;
-            case "RECUR":
-              oCbcRecurrecn.setEnabled(true);
-              oDPOnDate.setEnabled(false);
-              break;
-            default:
-              break;
-          }
-        },
-
-        fcAddBatchList: function (oEvent) {
-          var oList = this.byId(this.ControlID.tabBatchList);
-          var oItems = oList
-            .getBinding("items")
-            .getModel()
-            .getProperty("/Interface/Regist/Batch");
-          oItems.push({
-            EXECUTION: null,
-          });
-          this._h.mainView.refresh();
-        },
+        
 
         fcItemSelect: function (oEvent) {
           var oNavConMain = this.getControl("navConMain");
@@ -797,11 +649,11 @@ sap.ui.define(
         },
 
         getCertiText: function (iStatus) {
-          switch(iStatus) {
-            case '0':
-            return "Basic";
-            case '1':
-            return "oAuth2.0";
+          switch (iStatus) {
+            case "0":
+              return "Basic";
+            case "1":
+              return "oAuth2.0";
           }
         },
 
@@ -828,6 +680,259 @@ sap.ui.define(
         //------------------------- Common End -------------------------------------------
 
         //------------------------- Interface List  Start -------------------------------------------
+        
+        fcChangeBatch: function (oEvent) {
+          var sBatch = oEvent.getSource().getSelectedItem().getAdditionalText();
+          var oTable = this.byId(this.ControlID.tabBatchList);
+
+          switch (sBatch) {
+            case "BATCH":
+              oTable.setVisible(true);
+              break;
+            case "REALTIME":
+              this.fcDeleteAllBatchList(oEvent);
+              oTable.setVisible(false);
+              break;
+            default:
+              break;
+          }
+        },
+
+        fcChangeSystem: function (oEvent) {
+          var sSourceSystem = this.byId(
+            this.ControlID.ISourceSystem
+          ).getValue();
+          var sTargetSystem = this.byId(
+            this.ControlID.ITargetSystem
+          ).getValue();
+
+          var oRFC = this.byId(this.ControlID.IRFC);
+          var oES = this.byId(this.ControlID.IES);
+          var oWS = this.byId(this.ControlID.IWS);
+          var oWSB = this.byId(this.ControlID.IWSB);
+
+          var sSourceSystemType = this.byId(
+            this.ControlID.CSSType
+          ).getSelectedItem();
+          var sTargetSystemType = this.byId(
+            this.ControlID.CTSType
+          ).getSelectedItem();
+
+          if (sSourceSystemType) {
+            sSourceSystemType = sSourceSystemType.getText();
+          } else {
+            sSourceSystemType = "";
+          }
+
+          if (sTargetSystemType) {
+            sTargetSystemType = sTargetSystemType.getText();
+          } else {
+            sTargetSystemType = "";
+          }
+
+          if (
+            sSourceSystem.match("ERP") ||
+            sSourceSystemType.match("RFC") ||
+            sTargetSystem.match("ERP") ||
+            sTargetSystemType.match("RFC")
+          ) {
+            oRFC.setEnabled(true);
+            oES.setEnabled(true);
+            oWS.setEnabled(true);
+            oWSB.setEnabled(true);
+          } else {
+            oRFC.setEnabled(false);
+            oES.setEnabled(false);
+            oWS.setEnabled(false);
+            oWSB.setEnabled(false);
+          }
+        },
+
+        fcChangeCbcCycle: function (oEvent) {
+          var sExec = oEvent.getSource().getSelectedItem().getAdditionalText();
+
+          var sEventSorceID = oEvent.getSource().getId();
+          var sViewID = this.getView().getId();
+          var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
+          var oCbcCycleID = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcCycle +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          var oCbcRecurrecn = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcRecurrecn +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oCbcInterval = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcInterval +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oDPOnDate = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.DPOnDate +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oTPFrTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.TPFrTime +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oTPToTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.TPToTime +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oITimezone = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.ITimezone +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          switch (sExec) {
+            case "ONTIME":
+              oTPToTime.setEnabled(false);
+              oCbcInterval.setEnabled(false);
+              break;
+            case "EVERY":
+              oTPToTime.setEnabled(true);
+              oCbcInterval.setEnabled(true);
+              break;
+            default:
+              break;
+          }
+        },
+
+        fcChangeCbcExecType: function (oEvent) {
+          var sExec = oEvent.getSource().getSelectedItem().getAdditionalText();
+
+          var sEventSorceID = oEvent.getSource().getId();
+          var sViewID = this.getView().getId();
+          var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
+          var oCbcCycleID = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcCycle +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          var oCbcInterval = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcInterval +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          var oCbcRecurrecn = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.CbcRecurrecn +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oDPOnDate = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.DPOnDate +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oTPFrTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.TPFrTime +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oTPToTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.TPToTime +
+                sEventSorceID.match(rRegex)[0]
+            );
+          var oITimezone = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+                "--" +
+                this.ControlID.ITimezone +
+                sEventSorceID.match(rRegex)[0]
+            );
+
+          switch (sExec) {
+            case "DAY":
+              oCbcRecurrecn.setEnabled(false);
+              oDPOnDate.setEnabled(true);
+              break;
+            case "RECUR":
+              oCbcRecurrecn.setEnabled(true);
+              oDPOnDate.setEnabled(false);
+              break;
+            default:
+              break;
+          }
+        },
+
+        fcDeleteAllBatchList:  function (oEvent){
+          var oList = this.byId(this.ControlID.tabBatchList);
+          var oItems = oList
+            .getBinding("items")
+            .getModel()
+            .setProperty("/Interface/Regist/Batch", []);
+            this._h.mainView.refresh();
+        }, 
+
+        fcAddBatchList: function (oEvent) {
+          var oList = this.byId(this.ControlID.tabBatchList);
+          var oItems = oList
+            .getBinding("items")
+            .getModel()
+            .getProperty("/Interface/Regist/Batch");
+          oItems.push({
+            EXECUTION_CD_ID: null,
+            CYCLE_CD_ID: null,
+            RECUR_CD_ID:null,
+            ONDATE_D:null,
+            TIMEINTERVAL_CD_ID:null,
+            ONFRTIME_T:null,
+            ONTOTIME_T:null,
+            TIMEZONE: ''
+          });
+          this._h.mainView.refresh();
+        },
+        
         fcInterfaceRefresh: function (oEvent) {
           this.setBusy(this._h.mainView, true);
           this._h.management.refresh();
@@ -1082,7 +1187,9 @@ sap.ui.define(
           this.fragments["VHSSystemList"].close();
         },
 
-        onVHSSystemAfterClose: function () { },
+        onVHSSystemAfterClose: function (oEvent) {
+          this.fcChangeSystem(oEvent);
+        },
 
         onVHSSystemOK: function (oEvent) {
           var oInput = this.byId(this.ControlID.ISourceSystem);
@@ -1131,6 +1238,7 @@ sap.ui.define(
             WEBSERVICE_NM: oInput.WSName,
             WEBBINDING_NM: oInput.WSBName,
             EXECUTION_CD_ID: oInput.typeID,
+            BATCH : oInput.Batch  
           });
 
           this._h.management
@@ -1308,7 +1416,9 @@ sap.ui.define(
           this.fragments["VHTSystemList"].close();
         },
 
-        onVHTSystemAfterClose: function () { },
+        onVHTSystemAfterClose: function (oEvent) {
+          this.fcChangeSystem(oEvent);
+        },
 
         onVHTSystemOK: function (oEvent) {
           var oInput = this.byId(this.ControlID.ITargetSystem);
@@ -1483,12 +1593,14 @@ sap.ui.define(
           this.setUIChanges(this._h.management);
 
           if (this.checkUIChanges()) {
-            this.showMessageToast('msgWarn02', '20rem', []);
+            this.showMessageToast("msgWarn02", "20rem", []);
             return;
           }
 
           this.setMessageType(this.MESSAGE_TYPE.REFRESH);
-          this.getControl(this.ControlID.tabCodeList).getBinding('rows').refresh();
+          this.getControl(this.ControlID.tabCodeList)
+            .getBinding("rows")
+            .refresh();
         },
 
         // 코드 리스트 소팅
@@ -1497,10 +1609,15 @@ sap.ui.define(
           var oTable = oView.byId("row");
           var oCategoriesColumn = oView.byId("codeCategory");
 
-          oTable.sort(oCategoriesColumn, this._bSortColumnDescending ? SortOrder.Descending : SortOrder.Ascending, /*extend existing sorting*/true);
+          oTable.sort(
+            oCategoriesColumn,
+            this._bSortColumnDescending
+              ? SortOrder.Descending
+              : SortOrder.Ascending,
+            /*extend existing sorting*/ true
+          );
           this._bSortColumnDescending = !this._bSortColumnDescending;
         },
-
 
         // 코드 리스트 검색
         fcSearchCode: function (oEvent) {
@@ -1613,7 +1730,7 @@ sap.ui.define(
         },
 
         // 코드 생성 팝업 나타내기
-        fcCreateCode: function (oEvent) {          
+        fcCreateCode: function (oEvent) {
           this._h.mainView.setProperty("/CodeList/Add", {
             codeNm: "",
             description: "",
@@ -1622,7 +1739,7 @@ sap.ui.define(
           this.callPopupFragment("AddCodeList", oEvent);
         },
 
-        // 코드 생성 확정 
+        // 코드 생성 확정
         fcConfirmAddCodePopup: function (oEvent) {
           var self = this;
           // 테이블 컨트롤러 호출
@@ -1694,13 +1811,13 @@ sap.ui.define(
 
         // 코드 생성 팝업 닫기
         fcCancelAddCodePopup: function (oEvent) {
-          this.oMessageManager.removeAllMessages();          
+          this.oMessageManager.removeAllMessages();
           this.closePopupFragment("AddCodeList");
         },
 
         // 코드 수정 팝업 나타내기
         fcUpdateCodeList: function (oEvent) {
-          console.log("코드 팝업 ")
+          console.log("코드 팝업 ");
           this._h.mainView.setProperty("/CodeList/Add", {
             codeNm: "",
             description: "",
@@ -1709,20 +1826,24 @@ sap.ui.define(
           this.callPopupFragment("UpdateCodeList", oEvent);
         },
 
-        // 코드 수정 확정 
-        fcConfirmUpdateCodePopup: function (oEvent){
-          console.log("코드 수정 확정")
+        // 코드 수정 확정
+        fcConfirmUpdateCodePopup: function (oEvent) {
+          console.log("코드 수정 확정");
 
           var self = this;
           var oView = this.getView();
-    
+
           // Select context
-          var oContext = oEvent.getSource().getParent().getParent().getBindingContext('management');
+          var oContext = oEvent
+            .getSource()
+            .getParent()
+            .getParent()
+            .getBindingContext("management");
         },
 
         // 코드 수정 팝업 닫기
         fcCancelUpdateCodePopup: function (oEvent) {
-          console.log("코드 수정 팝업 닫기")
+          console.log("코드 수정 팝업 닫기");
           this.oMessageManager.removeAllMessages();
           this.closePopupFragment("UpdateCodeList");
         },
@@ -1741,21 +1862,27 @@ sap.ui.define(
           var oTable = this.getControl(this.ControlID.tabCodeList);
           var oBinding = oTable.getBinding("rows");
 
-          if (!this._h.mainView.getProperty('/CodeList/selectedCount')) {
-            this.showMessage(this.MSGTYPE.WARNING, 'Error', this.getI18nText('tlDeleteSetting'));
+          if (!this._h.mainView.getProperty("/CodeList/selectedCount")) {
+            this.showMessage(
+              this.MSGTYPE.WARNING,
+              "Error",
+              this.getI18nText("tlDeleteSetting")
+            );
             return;
           }
 
-          this.callPopupConfirm('msgAlert002', 'alert', this.MSGBOXICON.WARNING)
+          this.callPopupConfirm("msgAlert002", "alert", this.MSGBOXICON.WARNING)
             .then(function (sAction) {
-              if (sAction === 'OK') {
+              if (sAction === "OK") {
                 _.forEach(oTable.getSelectedIndices(), function (iIndex) {
-                  oTable.getContextByIndex(iIndex).setProperty('DELETED_TF', true);
+                  oTable
+                    .getContextByIndex(iIndex)
+                    .setProperty("DELETED_TF", true);
                 });
 
                 self.setMessageType(self.MESSAGE_TYPE.UPDATE);
 
-                self._h.management.submitBatch('codeListDataGroup').then(
+                self._h.management.submitBatch("codeListDataGroup").then(
                   // Success
                   function (oData) {
                     self._h.management.refresh();
@@ -1765,15 +1892,16 @@ sap.ui.define(
                   // Fail
                   function (oError) {
                     self.resetBindingChanges(oBinding);
-                    self.showMessageToast('msgError10', '20rem', [oError.message]);
+                    self.showMessageToast("msgError10", "20rem", [
+                      oError.message,
+                    ]);
                   }
-                )
+                );
               }
             })
             .catch(function (oError) {
               console.log(oError);
             });
-
         },
 
         //------------------------- Code List End -------------------------------------------

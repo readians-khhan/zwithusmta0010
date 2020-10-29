@@ -13,7 +13,7 @@ type ATHENTIC_TYPE {
     ACCESSTOKENURL : String(100);
     CLIENTID       : String(100);
     CLIENTSECRET   : String(100);
-} 
+}
 
 define entity SCI_TP0010 : cuid, managed {
     IF_NO                : Integer;
@@ -130,10 +130,10 @@ define entity SCI_TP0020 : cuid, managed {
     EXECUTION_CD    : Association to one SCI_MST0010;
     CYCLE_CD        : Association to one SCI_MST0010;
     RECUR_CD        : Association to one SCI_MST0010;
-    ONTIME_T        : Time;
+    ONDATE_D        : Date;
     TIMEINTERVAL_CD : Association to one SCI_MST0010;
-    ONFRDATE        : Date;
-    ONTODATE        : Date;
+    ONFRTIME_T      : Time;
+    ONTOTIME_T      : Time;
     DELETED_TF      : Boolean not null default false;
     TIMEZONE        : String default '한국/서울 +9:00';
 }

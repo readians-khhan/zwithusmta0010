@@ -19,10 +19,10 @@
             <VBox class="sapUiSmallMargin">
                 <f:SimpleForm editable="true"
                     layout="ResponsiveGridLayout"
-                    labelSpanXL="3"
-                    labelSpanL="3"
-                    labelSpanM="3"
-                    labelSpanS="10"
+                    labelSpanXL="2"
+                    labelSpanL="2"
+                    labelSpanM="2"
+                    labelSpanS="2"
                     adjustLabelSpan="false"
                     emptySpanXL="0"
                     emptySpanL="0"
@@ -40,7 +40,7 @@
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </ComboBox>
 
@@ -49,7 +49,7 @@
                         <Input value="{mainView>/Interface/Regist/Name}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
@@ -58,7 +58,7 @@
                         <Input value="{mainView>/Interface/Regist/Description}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
@@ -67,7 +67,7 @@
                         <Input value="{mainView>/Interface/Regist/Package}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
@@ -76,34 +76,31 @@
                         <Input value="{mainView>/Interface/Regist/IFName}"
                             required="true">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
                         <!--Interface As-Is ID-->
                         <Label text="{i18n>fldAsIsID}" />
-                        <Input value="{mainView>/Interface/Regist/AsIsID}"
-                            required="true">
+                        <Input value="{mainView>/Interface/Regist/AsIsID}">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
                         <!--Interface As-Is Name -->
                         <Label text="{i18n>fldAsIsName}" />
-                        <Input value="{mainView>/Interface/Regist/AsIsName}"
-                            required="true">
+                        <Input value="{mainView>/Interface/Regist/AsIsName}">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
                         <!--Interface As-Is Description-->
                         <Label text="{i18n>fldAsIsDesc}" />
-                        <Input value="{mainView>/Interface/Regist/AsIsDescription}"
-                            required="true">
+                        <Input value="{mainView>/Interface/Regist/AsIsDescription}">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
@@ -112,23 +109,26 @@
                         <Input id="ISourceSystem"
                             showValueHelp="true"
                             valueHelpOnly="true"
-                            valueHelpRequest="onPAI"
-                            app:fcCode="fcVHSSystem">
+                            valueHelpRequest="onValueHelp"
+                            app:vhCode="fcVHSSystem">
                             <core:Item key="{mainView>/Interface/Regist/SourceSystemID}"
                                 text="{mainView>/Interface/Regist/SourceSystemDESC}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
                         <!--Sorce System Type-->
                         <Label text="{i18n>fldSApplicationType}" />
-                        <ComboBox selectedKey="{mainView>/Interface/Regist/SourceSystemTypeID}"
+                        <ComboBox id="CSSType"
+                            selectionChange="onPAI"
+                            app:fcCode="fcChangeSystem"
+                            selectedKey="{mainView>/Interface/Regist/SourceSystemTypeID}"
                             items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV', sorter: {path: 'DESC01'}}">
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </ComboBox>
 
@@ -137,77 +137,84 @@
                         <Input id="ITargetSystem"
                             showValueHelp="true"
                             valueHelpOnly="true"
-                            valueHelpRequest="onPAI"
-                            app:fcCode="fcVHTSystem">
+                            valueHelpRequest="onValueHelp"
+                            app:vhCode="fcVHTSystem">
                             <core:Item key="{mainView>/Interface/Regist/TargetSystemID}"
                                 text="{mainView>/Interface/Regist/TargetSystemDESC}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
-                        <!--Sorce System Type-->
+                        <!--Target System Type-->
                         <Label text="{i18n>fldTApplicationType}" />
-                        <ComboBox selectedKey="{mainView>/Interface/Regist/TargetSystemTypeID}"
+                        <ComboBox id="CTSType"
+                            selectionChange="onPAI"
+                            app:fcCode="fcChangeSystem"
+                            selectedKey="{mainView>/Interface/Regist/TargetSystemTypeID}"
                             items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV', sorter: {path: 'DESC01'}}">
                             <core:Item text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </ComboBox>
 
                         <!--RFC Name -->
                         <Label text="{i18n>fldRFCName}" />
-                        <Input value="{mainView>/Interface/Regist/RFCName}"
-                            required="true">
+                        <Input id="IRFC"
+                            value="{mainView>/Interface/Regist/RFCName}">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
                         <!--Enterprise Service Name -->
                         <Label text="{i18n>fldESName}" />
-                        <Input value="{mainView>/Interface/Regist/ESName}"
-                            required="true">
+                        <Input id="IES"
+                            value="{mainView>/Interface/Regist/ESName}">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
                         <!--Web Service Name -->
                         <Label text="{i18n>fldWSName}" />
-                        <Input value="{mainView>/Interface/Regist/WSName}"
-                            required="true">
+                        <Input id="IWS"
+                            value="{mainView>/Interface/Regist/WSName}">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
                         <!--Web Binding Name -->
                         <Label text="{i18n>fldWSBName}" />
-                        <Input value="{mainView>/Interface/Regist/WSBName}"
-                            required="true">
+                        <Input id="IWSB"
+                            value="{mainView>/Interface/Regist/WSBName}">
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </Input>
 
                         <!--Execution Type -->
                         <Label text="{i18n>fldBatch}" />
-                        <ComboBox items="{path: 'management>/SCI_VH_CODE_IFEXECUTION_SRV', sorter: {path: 'DESC01'}}"
-                            selectedKey="{mainView>/Interface/Regist/typeID}">
-                            <core:Item text="{management>DESC01}"
+                        <ComboBox showSecondaryValues="true"
+                            items="{path: 'management>/SCI_VH_CODE_IFEXECUTION_SRV', sorter: {path: 'DESC01'}}"
+                            selectedKey="{mainView>/Interface/Regist/typeID}"
+                            selectionChange="onPAI"
+                            app:fcCode="fcChangeBatch">
+                            <core:ListItem additionalText="{management>CODE}"
+                                text="{management>DESC01}"
                                 key="{management>ID}"/>
                             <layoutData>
-                                <l:GridData span="XL6 L8 M9 S9" />
+                                <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
                         </ComboBox>
 
                         <!--Batch List-->
                         <Label text="{i18n>fldBatchList}" />
                         <Table id="tabBatchList"
-                            width="80%"
+                            width="100%"
                             inset="false"
                             items="{mainView>/Interface/Regist/Batch}">
                             <headerToolbar>
@@ -249,44 +256,53 @@
                             <items>
                                 <ColumnListItem>
                                     <cells>
-                                        <ComboBox showSecondaryValues="true" selectionChange="onPAI"
-                                        app:fcCode="fcChangeCbcExecType" id="CbcExecType"
-                                            items="{path: 'management>/SCI_VH_CODE_BATCHEXEC_SRV'}">
-                                            <core:ListItem additionalText="{management>CODE}" text="{management>DESC01}"
+                                        <ComboBox showSecondaryValues="true"
+                                            selectionChange="onPAI"
+                                            app:fcCode="fcChangeCbcExecType"
+                                            id="CbcExecType"
+                                            items="{path: 'management>/SCI_VH_CODE_BATCHEXEC_SRV'}" selectedKey="{mainView>EXECUTION_CD_ID}">
+                                            <core:ListItem additionalText="{management>CODE}"
+                                                text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <ComboBox id="CbcRecurrecn"
+                                        <ComboBox id="CbcRecurrecn" selectedKey="{mainView>RECUR_CD_ID}"
                                             items="{path: 'management>/SCI_VH_CODE_BATCHRECUR_SRV'}">
                                             <core:Item text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                       <DatePicker id="DPOnDate"
+                                        <DatePicker id="DPOnDate" value="{mainView>ONDATE_D}"
                                             valueFormat="yyyy-MM-dd"
                                             displayFormat="yyyy-MM-dd"
                                             change="handleChange"
                                             class="sapUiSmallMarginBottom"/>
-                                        <ComboBox id="CbcCycle" showSecondaryValues="true"  selectionChange="onPAI"
-                                        app:fcCode="fcChangeCbcCycle" items="{path: 'management>/SCI_VH_CODE_BATCHCYCLE_SRV'}">
-                                            <core:ListItem additionalText="{management>CODE}" text="{management>DESC01}"
+                                        <ComboBox id="CbcCycle" selectedKey="{mainView>CYCLE_CD_ID}"
+                                            showSecondaryValues="true"
+                                            selectionChange="onPAI"
+                                            app:fcCode="fcChangeCbcCycle"
+                                            items="{path: 'management>/SCI_VH_CODE_BATCHCYCLE_SRV'}">
+                                            <core:ListItem additionalText="{management>CODE}"
+                                                text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <ComboBox id="CbcInterval" items="{path: 'management>/SCI_VH_CODE_BATCHTIMEINTERVAL_SRV'}">
+                                        <ComboBox id= "CbcInterval" selectedKey="{mainView>TIMEINTERVAL_CD_ID}"
+                                            items="{path: 'management>/SCI_VH_CODE_BATCHTIMEINTERVAL_SRV'}">
                                             <core:Item text="{management>DESC01}"
                                                 key="{management>ID}"/>
                                         </ComboBox>
-                                        <TimePicker id="TPFrTime"
+                                        <TimePicker id="TPFrTime" value="{mainView>ONFRTIME_T}" 
                                             valueFormat="HH:mm"
                                             displayFormat="HH:mm"
                                             change="handleChange"
                                             placeholder="Enter the time to start"/>
-                                        <TimePicker id="TPToTime"
+                                        <TimePicker id="TPToTime" value="{mainView>ONTOTIME_T}"
                                             valueFormat="HH:mm"
                                             displayFormat="HH:mm"
                                             change="handleChange"
                                             placeholder="Enter the time to finish"/>
                                         <Input id="ITimezone"
-                                            value="{mainView>/Interface/Regist/Timezone}"
-                                            required="true">
+                                            value="{mainView>TIMEZONE}"
+                                            required="true"
+                                            placeholder="'한국/서울 +9:00'">
                                         </Input>
                                     </cells>
                                 </ColumnListItem>

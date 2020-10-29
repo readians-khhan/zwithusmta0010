@@ -88,6 +88,9 @@
                                 </OverflowToolbar>
                             </headerToolbar>
                             <columns>
+                                <Column width="2rem">
+                                    <Text text="{i18n>fldBatchDelete}"/>
+                                </Column>
                                 <Column width="4rem">
                                     <Text text="{i18n>fldSystemManagerName}" />
                                 </Column>
@@ -101,6 +104,10 @@
                             <items>
                                 <ColumnListItem>
                                     <cells>
+                                        <Button text="{i18N>fldBatchDelete}"
+                                            icon="sap-icon://delete"
+                                            press="onPAI"
+                                            app:fcCode="fcDeleteManager" />
                                         <Input value="{mainView>NAME}"
                                             placeholder="Name"
                                             required="true">

@@ -105,6 +105,7 @@ sap.ui.define(
           AddSysLiSubdiaryCd: "AddSysLiSubdiaryCd",
           AddSysLiAppliCd: "AddSysLiAppliCd",
           tabAddMangerList: "tabAddMangerList",
+          dialogAddSystemList: "dialogAddSystemList",
 
           //--- Update Pop Up ---
           UpdateSystemList: "UpdateSystemList",
@@ -331,6 +332,9 @@ sap.ui.define(
             case "fcAddManager":
               this.fcAddManager(oEvent);
               break;
+            case "fcDeleteManager":
+              this.fcDeleteManager(oEvent);
+              break;
             //---- Update Popup ----
             case "fcUpdateSystemList":
               this.fcUpdateSystemList(oEvent);
@@ -343,6 +347,9 @@ sap.ui.define(
               break;
             case "fcUpdateManager":
               this.fcUpdateManager(oEvent);
+              break;
+            case "fcDeleteManagerUpdate":
+              this.fcDeleteManagerUpdate(oEvent);
               break;
             //---- Delete ----
             case "fcDeleteSystemList":
@@ -397,7 +404,6 @@ sap.ui.define(
 
           oBatch = _.pull(oBatch, oBatch[Iindex]);
           this._h.mainView.refresh();
-          
         },
 
         fcMessage: function (oEvent) {
@@ -2058,11 +2064,25 @@ sap.ui.define(
             .getModel()
             .getProperty("/SystemList/Add/Manager");
           oItems.push({
-            NAME: '',
-            PHONE: '',
-            EMAIL: ''
+            NAME: "",
+            PHONE: "",
+            EMAIL: "",
           });
           this._h.management.refresh();
+        },
+
+        fcDeleteManager: function (oEvent) {
+          var oSource = oEvent.getSource().getId();
+          var Iindex = parseInt(
+            oSource.substr(oSource.length - 1, oSource.length)
+          );
+
+          var oManager = this._h.mainView.getProperty(
+            "/SystemList/Add/Manager"
+          );
+
+          oManager = _.pull(oManager, oManager[Iindex]);
+          this._h.mainView.refresh();
         },
 
         fcAddSystemListPopup: function (oEvent) {
@@ -2164,6 +2184,15 @@ sap.ui.define(
             .then(
               function (oData) {
                 this.showMessageToast("msgSuccess13", "20rem", []);
+                this.getView()
+                  .byId(this.ControlID.AddSysLiCompanyCd)
+                  .setValue("");
+                this.getView()
+                  .byId(this.ControlID.AddSysLiSubdiaryCd)
+                  .setValue("");
+                this.getView()
+                  .byId(this.ControlID.AddSysLiAppliCd)
+                  .setValue("");
                 this.closePopupFragment(self.ControlID.AddSystemList);
               }.bind(this),
               function (oError) {
@@ -2171,7 +2200,7 @@ sap.ui.define(
                 this.showMessageToast("msgError04", "20rem", [oError.message]);
               }.bind(this)
             );
-        },        
+        },
 
         fcCancelAddSystemListPopUp: function (oEvent) {
           this.closePopupFragment(this.ControlID.AddSystemList, oEvent);
@@ -2199,9 +2228,23 @@ sap.ui.define(
           oItems.push({
             NAME: "",
             PHONE: "",
-            EMAIL: ""
+            EMAIL: "",
           });
           this._h.management.refresh();
+        },
+
+        fcDeleteManagerUpdate: function (oEvent) {
+          var oSource = oEvent.getSource().getId();
+          var Iindex = parseInt(
+            oSource.substr(oSource.length - 1, oSource.length)
+          );
+
+          var oManager = this._h.mainView.getProperty(
+            "/SystemList/Update/Manager"
+          );
+
+          oManager = _.pull(oManager, oManager[Iindex]);
+          this._h.mainView.refresh();
         },
 
         fcUpdateSystemListPopup: function (oEvent) {

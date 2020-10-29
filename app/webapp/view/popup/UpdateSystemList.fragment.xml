@@ -74,7 +74,7 @@
                         <Label text="{i18n>fldSystemDescription}" />
                         <Input value="{management>DESCRIPTION}"
                             required="true" />
-                        <!-- <Input value="{mainView>/SystemList/Update/description}" required="true"/> -->                   
+                        <!-- <Input value="{mainView>/SystemList/Update/description}" required="true"/> -->
 
                         <!-- MANAGER INFO : Add -->
                         <Table id="tabUpdateMangerList"
@@ -93,6 +93,9 @@
                                 </OverflowToolbar>
                             </headerToolbar>
                             <columns>
+                                <Column width="2rem">
+                                    <Text text="{i18n>fldBatchDelete}"/>
+                                </Column>
                                 <Column width="4rem">
                                     <Text text="{i18n>fldSystemManagerName}" />
                                 </Column>
@@ -106,6 +109,10 @@
                             <items>
                                 <ColumnListItem>
                                     <cells>
+                                        <Button text="{i18N>fldBatchDelete}"
+                                            icon="sap-icon://delete"
+                                            press="onPAI"
+                                            app:fcCode="fcDeleteManagerUpdate" />
                                         <Input value="{mainView>NAME}"
                                             placeholder="Name"
                                             required="true">

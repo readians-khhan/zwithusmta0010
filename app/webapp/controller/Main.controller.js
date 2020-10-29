@@ -268,6 +268,9 @@ sap.ui.define(
             case "fcChangeBatch":
               this.fcChangeBatch(oEvent);
               break;
+            case "fcCreateInterfacePopupElementDelete":
+              this.fcCreateInterfacePopupElementDelete(oEvent);
+              break;
 
             // Code List
             case "fcSearchCode":
@@ -350,10 +353,11 @@ sap.ui.define(
             case "fcMessage":
               this.fcMessage(oEvent);
               break;
+            case "fcCheckCHOnlyInputKey":
+              this.fcCheckCHOnlyInputKey(oEvent);
+              break;
           }
         },
-
-        
 
         fcItemSelect: function (oEvent) {
           var oNavConMain = this.getControl("navConMain");
@@ -383,6 +387,19 @@ sap.ui.define(
 
         //------------------------- Common Start -------------------------------------------
 
+        fcCreateInterfacePopupElementDelete: function (oEvent) {
+          var oSource = oEvent.getSource().getId();
+          var Iindex = parseInt(
+            oSource.substr(oSource.length - 1, oSource.length)
+          );
+
+          var oBatch = this._h.mainView.getProperty("/Interface/Regist/Batch");
+
+          oBatch = _.pull(oBatch, oBatch[Iindex]);
+          this._h.mainView.refresh();
+          
+        },
+
         fcMessage: function (oEvent) {
           if (!this.fragments["Messages"]) {
             var sFragmentName =
@@ -394,6 +411,12 @@ sap.ui.define(
             this.getView().addDependent(this.fragments["Messages"]);
           }
           this.fragments["Messages"].openBy(oEvent.getSource());
+        },
+
+        fcCheckCHOnlyInputKey: function (oEvent) {
+          var oInput = oEvent.getSource();
+          var bValid = !oInput.getSelectedKey();
+          oInput.setValueState(bValid ? "Error" : "None");
         },
 
         //Combox Selection Change
@@ -686,7 +709,7 @@ sap.ui.define(
         //------------------------- Common End -------------------------------------------
 
         //------------------------- Interface List  Start -------------------------------------------
-        
+
         fcChangeBatch: function (oEvent) {
           var sBatch = oEvent.getSource().getSelectedItem().getAdditionalText();
           var oTable = this.byId(this.ControlID.tabBatchList);
@@ -911,14 +934,14 @@ sap.ui.define(
           }
         },
 
-        fcDeleteAllBatchList:  function (oEvent){
+        fcDeleteAllBatchList: function (oEvent) {
           var oList = this.byId(this.ControlID.tabBatchList);
           var oItems = oList
             .getBinding("items")
             .getModel()
             .setProperty("/Interface/Regist/Batch", []);
-            this._h.mainView.refresh();
-        }, 
+          this._h.mainView.refresh();
+        },
 
         fcAddBatchList: function (oEvent) {
           var oList = this.byId(this.ControlID.tabBatchList);
@@ -929,16 +952,16 @@ sap.ui.define(
           oItems.push({
             EXECUTION_CD_ID: null,
             CYCLE_CD_ID: null,
-            RECUR_CD_ID:null,
-            ONDATE_D:null,
-            TIMEINTERVAL_CD_ID:null,
-            ONFRTIME_T:null,
-            ONTOTIME_T:null,
-            TIMEZONE: ''
+            RECUR_CD_ID: null,
+            ONDATE_D: null,
+            TIMEINTERVAL_CD_ID: null,
+            ONFRTIME_T: null,
+            ONTOTIME_T: null,
+            TIMEZONE: "",
           });
           this._h.mainView.refresh();
         },
-        
+
         fcInterfaceRefresh: function (oEvent) {
           this.setBusy(this._h.mainView, true);
           this._h.management.refresh();
@@ -1244,7 +1267,7 @@ sap.ui.define(
             WEBSERVICE_NM: oInput.WSName,
             WEBBINDING_NM: oInput.WSBName,
             EXECUTION_CD_ID: oInput.typeID,
-            BATCH : oInput.Batch  
+            BATCH: oInput.Batch,
           });
 
           this._h.management

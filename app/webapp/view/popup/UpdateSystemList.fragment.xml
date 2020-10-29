@@ -74,9 +74,9 @@
                         <Label text="{i18n>fldSystemDescription}" />
                         <Input value="{management>DESCRIPTION}"
                             required="true" />
-                        <!-- <Input value="{mainView>/SystemList/Update/description}" required="true"/> -->
+                        <!-- <Input value="{mainView>/SystemList/Update/description}" required="true"/> -->                   
 
-                        <!-- MANAGER INFO -->
+                        <!-- MANAGER INFO : Add -->
                         <Table id="tabUpdateMangerList"
                             inset="false"
                             items="{mainView>/SystemList/Update/Manager}">
@@ -106,15 +106,15 @@
                             <items>
                                 <ColumnListItem>
                                     <cells>
-                                        <Input value="{mainView>/NAME}"
+                                        <Input value="{mainView>NAME}"
                                             placeholder="Name"
                                             required="true">
                                         </Input>
-                                        <Input value="{mainView>/PHONE}"
+                                        <Input value="{mainView>PHONE}"
                                             placeholder="Contact"
                                             required="true">
                                         </Input>
-                                        <Input value="{mainView>/EMAIL}"
+                                        <Input value="{mainView>EMAIL}"
                                             placeholder="Email"
                                             required="true">
                                         </Input>

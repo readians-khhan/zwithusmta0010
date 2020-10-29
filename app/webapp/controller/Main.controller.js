@@ -2035,9 +2035,9 @@ sap.ui.define(
             .getModel()
             .getProperty("/SystemList/Add/Manager");
           oItems.push({
-            NAME: "",
-            PHONE: "",
-            EMAIL: ""
+            NAME: '',
+            PHONE: '',
+            EMAIL: ''
           });
           this._h.management.refresh();
         },
@@ -2127,13 +2127,7 @@ sap.ui.define(
             APPL_NM: oInput.appliNm,
             SYSTEM_NM: oInput.systemNm,
             DESCRIPTION: oInput.description,
-            MANAGER: [ oInput.Manager
-              // {
-              //   NAME: oInput.NAME,
-              //   PHONE: oInput.PHONE,
-              //   EMAIL: oInput.EMAIL,
-              // },
-            ],
+            MANAGER: oInput.Manager,
             IP: oInput.systemIP,
             HOST: oInput.systemHost,
             PORT: oInput.systemPort,

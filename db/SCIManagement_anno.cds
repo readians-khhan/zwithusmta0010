@@ -45,7 +45,7 @@ annotate SCI_TP0010 with @(
     EXECUTION_CD         @description : 'Is Interface  key';
     BATCHCYCLE_CD        @description : 'Batch check code (Real Time or Batch)';
     BATCH_TIME           @description : 'Batch Time';
-    DELEDTED_TF          @description : 'Is Deleted';
+    DELETED_TF          @description : 'Is Deleted';
 };
 
 
@@ -73,7 +73,7 @@ annotate SCI_TP0010_HIST with @(title : 'Interface List Table History', ) {
     WEBBINDING_NM        @description : 'ERP WebBindg Name';
     EXECUTION_CD         @description : 'Batch check code (Real Time or Batch)';
     BATCH                @description : 'Batch List';
-    DELEDTED_TF          @description : 'Is Deleted';
+    DELETED_TF          @description : 'Is Deleted';
 };
 
 

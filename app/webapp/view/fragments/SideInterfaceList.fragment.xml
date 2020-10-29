@@ -14,7 +14,7 @@
         enableBusyIndicator="true"
         rows="{
             path: 'management>/SCI_TP_INTERFACELIST_SRV',
-            parameters: {   
+            parameters: {
                 $count: true,
                 $$updateGroupId: 'InterfaceDataGroup'
             }
@@ -54,17 +54,15 @@
             <!-- Deleted_TF -->
             <t:Column width="7rem"
                 autoResizable="true"
-                sortProperty="DELEDTED_TF"
-                filterProperty="DELEDTED_TF"
+                sortProperty="DELETED_TF"
+                filterProperty="DELETED_TF"
                 hAlign="Center">
                 <Label text="{i18n>fldDelted}"
                     textAlign="Center"
                     width="100%"/>
                 <t:template>
-                    <Text text="{management>DELEDTED_TF}"
-                        textAlign="Begin"
-                        width="100%"
-                        wrapping="false"/>
+                    <ObjectStatus text="{parts: [{ path: 'management>DELETED_TF'}], formatter: '.getDeletedIfText'}"
+                        icon="{parts: [{ path: 'management>DELETED_TF'}], formatter: '.getDeletedIfIcon'}" />
                 </t:template>
             </t:Column>
             <!-- Interface Status -->
@@ -77,10 +75,8 @@
                     textAlign="Center"
                     width="100%"/>
                 <t:template>
-                    <Text text="{management>STATUS_DESC01}"
-                        textAlign="Begin"
-                        width="100%"
-                        wrapping="false"/>
+                    <ObjectStatus text="{parts: [{ path: 'management>STATUS_DESC01'}], formatter: '.getInterfaceStatusText'}"
+                        icon="{parts: [{ path: 'management>STATUS_DESC01'}], formatter: '.getInterfaceStatusIcon'}" />
                 </t:template>
             </t:Column>
             <!-- Interface No -->
@@ -493,10 +489,8 @@
                     textAlign="Center"
                     width="100%"/>
                 <t:template>
-                    <Text text="{management>EXECUTION_DESC01}"
-                        textAlign="Begin"
-                        width="100%"
-                        wrapping="false"/>
+                    <ObjectStatus text="{parts: [{ path: 'management>EXECUTION_DESC01'}], formatter: '.getInterfaceBatchText'}"
+                        icon="{parts: [{ path: 'management>EXECUTION_DESC01'}], formatter: '.getInterfaceBatchIcon'}" />
                 </t:template>
             </t:Column>
             <!-- Batch List -->
@@ -507,7 +501,10 @@
                     textAlign="Center"
                     width="100%"/>
                 <t:template>
-                    <Button text="List"></Button>
+                    <Button icon="sap-icon://list"
+                        text="List"
+                        press="onPAI"
+                        app:fcCode="fcshowBatchList"></Button>
                 </t:template>
             </t:Column>
             <!-- 작성자 -->

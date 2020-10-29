@@ -35,7 +35,7 @@ define entity SCI_TP0010 : cuid, managed {
     WEBSERVICE_NM        : String(50);
     WEBBINDING_NM        : String(50);
     EXECUTION_CD         : Association to one SCI_MST0010 not null;
-    DELEDTED_TF          : Boolean not null default false;
+    DELETED_TF          : Boolean not null default false;
     BATCH                : Composition of many SCI_TP0020
                                on BATCH.TP0010 = $self;
     HISTORY              : Association to many SCI_TP0010_HIST
@@ -63,7 +63,7 @@ define entity SCI_TP0010_HIST : cuid, managed {
     WEBSERVICE_NM        : String(50);
     WEBBINDING_NM        : String(50);
     EXECUTION_CD         : Association to one SCI_MST0010 not null;
-    DELEDTED_TF          : Boolean not null default false;
+    DELETED_TF          : Boolean not null default false;
 }
 
 define entity SCI_MST0010 : cuid, managed {

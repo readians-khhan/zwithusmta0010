@@ -271,6 +271,13 @@ sap.ui.define(
             case "fcCreateInterfacePopupElementDelete":
               this.fcCreateInterfacePopupElementDelete(oEvent);
               break;
+            case "fcInterfaceBatchList":
+              this.fcInterfaceRefresh(oEvent);
+              break;
+
+            case "fcshowBatchList":
+              this.fcshowBatchList(oEvent);
+              break;
 
             // Code List
             case "fcSearchCode":
@@ -397,7 +404,6 @@ sap.ui.define(
 
           oBatch = _.pull(oBatch, oBatch[Iindex]);
           this._h.mainView.refresh();
-          
         },
 
         fcMessage: function (oEvent) {
@@ -649,11 +655,57 @@ sap.ui.define(
 
           switch (iStatus) {
             case "예":
+            case true:
               return "sap-icon://delete";
+            case false:
             case "아니오":
               return "sap-icon://complete";
             default:
               return "sap-icon://complete";
+          }
+        },
+
+        getInterfaceStatusIcon: function (iStatus) {
+          switch (iStatus) {
+            case "사용":
+              return "sap-icon://unlocked";
+            case "미사용":
+              return "sap-icon://locked";
+            default:
+              return "sap-icon://locked";
+          }
+        },
+
+        getInterfaceStatusText: function (iStatus) {
+          switch (iStatus) {
+            case "사용":
+              return "사용";
+            case "미사용":
+              return "미사용";
+            default:
+              return "미사용";
+          }
+        },
+
+        getInterfaceBatchIcon: function (iStatus) {
+          switch (iStatus) {
+            case "Batch":
+              return "sap-icon://fob-watch";
+            case "Realtime":
+              return "sap-icon://paper-plane";
+            default:
+              return "sap-icon://paper-plane";
+          }
+        },
+
+        getInterfaceBatchText: function (iStatus) {
+          switch (iStatus) {
+            case "Batch":
+              return "Batch";
+            case "Realtime":
+              return "Realtime";
+            default:
+              return "Realtime";
           }
         },
 
@@ -709,6 +761,8 @@ sap.ui.define(
         //------------------------- Common End -------------------------------------------
 
         //------------------------- Interface List  Start -------------------------------------------
+
+        fcshowBatchList: function (oEvent) {},
 
         fcChangeBatch: function (oEvent) {
           var sBatch = oEvent.getSource().getSelectedItem().getAdditionalText();
@@ -783,23 +837,7 @@ sap.ui.define(
           var sEventSorceID = oEvent.getSource().getId();
           var sViewID = this.getView().getId();
           var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
-          var oCbcCycleID = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcCycle +
-                sEventSorceID.match(rRegex)[0]
-            );
 
-          var oCbcRecurrecn = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcRecurrecn +
-                sEventSorceID.match(rRegex)[0]
-            );
           var oCbcInterval = sap.ui
             .getCore()
             .byId(
@@ -808,36 +846,13 @@ sap.ui.define(
                 this.ControlID.CbcInterval +
                 sEventSorceID.match(rRegex)[0]
             );
-          var oDPOnDate = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.DPOnDate +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPFrTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPFrTime +
-                sEventSorceID.match(rRegex)[0]
-            );
+
           var oTPToTime = sap.ui
             .getCore()
             .byId(
               sViewID +
                 "--" +
                 this.ControlID.TPToTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oITimezone = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.ITimezone +
                 sEventSorceID.match(rRegex)[0]
             );
 
@@ -861,23 +876,6 @@ sap.ui.define(
           var sEventSorceID = oEvent.getSource().getId();
           var sViewID = this.getView().getId();
           var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
-          var oCbcCycleID = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcCycle +
-                sEventSorceID.match(rRegex)[0]
-            );
-
-          var oCbcInterval = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcInterval +
-                sEventSorceID.match(rRegex)[0]
-            );
 
           var oCbcRecurrecn = sap.ui
             .getCore()
@@ -887,36 +885,13 @@ sap.ui.define(
                 this.ControlID.CbcRecurrecn +
                 sEventSorceID.match(rRegex)[0]
             );
+
           var oDPOnDate = sap.ui
             .getCore()
             .byId(
               sViewID +
                 "--" +
                 this.ControlID.DPOnDate +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPFrTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPFrTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPToTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPToTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oITimezone = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.ITimezone +
                 sEventSorceID.match(rRegex)[0]
             );
 
@@ -1198,7 +1173,7 @@ sap.ui.define(
           }
           if (!bDeleted) {
             aFilters.push({
-              field: "DELEDTED_TF",
+              field: "DELETED_TF",
               op: this.OP.EQ,
               from: bDeleted,
             });
@@ -1249,7 +1224,7 @@ sap.ui.define(
           ).getSelectedKey();
 
           var oBinding = oTable.getBinding("rows");
-          oBinding.create({
+          var oInputData = {
             IF_NM: oInput.Name,
             IF_DESC: oInput.Description,
             PAKCAGE_NM: oInput.Package,
@@ -1267,8 +1242,13 @@ sap.ui.define(
             WEBSERVICE_NM: oInput.WSName,
             WEBBINDING_NM: oInput.WSBName,
             EXECUTION_CD_ID: oInput.typeID,
-            BATCH: oInput.Batch,
-          });
+          };
+
+          if (oInput.Batch.length > 1) {
+            oInputData.BATCH = oInput.Batch;
+          }
+          
+          oBinding.create(oInputData);
 
           this._h.management
             .submitBatch(this.ControlID.InterfaceDataGroup)
@@ -2058,9 +2038,9 @@ sap.ui.define(
             .getModel()
             .getProperty("/SystemList/Add/Manager");
           oItems.push({
-            NAME: '',
-            PHONE: '',
-            EMAIL: ''
+            NAME: "",
+            PHONE: "",
+            EMAIL: "",
           });
           this._h.management.refresh();
         },
@@ -2171,7 +2151,7 @@ sap.ui.define(
                 this.showMessageToast("msgError04", "20rem", [oError.message]);
               }.bind(this)
             );
-        },        
+        },
 
         fcCancelAddSystemListPopUp: function (oEvent) {
           this.closePopupFragment(this.ControlID.AddSystemList, oEvent);
@@ -2199,7 +2179,7 @@ sap.ui.define(
           oItems.push({
             NAME: "",
             PHONE: "",
-            EMAIL: ""
+            EMAIL: "",
           });
           this._h.management.refresh();
         },

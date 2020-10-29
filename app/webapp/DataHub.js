@@ -1,10 +1,10 @@
-sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
+sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (
   Object
 ) {
-  'use strict';
+  "use strict";
 
   return Object.extend(
-    'withus.sci.management.SCIManagement.model.common.DataHub',
+    "withus.sci.management.SCIManagement.model.common.DataHub",
     {
       /**
        * 공통변수
@@ -16,7 +16,7 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
       device: null,
       i18n: null,
       router: null,
-      nameSpace: 'withus.sci.management.SCIManagement',
+      nameSpace: "withus.sci.management.SCIManagement",
 
       /**
        * OData모델객체
@@ -31,17 +31,17 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
 
       mainViewInitData: {
         busy: false,
-        search: '',
-        bpSearch: '',
+        search: "",
+        bpSearch: "",
         condition: {
-          iconKey: 'T',
+          iconKey: "T",
           fromDate: null,
           toDate: null,
         },
-        action: '',
+        action: "",
         hasUIChanges: false,
         hasError: false,
-        stickyOptions: ['HeaderToolbar', 'ColumnHeaders'],
+        stickyOptions: ["HeaderToolbar", "ColumnHeaders"],
         statusCount: {
           total: 0,
           draft: 0,
@@ -54,31 +54,31 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
           condition: {
             fromDate: null,
             toDate: null,
-            fileName: '',
-            fileStatus: ['0'],
-            movementStatus: ['0', '1', '2', '3', '4', '5', '6'],
-            confirmationStatus: ['0', '1', '2', '3', '4', '5', '6'],
+            fileName: "",
+            fileStatus: ["0"],
+            movementStatus: ["0", "1", "2", "3", "4", "5", "6"],
+            confirmationStatus: ["0", "1", "2", "3", "4", "5", "6"],
             postingfromDate: null,
             postingtoDate: null,
           },
           statusFile: [
             {
-              statusKey: '0',
-              statusName: 'Active',
+              statusKey: "0",
+              statusName: "Active",
             },
             {
-              statusKey: '1',
-              statusName: 'Deleted',
+              statusKey: "1",
+              statusName: "Deleted",
             },
           ],
           statusList: [
             {
-              statusKey: '0',
-              statusName: 'Not Target',
+              statusKey: "0",
+              statusName: "Not Target",
             },
             {
-              statusKey: '1',
-              statusName: 'Not Executed',
+              statusKey: "1",
+              statusName: "Not Executed",
             },
           ],
           totalCount: 0,
@@ -86,18 +86,18 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
           activeDelete: false,
         },
         Codes: {
-          FieldName: '',
+          FieldName: "",
           FieldStatus: [
             {
-              FieldStatusKey: 'Movement',
-              FieldStatusName: 'Movements',
+              FieldStatusKey: "Movement",
+              FieldStatusName: "Movements",
             },
             {
-              FieldStatusKey: 'Confirmation',
-              FieldStatusName: 'Confirmations',
+              FieldStatusKey: "Confirmation",
+              FieldStatusName: "Confirmations",
             },
           ],
-          SelectedFieldStatusKey: 'Confirmation',
+          SelectedFieldStatusKey: "Confirmation",
           totalModificationsCount: 0,
           selectedModificationsCount: 0,
         },
@@ -106,116 +106,102 @@ sap.ui.define(['sap/ui/base/Object', 'sap/ui/model/json/JSONModel'], function (
           selectedCount: 0,
           activeDelete: false,
           Add: {
-            company: '',
-            subdiary: '',
-            appliCd: '',
-            appliNm: '',
-            systemNm: '',
-            description: '',            
-            Manager: [{
-              name: '',
-              contact: '',
-              email: ''
-            }],
-            managerName: '',
-            contact: '',
-            email: '',
-            systemIP: '',
-            systemHost: '',
-            systemPort: '',
-            systemCerti: '0',
+            company: "",
+            subdiary: "",
+            appliCd: "",
+            appliNm: "",
+            systemNm: "",
+            description: "",
+            systemIP: "",
+            systemHost: "",
+            systemPort: "",
+            systemCerti: "0",
+            Manager: [],
           },
           Update: {
-            company: '',
-            subdiary: '',
-            appliCd: '',
-            appliNm: '',
-            systemNm: '',
-            description: '',
-            Manager: [{
-              name: '',
-              contact: '',
-              email: ''
-            }],  
-            managerName: '',
-            contact: '',
-            email: '',
-            systemIP: '',
-            systemHost: '',
-            systemPort: '',
-            systemCerti: '0',
+            company: "",
+            subdiary: "",
+            appliCd: "",
+            appliNm: "",
+            systemNm: "",
+            description: "",
+            systemIP: "",
+            systemHost: "",
+            systemPort: "",
+            systemCerti: "",
+            Manager: [],
           },
           AccessCerti: [
             {
               type: 0,
-              typeName: 'Basic',
+              typeName: "Basic",
             },
             {
               type: 1,
-              typeName: 'oAuth2.0',
+              typeName: "oAuth2.0",
             },
           ],
         },
+        managerList: [],
 
         Interface: {
           totalCount: 0,
           selectedCount: 0,
           activeDelete: false,
           Regist: {
-            StatusID: '',
-            Name: '',
-            Description: '',
-            Package: '',
-            IFName: '',
-            AsIsID: '',
-            AsIsName: '',
-            AsIsDescription: '',
-            SourceSystemID: '',
-            SourceSystemTypeID: '',
-            TargetSystemID: '',
-            TargetSystemDESC: '',
-            TargetSystemTypeID: '',
-            RFCName: '',
-            ESName: '',
-            WSName: '',
-            WSBName: '',
-            typeID: '',
+            StatusID: "",
+            Name: "",
+            Description: "",
+            Package: "",
+            IFName: "",
+            AsIsID: "",
+            AsIsName: "",
+            AsIsDescription: "",
+            SourceSystemID: "",
+            SourceSystemTypeID: "",
+            TargetSystemID: "",
+            TargetSystemDESC: "",
+            TargetSystemTypeID: "",
+            RFCName: "",
+            ESName: "",
+            WSName: "",
+            WSBName: "",
+            typeID: "",
             Batch: [],
           },
         },
 
-        BatchList : [],
+        BatchList: [],
 
-         // Code List
-         CodeList: {
+        // Code List
+        CodeList: {
           totalCount: 0,
           selectedCount: 0,
           activeDelete: false,
           Add: {
-            cat01: '',
-            cat02: '',
-            cat03: '',
-            codeNm: '',
-            description: '',
-            detailDescription: '',
+            cat01: "",
+            cat02: "",
+            cat03: "",
+            codeNm: "",
+            description: "",
+            detailDescription: "",
           },
           Update: {
-            cat01: '',
-            cat02: '',
-            cat03: '',
-            CodeNm: '',
-            description: '',
-            detailDescription: '',
+            cat01: "",
+            cat02: "",
+            cat03: "",
+            CodeNm: "",
+            description: "",
+            detailDescription: "",
           },
         },
 
-        ApiLog: '',
-        ModLog: '',
-        ExceptionLog: '',
+        ApiLog: "",
+        ModLog: "",
+        ExceptionLog: "",
 
-        SAPURL: '',
+        SAPURL: "",
       },
-      managerList: [],
     }
   );
 });

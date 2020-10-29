@@ -82,7 +82,7 @@ sap.ui.define(
           AddCodeLiCat01: "AddCodeLiCat01",
           AddCodeLiCat02: "AddCodeLiCat02",
           AddCodeLiCat03: "AddCodeLiCat03",
-        
+
           //-------------------------------------------------------------------------------------------
 
           // System List
@@ -98,6 +98,7 @@ sap.ui.define(
           AddSysLiCompanyCd: "AddSysLiCompanyCd",
           AddSysLiSubdiaryCd: "AddSysLiSubdiaryCd",
           AddSysLiAppliCd: "AddSysLiAppliCd",
+          tabAddMangerList: "tabAddMangerList",
 
           //--- Update Pop Up ---
           UpdateSystemList: "UpdateSystemList",
@@ -106,6 +107,7 @@ sap.ui.define(
           UpdateSysLiCompanyCd: "UpdateSysLiCompanyCd",
           UpdateSysLiSubdiaryCd: "UpdateSysLiSubdiaryCd",
           UpdateSysLiAppliCd: "UpdateSysLiAppliCd",
+          tabUpdateMangerList: "tabUpdateMangerList",
         },
 
         MESSAGE_TYPE: {
@@ -160,13 +162,13 @@ sap.ui.define(
         },
 
         // Before Rendering
-        onBeforeRendering: function () { },
+        onBeforeRendering: function () {},
 
         // After Rendering
-        onAfterRendering: function (oEvent) { },
+        onAfterRendering: function (oEvent) {},
 
         // Destory Program
-        onExit: function () { },
+        onExit: function () {},
 
         /* ========================================================== */
         /* Events */
@@ -276,7 +278,7 @@ sap.ui.define(
               this.fcConfirmAddCodePopup(oEvent);
               break;
 
-            // Code Update Popup 
+            // Code Update Popup
             case "fcCancelUpdateCodePopup":
               this.fcCancelUpdateCodePopup(oEvent);
               break;
@@ -316,6 +318,9 @@ sap.ui.define(
               break;
             case "fcCancelUpdateSystemListPopUp":
               this.fcCancelUpdateSystemListPopUp(oEvent);
+              break;
+            case "fcUpdateManager":
+              this.fcUpdateManager(oEvent);
               break;
             //---- Delete ----
             case "fcDeleteSystemList":
@@ -541,6 +546,7 @@ sap.ui.define(
 
         //Combox Selection Change
         onSelectionChange: function (oEvent) {
+          //__xmlview0 앞에 붙어서 substring
           var sId = oEvent.getSource().sId.substring(12);
 
           if (sId == "AddSysLiCompanyCd") {
@@ -797,11 +803,11 @@ sap.ui.define(
         },
 
         getCertiText: function (iStatus) {
-          switch(iStatus) {
-            case '0':
-            return "Basic";
-            case '1':
-            return "oAuth2.0";
+          switch (iStatus) {
+            case "0":
+              return "Basic";
+            case "1":
+              return "oAuth2.0";
           }
         },
 
@@ -1082,7 +1088,7 @@ sap.ui.define(
           this.fragments["VHSSystemList"].close();
         },
 
-        onVHSSystemAfterClose: function () { },
+        onVHSSystemAfterClose: function () {},
 
         onVHSSystemOK: function (oEvent) {
           var oInput = this.byId(this.ControlID.ISourceSystem);
@@ -1308,7 +1314,7 @@ sap.ui.define(
           this.fragments["VHTSystemList"].close();
         },
 
-        onVHTSystemAfterClose: function () { },
+        onVHTSystemAfterClose: function () {},
 
         onVHTSystemOK: function (oEvent) {
           var oInput = this.byId(this.ControlID.ITargetSystem);
@@ -1483,12 +1489,14 @@ sap.ui.define(
           this.setUIChanges(this._h.management);
 
           if (this.checkUIChanges()) {
-            this.showMessageToast('msgWarn02', '20rem', []);
+            this.showMessageToast("msgWarn02", "20rem", []);
             return;
           }
 
           this.setMessageType(this.MESSAGE_TYPE.REFRESH);
-          this.getControl(this.ControlID.tabCodeList).getBinding('rows').refresh();
+          this.getControl(this.ControlID.tabCodeList)
+            .getBinding("rows")
+            .refresh();
         },
 
         // 코드 리스트 소팅
@@ -1497,10 +1505,15 @@ sap.ui.define(
           var oTable = oView.byId("row");
           var oCategoriesColumn = oView.byId("codeCategory");
 
-          oTable.sort(oCategoriesColumn, this._bSortColumnDescending ? SortOrder.Descending : SortOrder.Ascending, /*extend existing sorting*/true);
+          oTable.sort(
+            oCategoriesColumn,
+            this._bSortColumnDescending
+              ? SortOrder.Descending
+              : SortOrder.Ascending,
+            /*extend existing sorting*/ true
+          );
           this._bSortColumnDescending = !this._bSortColumnDescending;
         },
-
 
         // 코드 리스트 검색
         fcSearchCode: function (oEvent) {
@@ -1613,7 +1626,7 @@ sap.ui.define(
         },
 
         // 코드 생성 팝업 나타내기
-        fcCreateCode: function (oEvent) {          
+        fcCreateCode: function (oEvent) {
           this._h.mainView.setProperty("/CodeList/Add", {
             codeNm: "",
             description: "",
@@ -1622,7 +1635,7 @@ sap.ui.define(
           this.callPopupFragment("AddCodeList", oEvent);
         },
 
-        // 코드 생성 확정 
+        // 코드 생성 확정
         fcConfirmAddCodePopup: function (oEvent) {
           var self = this;
           // 테이블 컨트롤러 호출
@@ -1694,13 +1707,13 @@ sap.ui.define(
 
         // 코드 생성 팝업 닫기
         fcCancelAddCodePopup: function (oEvent) {
-          this.oMessageManager.removeAllMessages();          
+          this.oMessageManager.removeAllMessages();
           this.closePopupFragment("AddCodeList");
         },
 
         // 코드 수정 팝업 나타내기
         fcUpdateCodeList: function (oEvent) {
-          console.log("코드 팝업 ")
+          console.log("코드 팝업 ");
           this._h.mainView.setProperty("/CodeList/Add", {
             codeNm: "",
             description: "",
@@ -1709,20 +1722,24 @@ sap.ui.define(
           this.callPopupFragment("UpdateCodeList", oEvent);
         },
 
-        // 코드 수정 확정 
-        fcConfirmUpdateCodePopup: function (oEvent){
-          console.log("코드 수정 확정")
+        // 코드 수정 확정
+        fcConfirmUpdateCodePopup: function (oEvent) {
+          console.log("코드 수정 확정");
 
           var self = this;
           var oView = this.getView();
-    
+
           // Select context
-          var oContext = oEvent.getSource().getParent().getParent().getBindingContext('management');
+          var oContext = oEvent
+            .getSource()
+            .getParent()
+            .getParent()
+            .getBindingContext("management");
         },
 
         // 코드 수정 팝업 닫기
         fcCancelUpdateCodePopup: function (oEvent) {
-          console.log("코드 수정 팝업 닫기")
+          console.log("코드 수정 팝업 닫기");
           this.oMessageManager.removeAllMessages();
           this.closePopupFragment("UpdateCodeList");
         },
@@ -1741,21 +1758,27 @@ sap.ui.define(
           var oTable = this.getControl(this.ControlID.tabCodeList);
           var oBinding = oTable.getBinding("rows");
 
-          if (!this._h.mainView.getProperty('/CodeList/selectedCount')) {
-            this.showMessage(this.MSGTYPE.WARNING, 'Error', this.getI18nText('tlDeleteSetting'));
+          if (!this._h.mainView.getProperty("/CodeList/selectedCount")) {
+            this.showMessage(
+              this.MSGTYPE.WARNING,
+              "Error",
+              this.getI18nText("tlDeleteSetting")
+            );
             return;
           }
 
-          this.callPopupConfirm('msgAlert002', 'alert', this.MSGBOXICON.WARNING)
+          this.callPopupConfirm("msgAlert002", "alert", this.MSGBOXICON.WARNING)
             .then(function (sAction) {
-              if (sAction === 'OK') {
+              if (sAction === "OK") {
                 _.forEach(oTable.getSelectedIndices(), function (iIndex) {
-                  oTable.getContextByIndex(iIndex).setProperty('DELETED_TF', true);
+                  oTable
+                    .getContextByIndex(iIndex)
+                    .setProperty("DELETED_TF", true);
                 });
 
                 self.setMessageType(self.MESSAGE_TYPE.UPDATE);
 
-                self._h.management.submitBatch('codeListDataGroup').then(
+                self._h.management.submitBatch("codeListDataGroup").then(
                   // Success
                   function (oData) {
                     self._h.management.refresh();
@@ -1765,15 +1788,16 @@ sap.ui.define(
                   // Fail
                   function (oError) {
                     self.resetBindingChanges(oBinding);
-                    self.showMessageToast('msgError10', '20rem', [oError.message]);
+                    self.showMessageToast("msgError10", "20rem", [
+                      oError.message,
+                    ]);
                   }
-                )
+                );
               }
             })
             .catch(function (oError) {
               console.log(oError);
             });
-
         },
 
         //------------------------- Code List End -------------------------------------------
@@ -1883,9 +1907,7 @@ sap.ui.define(
             appliNm: "",
             systemNm: "",
             description: "",
-            managerName: "",
-            contact: "",
-            email: "",
+            Manager: [],
             systemIP: "",
             systemHost: "",
             systemPort: "",
@@ -1893,6 +1915,21 @@ sap.ui.define(
           });
 
           this.callPopupFragment("AddSystemList", oEvent);
+        },
+
+        //manager add btn
+        fcAddManager: function (oEvent) {
+          var oList = this.byId(this.ControlID.tabAddMangerList);
+          var oItems = oList
+            .getBinding("items")
+            .getModel()
+            .getProperty("/SystemList/Add/Manager");
+          oItems.push({
+            NAME: "",
+            PHONE: "",
+            EMAIL: ""
+          });
+          this._h.management.refresh();
         },
 
         fcAddSystemListPopup: function (oEvent) {
@@ -1980,12 +2017,12 @@ sap.ui.define(
             APPL_NM: oInput.appliNm,
             SYSTEM_NM: oInput.systemNm,
             DESCRIPTION: oInput.description,
-            MANAGER: [
-              {
-                NAME: oInput.managerName,
-                PHONE: oInput.contact,
-                EMAIL: oInput.email,
-              },
+            MANAGER: [ oInput.Manager
+              // {
+              //   NAME: oInput.NAME,
+              //   PHONE: oInput.PHONE,
+              //   EMAIL: oInput.EMAIL,
+              // },
             ],
             IP: oInput.systemIP,
             HOST: oInput.systemHost,
@@ -2007,22 +2044,7 @@ sap.ui.define(
                 this.showMessageToast("msgError04", "20rem", [oError.message]);
               }.bind(this)
             );
-        },
-
-        //manager add btn
-        fcAddManager: function (oEvent) {
-          var oList = this.byId(this.ControlID.tbSystemManager);
-          var oItems = oList
-            .getBinding("items")
-            .getModel()
-            .getProperty("/managerList");
-          oItems.push({
-            managerName: "",
-            managerContact: "",
-            managerEmail: "",
-          });
-          this._h.management.refresh();
-        },
+        },        
 
         fcCancelAddSystemListPopUp: function (oEvent) {
           this.closePopupFragment(this.ControlID.AddSystemList, oEvent);
@@ -2033,8 +2055,6 @@ sap.ui.define(
           this.callPopupFragment(this.ControlID.UpdateSystemList, oEvent);
 
           var oPath = this.getListItemContext(oEvent, "management").sPath;
-          var oD = this.getListItemContext(oEvent, "management");
-          console.log(oD);
 
           this.fragments["UpdateSystemList"].bindElement({
             path: oPath,
@@ -2042,11 +2062,24 @@ sap.ui.define(
           });
         },
 
+        //manager update(add)
+        fcUpdateManager: function (oEvent) {
+          var oList = this.byId(this.ControlID.tabUpdateMangerList);
+          var oItems = oList
+            .getBinding("items")
+            .getModel()
+            .getProperty("/SystemList/Update/Manager");
+          oItems.push({
+            NAME: "",
+            PHONE: "",
+            EMAIL: ""
+          });
+          this._h.management.refresh();
+        },
+
         fcUpdateSystemListPopup: function (oEvent) {
           var self = this;
           this.setUIChanges(this._h.management);
-
-          console.log(this.setUIChanges(this._h.management));
 
           if (this.checkUIChanges()) {
             this._h.management

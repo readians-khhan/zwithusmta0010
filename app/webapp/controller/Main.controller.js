@@ -88,6 +88,8 @@ sap.ui.define(
           AddCodeLiCat01: "AddCodeLiCat01",
           AddCodeLiCat02: "AddCodeLiCat02",
           AddCodeLiCat03: "AddCodeLiCat03",
+          formUpdateCodeList: "formUpdateCodeList",
+          UpdateCodeList: "UpdateCodeList",
 
           //-------------------------------------------------------------------------------------------
 
@@ -369,6 +371,83 @@ sap.ui.define(
               break;
             case "fcCheckCHOnlyInputKey":
               this.fcCheckCHOnlyInputKey(oEvent);
+          }
+        },
+
+        fcChangeCbcCycle: function (oEvent) {
+          var sExec = oEvent.getSource().getSelectedItem().getAdditionalText();
+
+          var sEventSorceID = oEvent.getSource().getId();
+          var sViewID = this.getView().getId();
+          var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
+          var oCbcCycleID = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+              "--" +
+              this.ControlID.CbcCycle +
+              sEventSorceID.match(rRegex)[0]
+            );
+
+          var oCbcRecurrecn = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+              "--" +
+              this.ControlID.CbcRecurrecn +
+              sEventSorceID.match(rRegex)[0]
+            );
+          var oCbcInterval = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+              "--" +
+              this.ControlID.CbcInterval +
+              sEventSorceID.match(rRegex)[0]
+            );
+          var oDPOnDate = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+              "--" +
+              this.ControlID.DPOnDate +
+              sEventSorceID.match(rRegex)[0]
+            );
+          var oTPFrTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+              "--" +
+              this.ControlID.TPFrTime +
+              sEventSorceID.match(rRegex)[0]
+            );
+          var oTPToTime = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+              "--" +
+              this.ControlID.TPToTime +
+              sEventSorceID.match(rRegex)[0]
+            );
+          var oITimezone = sap.ui
+            .getCore()
+            .byId(
+              sViewID +
+              "--" +
+              this.ControlID.ITimezone +
+              sEventSorceID.match(rRegex)[0]
+            );
+
+          switch (sExec) {
+            case "ONTIME":
+              oTPToTime.setEnabled(false);
+              oCbcInterval.setEnabled(false);
+              break;
+            case "EVERY":
+              oTPToTime.setEnabled(true);
+              oCbcInterval.setEnabled(true);
+              break;
+            default:
               break;
           }
         },
@@ -1752,6 +1831,14 @@ sap.ui.define(
             description: "",
             detailDescription: "",
           });
+          // 컨트롤
+          var oSCCat01 = this.getControl(this.ControlID.MCCDSoruceCt01);
+          
+          // 선택 데이터 가져오기
+          var oSCCategory01 = oSCCat01.getValue();
+
+          console.log(oSCCategory01);
+
           this.callPopupFragment("AddCodeList", oEvent);
         },
 
@@ -1833,28 +1920,45 @@ sap.ui.define(
 
         // 코드 수정 팝업 나타내기
         fcUpdateCodeList: function (oEvent) {
-          console.log("코드 팝업 ");
-          this._h.mainView.setProperty("/CodeList/Add", {
-            codeNm: "",
-            description: "",
-            detailDescription: "",
+          console.log("코드 팝업 ")
+          this.callPopupFragment(this.ControlID.UpdateCodeList, oEvent);
+
+          var oPath = this.getListItemContext(oEvent, "management").sPath;
+          var oD = this.getListItemContext(oEvent, "management");
+          console.log(oD);
+
+          this.fragments["UpdateCodeList"].bindElement({
+            path: oPath,
+            model: "management",
           });
-          this.callPopupFragment("UpdateCodeList", oEvent);
         },
 
-        // 코드 수정 확정
+        // 코드 수정 확정 
         fcConfirmUpdateCodePopup: function (oEvent) {
-          console.log("코드 수정 확정");
-
           var self = this;
-          var oView = this.getView();
+          this.setUIChanges(this._h.management);
 
-          // Select context
-          var oContext = oEvent
-            .getSource()
-            .getParent()
-            .getParent()
-            .getBindingContext("management");
+          console.log(this.checkUIChanges());
+
+          if (this.checkUIChanges()) {
+            this._h.management.submitBatch(this.ControlID.codeListDataGroup)
+              .then(
+                function () {
+                  self.setUIChanges(self._h.management, false);
+                  self.setMessageType(self.MESSAGE_TYPE.UPDATE);
+                  self.getControl('dialogAddCodeList').close();
+                  self._h.management.refresh();
+                },
+                function (oError) {
+                  self.setUIChanges(self._h.management, false);
+                  self.showMessageToast("msgError10", "20rem", [
+                    oError.message,
+                  ]);
+                });
+          } else {
+            this.getControl('dialogAddCodeList').close();
+            this.showMessageToast("msgInfo01", "20rem");
+          }
         },
 
         // 코드 수정 팝업 닫기
@@ -1924,7 +2028,7 @@ sap.ui.define(
 
         //------------------------- System List Start -------------------------------------------
 
-        fcInitSystemList: function (oEvent) {},
+        fcInitSystemList: function (oEvent) { },
 
         fcRefreshSystemList: function (oEvent) {
           this.setUIChanges(this._h.management);

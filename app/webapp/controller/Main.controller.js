@@ -469,7 +469,6 @@ sap.ui.define(
               break;
             case "systemList":
               this.getView().byId("tabSystemList__bDelete").setEnabled(false);
-              // this.fcInitSystemList();
               oNavConMain.to(this.getControl("dp-system"), "slide");
               break;
             case "exception":
@@ -2057,17 +2056,6 @@ sap.ui.define(
         //------------------------- Code List End -------------------------------------------
 
         //------------------------- System List Start -------------------------------------------
-
-        fcInitSystemList: function (oEvent) {
-          this.getControl(this.ControlID.McSLSorceCompanyCd).setSelectedKey("");
-          this.getControl(this.ControlID.McSLSorceSubsidiaryCd).setSelectedKey(
-            ""
-          );
-          this.getControl(this.ControlID.MiSystemAppNm).setSelectedKey("");
-
-          this._h.management.refresh();
-        },
-
         fcRefreshSystemList: function (oEvent) {
           this.setUIChanges(this._h.management);
 
@@ -2179,7 +2167,7 @@ sap.ui.define(
           this.callPopupFragment("AddSystemList", oEvent);
         },
 
-        //manager add btn
+        //manager Tb add btn
         fcAddManager: function (oEvent) {
           var oList = this.byId(this.ControlID.tabAddMangerList);
           var oItems = oList
@@ -2194,6 +2182,7 @@ sap.ui.define(
           this._h.management.refresh();
         },
 
+        //manager Tb delete btn
         fcDeleteManager: function (oEvent) {
           var oSource = oEvent.getSource().getId();
           var Iindex = parseInt(
@@ -2313,9 +2302,6 @@ sap.ui.define(
                 this.getControl(
                   this.ControlID.AddSysLiSubdiaryCd
                 ).setSelectedKey("");
-                this.getControl(this.ControlID.AddSysLiAppliCd).setSelectedKey(
-                  ""
-                );
                 this.closePopupFragment(self.ControlID.AddSystemList);
               }.bind(this),
               function (oError) {

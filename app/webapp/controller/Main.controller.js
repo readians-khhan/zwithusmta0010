@@ -384,58 +384,58 @@ sap.ui.define(
             .getCore()
             .byId(
               sViewID +
-              "--" +
-              this.ControlID.CbcCycle +
-              sEventSorceID.match(rRegex)[0]
+                "--" +
+                this.ControlID.CbcCycle +
+                sEventSorceID.match(rRegex)[0]
             );
 
           var oCbcRecurrecn = sap.ui
             .getCore()
             .byId(
               sViewID +
-              "--" +
-              this.ControlID.CbcRecurrecn +
-              sEventSorceID.match(rRegex)[0]
+                "--" +
+                this.ControlID.CbcRecurrecn +
+                sEventSorceID.match(rRegex)[0]
             );
           var oCbcInterval = sap.ui
             .getCore()
             .byId(
               sViewID +
-              "--" +
-              this.ControlID.CbcInterval +
-              sEventSorceID.match(rRegex)[0]
+                "--" +
+                this.ControlID.CbcInterval +
+                sEventSorceID.match(rRegex)[0]
             );
           var oDPOnDate = sap.ui
             .getCore()
             .byId(
               sViewID +
-              "--" +
-              this.ControlID.DPOnDate +
-              sEventSorceID.match(rRegex)[0]
+                "--" +
+                this.ControlID.DPOnDate +
+                sEventSorceID.match(rRegex)[0]
             );
           var oTPFrTime = sap.ui
             .getCore()
             .byId(
               sViewID +
-              "--" +
-              this.ControlID.TPFrTime +
-              sEventSorceID.match(rRegex)[0]
+                "--" +
+                this.ControlID.TPFrTime +
+                sEventSorceID.match(rRegex)[0]
             );
           var oTPToTime = sap.ui
             .getCore()
             .byId(
               sViewID +
-              "--" +
-              this.ControlID.TPToTime +
-              sEventSorceID.match(rRegex)[0]
+                "--" +
+                this.ControlID.TPToTime +
+                sEventSorceID.match(rRegex)[0]
             );
           var oITimezone = sap.ui
             .getCore()
             .byId(
               sViewID +
-              "--" +
-              this.ControlID.ITimezone +
-              sEventSorceID.match(rRegex)[0]
+                "--" +
+                this.ControlID.ITimezone +
+                sEventSorceID.match(rRegex)[0]
             );
 
           switch (sExec) {
@@ -469,8 +469,8 @@ sap.ui.define(
               break;
             case "systemList":
               this.getView().byId("tabSystemList__bDelete").setEnabled(false);
+              // this.fcInitSystemList();
               oNavConMain.to(this.getControl("dp-system"), "slide");
-              this.fcInitSystemList();
               break;
             case "exception":
               oNavConMain.to(this.getControl("dp-exception"), "slide");
@@ -1333,7 +1333,7 @@ sap.ui.define(
           if (oInput.Batch.length > 1) {
             oInputData.BATCH = oInput.Batch;
           }
-          
+
           oBinding.create(oInputData);
 
           this._h.management
@@ -1833,7 +1833,7 @@ sap.ui.define(
           });
           // 컨트롤
           var oSCCat01 = this.getControl(this.ControlID.MCCDSoruceCt01);
-          
+
           // 선택 데이터 가져오기
           var oSCCategory01 = oSCCat01.getValue();
 
@@ -1920,7 +1920,7 @@ sap.ui.define(
 
         // 코드 수정 팝업 나타내기
         fcUpdateCodeList: function (oEvent) {
-          console.log("코드 팝업 ")
+          console.log("코드 팝업 ");
           this.callPopupFragment(this.ControlID.UpdateCodeList, oEvent);
 
           var oPath = this.getListItemContext(oEvent, "management").sPath;
@@ -1933,7 +1933,7 @@ sap.ui.define(
           });
         },
 
-        // 코드 수정 확정 
+        // 코드 수정 확정
         fcConfirmUpdateCodePopup: function (oEvent) {
           var self = this;
           this.setUIChanges(this._h.management);
@@ -1941,12 +1941,13 @@ sap.ui.define(
           console.log(this.checkUIChanges());
 
           if (this.checkUIChanges()) {
-            this._h.management.submitBatch(this.ControlID.codeListDataGroup)
+            this._h.management
+              .submitBatch(this.ControlID.codeListDataGroup)
               .then(
                 function () {
                   self.setUIChanges(self._h.management, false);
                   self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-                  self.getControl('dialogAddCodeList').close();
+                  self.getControl("dialogAddCodeList").close();
                   self._h.management.refresh();
                 },
                 function (oError) {
@@ -1954,9 +1955,10 @@ sap.ui.define(
                   self.showMessageToast("msgError10", "20rem", [
                     oError.message,
                   ]);
-                });
+                }
+              );
           } else {
-            this.getControl('dialogAddCodeList').close();
+            this.getControl("dialogAddCodeList").close();
             this.showMessageToast("msgInfo01", "20rem");
           }
         },
@@ -2028,7 +2030,15 @@ sap.ui.define(
 
         //------------------------- System List Start -------------------------------------------
 
-        fcInitSystemList: function (oEvent) { },
+        fcInitSystemList: function (oEvent) {
+          this.getControl(this.ControlID.McSLSorceCompanyCd).setSelectedKey("");
+          this.getControl(this.ControlID.McSLSorceSubsidiaryCd).setSelectedKey(
+            ""
+          );
+          this.getControl(this.ControlID.MiSystemAppNm).setSelectedKey("");
+
+          this._h.management.refresh();
+        },
 
         fcRefreshSystemList: function (oEvent) {
           this.setUIChanges(this._h.management);
@@ -2269,15 +2279,15 @@ sap.ui.define(
             .then(
               function (oData) {
                 this.showMessageToast("msgSuccess13", "20rem", []);
-                this.getView()
-                  .byId(this.ControlID.AddSysLiCompanyCd)
-                  .setValue("");
-                this.getView()
-                  .byId(this.ControlID.AddSysLiSubdiaryCd)
-                  .setValue("");
-                this.getView()
-                  .byId(this.ControlID.AddSysLiAppliCd)
-                  .setValue("");
+                this.getControl(
+                  this.ControlID.AddSysLiCompanyCd
+                ).setSelectedKey("");
+                this.getControl(
+                  this.ControlID.AddSysLiSubdiaryCd
+                ).setSelectedKey("");
+                this.getControl(this.ControlID.AddSysLiAppliCd).setSelectedKey(
+                  ""
+                );
                 this.closePopupFragment(self.ControlID.AddSystemList);
               }.bind(this),
               function (oError) {
@@ -2288,6 +2298,10 @@ sap.ui.define(
         },
 
         fcCancelAddSystemListPopUp: function (oEvent) {
+          this.getControl(this.ControlID.AddSysLiCompanyCd).setSelectedKey("");
+          this.getControl(this.ControlID.AddSysLiSubdiaryCd).setSelectedKey("");
+          this.getControl(this.ControlID.AddSysLiAppliCd).setSelectedKey("");
+
           this.closePopupFragment(this.ControlID.AddSystemList, oEvent);
         },
 

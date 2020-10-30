@@ -74,6 +74,7 @@
                         <!-- MANAGER INFO -->
                         <Table id="tabAddMangerList"
                             inset="false"
+                            autoResizable="true"
                             items="{mainView>/SystemList/Add/Manager}">
                             <headerToolbar>
                                 <OverflowToolbar >

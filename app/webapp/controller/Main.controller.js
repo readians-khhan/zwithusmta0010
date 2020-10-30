@@ -101,6 +101,8 @@ sap.ui.define(
           McSLSorceCompanyCd: "McSLSorceCompanyCd",
           McSLSorceSubsidiaryCd: "McSLSorceSubsidiaryCd",
           MiSystemAppNm: "MiSystemAppNm",
+          SLCbdeleted: "SLCbdeleted",
+
           //--- Add Pop Up ---
           AddSystemList: "AddSystemList",
           AddSysLiCompanyCd: "AddSysLiCompanyCd",
@@ -479,7 +481,6 @@ sap.ui.define(
 
         //------------------------- Common Start -------------------------------------------
 
-
         fcMessage: function (oEvent) {
           if (!this.fragments["Messages"]) {
             var sFragmentName =
@@ -837,30 +838,35 @@ sap.ui.define(
         //------------------------- Interface List  Start -------------------------------------------
 
         fcInitInterfaceCreateData: function (oEvent) {
-          var oMainverRegsiterData = this._h.mainView.getProperty("/Interface/Regist/");
+          var oMainverRegsiterData = this._h.mainView.getProperty(
+            "/Interface/Regist/"
+          );
           oMainverRegsiterData.StatusID = "";
-          oMainverRegsiterData.Name= "";
-          oMainverRegsiterData.Description= "";
-          oMainverRegsiterData.Package= "";
-          oMainverRegsiterData.IFName= "";
-          oMainverRegsiterData.AsIsID= "";
-          oMainverRegsiterData.AsIsName= "";
-          oMainverRegsiterData.AsIsDescription= "";
-          oMainverRegsiterData.SourceSystemID= "";
-          oMainverRegsiterData.SourceSystemTypeID= "";
-          oMainverRegsiterData.TargetSystemID= "";
-          oMainverRegsiterData.TargetSystemDESC= "";
-          oMainverRegsiterData.TargetSystemTypeID= "";
-          oMainverRegsiterData.RFCName= "";
-          oMainverRegsiterData.ESName= "";
-          oMainverRegsiterData.WSName= "";
-          oMainverRegsiterData.WSBName= "";
-          oMainverRegsiterData.typeID= "";
-          oMainverRegsiterData.Batch= [];
+          oMainverRegsiterData.Name = "";
+          oMainverRegsiterData.Description = "";
+          oMainverRegsiterData.Package = "";
+          oMainverRegsiterData.IFName = "";
+          oMainverRegsiterData.AsIsID = "";
+          oMainverRegsiterData.AsIsName = "";
+          oMainverRegsiterData.AsIsDescription = "";
+          oMainverRegsiterData.SourceSystemID = "";
+          oMainverRegsiterData.SourceSystemTypeID = "";
+          oMainverRegsiterData.TargetSystemID = "";
+          oMainverRegsiterData.TargetSystemDESC = "";
+          oMainverRegsiterData.TargetSystemTypeID = "";
+          oMainverRegsiterData.RFCName = "";
+          oMainverRegsiterData.ESName = "";
+          oMainverRegsiterData.WSName = "";
+          oMainverRegsiterData.WSBName = "";
+          oMainverRegsiterData.typeID = "";
+          oMainverRegsiterData.Batch = [];
 
-          var oMainverRegsiterData = this._h.mainView.setProperty("/Interface/Regist/",oMainverRegsiterData);
+          var oMainverRegsiterData = this._h.mainView.setProperty(
+            "/Interface/Regist/",
+            oMainverRegsiterData
+          );
         },
-        
+
         fcCreateInterfacePopupElementDelete: function (oEvent) {
           var oSource = oEvent.getSource().getId();
           var Iindex = parseInt(
@@ -872,7 +878,7 @@ sap.ui.define(
           oBatch = _.pull(oBatch, oBatch[Iindex]);
           this._h.mainView.refresh();
         },
-        
+
         fcshowBatchList: function (oEvent) {},
 
         fcChangeBatch: function (oEvent) {
@@ -2100,6 +2106,10 @@ sap.ui.define(
           var oSCCompany = oSCCompany.getSelectedKeys();
           var oSCSubsidary = oSCSubsidary.getSelectedKeys();
 
+          var oDeleted = this.getControl(
+            this.ControlID.SLCbdeleted
+          ).getSelected();
+
           //회사
           if (oSCCompany.length) {
             aCompanyFilters = _.map(oSCCompany, function (iStatus) {
@@ -2132,6 +2142,13 @@ sap.ui.define(
               field: "APPL_NM",
               op: this.OP.CONTAINS,
               from: oApplNmTokens,
+            });
+          }
+          if (!oDeleted) {
+            aFilters.push({
+              field: "DELETED_TF",
+              op: this.OP.EQ,
+              from: oDeleted,
             });
           }
 
@@ -2211,7 +2228,7 @@ sap.ui.define(
           if (!oInput.company) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Company"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldCompanyCd")]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2221,7 +2238,7 @@ sap.ui.define(
           if (!oInput.subdiary) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Subdiary Company"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldSubsidaryCd")]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2231,7 +2248,7 @@ sap.ui.define(
           if (!oInput.appliCd) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Application Code"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldApplTypeCd")]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2241,7 +2258,7 @@ sap.ui.define(
           if (!oInput.appliNm) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Application Name"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldApplNm")]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2251,7 +2268,7 @@ sap.ui.define(
           if (!oInput.systemNm) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["System Name"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldSystemNm")]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2261,7 +2278,7 @@ sap.ui.define(
           if (!oInput.description) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Description"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldSystemDescription")]),
               type: "Error",
               processor: this._h.mainView,
             });

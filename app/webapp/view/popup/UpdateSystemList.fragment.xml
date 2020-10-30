@@ -79,6 +79,7 @@
                         <!-- MANAGER INFO : Add -->
                         <Table id="tabUpdateMangerList"
                             inset="false"
+                            autoResizable="true"
                             items="{mainView>/SystemList/Update/Manager}">
                             <headerToolbar>
                                 <OverflowToolbar >

@@ -61,6 +61,14 @@
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>
+                <!-- Deleted -->
+                <f:FormContainer>
+                    <f:FormElement>
+                        <f:fields>
+                            <CheckBox id="SLCbdeleted" text="{i18n>cbdeleted}" selected="false" />
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
             </f:formContainers>
         </f:Form>
     </Panel>

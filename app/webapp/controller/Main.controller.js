@@ -480,42 +480,6 @@ sap.ui.define(
 
         //------------------------- Common Start -------------------------------------------
 
-        fcInitInterfaceCreateData: function (oEvent) {
-          var oMainverRegsiterData = this._h.mainView.getProperty("/Interface/Regist/");
-          oMainverRegsiterData.StatusID = "";
-          oMainverRegsiterData.Name= "";
-          oMainverRegsiterData.Description= "";
-          oMainverRegsiterData.Package= "";
-          oMainverRegsiterData.IFName= "";
-          oMainverRegsiterData.AsIsID= "";
-          oMainverRegsiterData.AsIsName= "";
-          oMainverRegsiterData.AsIsDescription= "";
-          oMainverRegsiterData.SourceSystemID= "";
-          oMainverRegsiterData.SourceSystemTypeID= "";
-          oMainverRegsiterData.TargetSystemID= "";
-          oMainverRegsiterData.TargetSystemDESC= "";
-          oMainverRegsiterData.TargetSystemTypeID= "";
-          oMainverRegsiterData.RFCName= "";
-          oMainverRegsiterData.ESName= "";
-          oMainverRegsiterData.WSName= "";
-          oMainverRegsiterData.WSBName= "";
-          oMainverRegsiterData.typeID= "";
-          oMainverRegsiterData.Batch= [];
-
-          var oMainverRegsiterData = this._h.mainView.setProperty("/Interface/Regist/",oMainverRegsiterData);
-        },
-        
-        fcCreateInterfacePopupElementDelete: function (oEvent) {
-          var oSource = oEvent.getSource().getId();
-          var Iindex = parseInt(
-            oSource.substr(oSource.length - 1, oSource.length)
-          );
-
-          var oBatch = this._h.mainView.getProperty("/Interface/Regist/Batch");
-
-          oBatch = _.pull(oBatch, oBatch[Iindex]);
-          this._h.mainView.refresh();
-        },
 
         fcMessage: function (oEvent) {
           if (!this.fragments["Messages"]) {
@@ -873,6 +837,43 @@ sap.ui.define(
 
         //------------------------- Interface List  Start -------------------------------------------
 
+        fcInitInterfaceCreateData: function (oEvent) {
+          var oMainverRegsiterData = this._h.mainView.getProperty("/Interface/Regist/");
+          oMainverRegsiterData.StatusID = "";
+          oMainverRegsiterData.Name= "";
+          oMainverRegsiterData.Description= "";
+          oMainverRegsiterData.Package= "";
+          oMainverRegsiterData.IFName= "";
+          oMainverRegsiterData.AsIsID= "";
+          oMainverRegsiterData.AsIsName= "";
+          oMainverRegsiterData.AsIsDescription= "";
+          oMainverRegsiterData.SourceSystemID= "";
+          oMainverRegsiterData.SourceSystemTypeID= "";
+          oMainverRegsiterData.TargetSystemID= "";
+          oMainverRegsiterData.TargetSystemDESC= "";
+          oMainverRegsiterData.TargetSystemTypeID= "";
+          oMainverRegsiterData.RFCName= "";
+          oMainverRegsiterData.ESName= "";
+          oMainverRegsiterData.WSName= "";
+          oMainverRegsiterData.WSBName= "";
+          oMainverRegsiterData.typeID= "";
+          oMainverRegsiterData.Batch= [];
+
+          var oMainverRegsiterData = this._h.mainView.setProperty("/Interface/Regist/",oMainverRegsiterData);
+        },
+        
+        fcCreateInterfacePopupElementDelete: function (oEvent) {
+          var oSource = oEvent.getSource().getId();
+          var Iindex = parseInt(
+            oSource.substr(oSource.length - 1, oSource.length)
+          );
+
+          var oBatch = this._h.mainView.getProperty("/Interface/Regist/Batch");
+
+          oBatch = _.pull(oBatch, oBatch[Iindex]);
+          this._h.mainView.refresh();
+        },
+        
         fcshowBatchList: function (oEvent) {},
 
         fcChangeBatch: function (oEvent) {

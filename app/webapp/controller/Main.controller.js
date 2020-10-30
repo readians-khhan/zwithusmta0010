@@ -1888,7 +1888,7 @@ sap.ui.define(
           if (!oInput.cat01) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Category01"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldCodeSection")]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -1898,7 +1898,7 @@ sap.ui.define(
           if (!oInput.cat02) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Category02"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldCodeDetailSection")]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -1908,7 +1908,7 @@ sap.ui.define(
           if (!oInput.codeNm) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", ["Code Name"]),
+              message: this.getI18nText("msgError09", [this.getI18nText("fldCodeName")]),
               type: "Error",
               processor: this._h.mainView,
             });

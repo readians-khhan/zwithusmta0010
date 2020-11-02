@@ -102,6 +102,7 @@ sap.ui.define(
           McSLSorceSubsidiaryCd: "McSLSorceSubsidiaryCd",
           MiSystemAppNm: "MiSystemAppNm",
           SLCbdeleted: "SLCbdeleted",
+          SystemListManager: "SystemListManager",
 
           //--- Add Pop Up ---
           AddSystemList: "AddSystemList",
@@ -334,6 +335,12 @@ sap.ui.define(
               break;
             case "fcSelectionChangeSystemList":
               this.fcSelectionChangeSystemList(oEvent);
+              break;
+            case "fcManagerPopUp":
+              this.fcManagerPopUp(oEvent);
+              break;
+            case "fcCloseSystemListManagerPopUp":
+              this.fcCloseSystemListManagerPopUp(oEvent);
               break;
             //---- Add Popup ----
             case "fcCreateSystemList":
@@ -2130,6 +2137,21 @@ sap.ui.define(
           oControl.getBinding("rows").filter(aFilterObjects);
         },
 
+        //manager popup open
+        fcManagerPopUp: function (oEvent) {
+          this.callPopupFragment(this.ControlID.SystemListManager, oEvent);        
+          var managerList = this.getListItemContext(oEvent, "management");
+          var oPath = this.getListItemContext(oEvent, "management").sPath;
+          // var managerList = oEvent.getSource().getBindingContext("MANAGER")
+          
+          console.log(managerList);
+        },
+
+        //manager popup close
+        fcCloseSystemListManagerPopUp: function (oEvent) {
+          this.closePopupFragment(this.ControlID.SystemListManager, oEvent);
+        },
+
         //Create
         fcCreateSystemList: function (oEvent) {
           this._h.mainView.setProperty("/SystemList/Add", {
@@ -2185,12 +2207,12 @@ sap.ui.define(
           var bError = false;
           var oInput = this._h.mainView.getProperty("/SystemList/Add");
 
-          console.log(oInput);
-
           if (!oInput.company) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", [this.getI18nText("fldCompanyCd")]),
+              message: this.getI18nText("msgError09", [
+                this.getI18nText("fldCompanyCd"),
+              ]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2200,7 +2222,9 @@ sap.ui.define(
           if (!oInput.subdiary) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", [this.getI18nText("fldSubsidaryCd")]),
+              message: this.getI18nText("msgError09", [
+                this.getI18nText("fldSubsidaryCd"),
+              ]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2210,7 +2234,9 @@ sap.ui.define(
           if (!oInput.appliCd) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", [this.getI18nText("fldApplTypeCd")]),
+              message: this.getI18nText("msgError09", [
+                this.getI18nText("fldApplTypeCd"),
+              ]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2220,7 +2246,9 @@ sap.ui.define(
           if (!oInput.appliNm) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", [this.getI18nText("fldApplNm")]),
+              message: this.getI18nText("msgError09", [
+                this.getI18nText("fldApplNm"),
+              ]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2230,7 +2258,9 @@ sap.ui.define(
           if (!oInput.systemNm) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", [this.getI18nText("fldSystemNm")]),
+              message: this.getI18nText("msgError09", [
+                this.getI18nText("fldSystemNm"),
+              ]),
               type: "Error",
               processor: this._h.mainView,
             });
@@ -2240,7 +2270,9 @@ sap.ui.define(
           if (!oInput.description) {
             bError = true;
             var oMessage = new Message({
-              message: this.getI18nText("msgError09", [this.getI18nText("fldSystemDescription")]),
+              message: this.getI18nText("msgError09", [
+                this.getI18nText("fldSystemDescription"),
+              ]),
               type: "Error",
               processor: this._h.mainView,
             });

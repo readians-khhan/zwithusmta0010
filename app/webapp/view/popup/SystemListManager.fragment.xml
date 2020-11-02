@@ -1,0 +1,89 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:t="sap.ui.table"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Dialog id="dialogSystemListManager"
+        resizable="true"
+        draggable="true"
+        stretch="false"
+        busy="{mainView>/busy}"
+        busyIndicatorDelay="0"
+        title="{i18n>fldSystemManagerList}"
+        contentWidth="50%">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                <f:SimpleForm id="formUpdateSystemList"
+                    editable="true"
+                    layout="ResponsiveGridLayout"
+                    labelSpanXL="3"
+                    labelSpanL="3"
+                    labelSpanM="4"
+                    labelSpanS="12"
+                    adjustLabelSpan="false"
+                    emptySpanXL="0"
+                    emptySpanL="0"
+                    emptySpanM="0"
+                    emptySpanS="0"
+                    columnsXL="1"
+                    columnsL="1"
+                    columnsM="1"
+                    singleContainerFullSize="false">
+                    <f:content>
+                        <!-- MANAGER INFO -->
+                        <Table id="tabMangerList"
+                            inset="false"
+                            rows="{            
+            path: 'management>/SCI_MST_SYSTEMLIST_SRV/MANAGER',
+            parameters: {
+                $count: true,          
+                $$updateGroupId: 'systemListManagerDataGroup',
+                $expand: 'MANAGER'
+            },
+            events: {
+                dataReceived : '.onDR_SystemListManager'
+            }
+        }">
+                            <columns>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerName}" />
+                                </Column>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerContact}" />
+                                </Column>
+                                <Column width="4rem">
+                                    <Text text="{i18n>fldSystemManagerEmail}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{management>MANAGER/NAME}"/>
+                                        <Text text="{management>MANAGER/PHONE}"/>
+                                        <Text text="{management>MANAGER/EMAIL}"/>
+
+
+                                        <!-- <Input value="{mainView>NAME}" placeholder="Name" required="true">
+                                        </Input>
+                                        <Input value="{mainView>PHONE}" placeholder="Contact" required="true">
+                                        </Input>
+                                        <Input value="{mainView>EMAIL}" placeholder="Email" required="true">
+                                        </Input> -->
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+        </content>
+        <buttons>
+            <Button text="Close"
+                press="onPAI"
+                app:fcCode="fcCloseSystemListManagerPopUp" />
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>

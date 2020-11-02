@@ -279,9 +279,14 @@ sap.ui.define(
             case "fcInterfaceBatchList":
               this.fcInterfaceRefresh(oEvent);
               break;
-
             case "fcshowBatchList":
               this.fcshowBatchList(oEvent);
+              break;
+            case "fcEditInterfaceList":
+              this.fcEditInterfaceList(oEvent);
+              break;
+            case "fcCancelEditInterfacePopup":
+              this.fcCancelEditInterfacePopup(oEvent);
               break;
 
             // Code List
@@ -373,84 +378,6 @@ sap.ui.define(
               break;
             case "fcCheckCHOnlyInputKey":
               this.fcCheckCHOnlyInputKey(oEvent);
-          }
-        },
-
-        fcChangeCbcCycle: function (oEvent) {
-          var sExec = oEvent.getSource().getSelectedItem().getAdditionalText();
-
-          var sEventSorceID = oEvent.getSource().getId();
-          var sViewID = this.getView().getId();
-          var rRegex = new RegExp("-" + sViewID + "[a-zA-Z0-9-]+", "g");
-          var oCbcCycleID = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcCycle +
-                sEventSorceID.match(rRegex)[0]
-            );
-
-          var oCbcRecurrecn = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcRecurrecn +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oCbcInterval = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.CbcInterval +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oDPOnDate = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.DPOnDate +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPFrTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPFrTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oTPToTime = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.TPToTime +
-                sEventSorceID.match(rRegex)[0]
-            );
-          var oITimezone = sap.ui
-            .getCore()
-            .byId(
-              sViewID +
-                "--" +
-                this.ControlID.ITimezone +
-                sEventSorceID.match(rRegex)[0]
-            );
-
-          switch (sExec) {
-            case "ONTIME":
-              oTPToTime.setEnabled(false);
-              oCbcInterval.setEnabled(false);
-              break;
-            case "EVERY":
-              oTPToTime.setEnabled(true);
-              oCbcInterval.setEnabled(true);
-              break;
-            default:
-              break;
           }
         },
 
@@ -836,6 +763,41 @@ sap.ui.define(
         //------------------------- Common End -------------------------------------------
 
         //------------------------- Interface List  Start -------------------------------------------
+
+        fcCancelEditInterfacePopup: function (oEvent) {
+          this.closePopupFragment("UpdateInterface");
+        },
+
+        fcEditInterfaceList: function (oEvent) {
+          var self = this;
+          var oView = this.getView();
+
+          // Select context
+          var oContext = oEvent
+            .getSource()
+            .getParent()
+            .getParent()
+            .getBindingContext("management");
+          
+          
+          // Create Popup
+					if (!self.getControl('dialogRegisterInterfaceList')) {
+						Fragment.load({
+							id: oView.getId(),
+							name: self._h.nameSpace + '.view.popup.UpdateInterface',
+							controller: self
+						}).then(function (oDialog) {
+							oView.addDependent(oDialog);
+							self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
+							oDialog.open();
+						});
+					} else {
+						self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
+						self.getControl('dialogRegisterInterfaceList').open();
+          }
+          
+          //this.callPopupFragment("UpdateInterface", oEvent);
+        },
 
         fcInitInterfaceCreateData: function (oEvent) {
           var oMainverRegsiterData = this._h.mainView.getProperty(

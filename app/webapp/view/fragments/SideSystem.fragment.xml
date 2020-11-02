@@ -15,7 +15,8 @@
             path: 'management>/SCI_MST_SYSTEMLIST_SRV',
             parameters: {
                 $count: true,          
-                $$updateGroupId: 'systemListDataGroup'
+                $$updateGroupId: 'systemListDataGroup',
+                $expand: 'MANAGER'
             },
             events: {
                 dataReceived : '.onDR_SystemList'
@@ -167,53 +168,6 @@
                 </t:template>
             </t:Column>
 
-            <!-- Created Dt : 생성날짜 -->
-            <t:Column sortProperty="createdAt"
-                filterProperty="createdAt"
-                hAlign="Center"
-                width="15rem"
-                autoResizable="true">
-                <Label text="{i18n>fldCreatedAt}"/>
-                <t:template>
-                    <Text text="{management>createdAt}"/>
-                </t:template>
-            </t:Column>
-
-            <!-- Created By : 생성자 -->
-            <t:Column sortProperty="createdBy"
-                filterProperty="createdBy"
-                hAlign="Center"
-                width="10rem"
-                autoResizable="true">
-                <Label text="{i18n>fldCreatedBy}"/>
-                <t:template>
-                    <Text text="{management>createdBy}"/>
-                </t:template>
-            </t:Column>
-            <!-- Modifed Dt : 수정날짜 -->
-            <t:Column sortProperty="modifiedAt"
-                filterProperty="modifiedAt"
-                hAlign="Center"
-                width="15rem"
-                autoResizable="true">
-                <Label text="{i18n>fldModifiedAt}"/>
-                <t:template>
-                    <Text text="{management>modifiedAt}"/>
-                </t:template>
-            </t:Column>
-
-            <!-- Modified By : 수정자 -->
-            <t:Column sortProperty="modifiedBy"
-                filterProperty="modifiedBy"
-                hAlign="Center"
-                width="12rem"
-                autoResizable="true">
-                <Label text="{i18n>fldModifiedBy}"/>
-                <t:template>
-                    <Text text="{management>modifiedBy}"/>
-                </t:template>
-            </t:Column>
-
             <!-- Description -->
             <t:Column sortProperty="DESCRIPTION"
                 filterProperty="DESCRIPTION"
@@ -223,6 +177,21 @@
                 <Label text="{i18n>fldSystemDescription}"/>
                 <t:template>
                     <Text text="{management>DESCRIPTION}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Manager -->
+            <t:Column hAlign="Center"
+                width="8rem"
+                autoResizable="true">
+                <Label text="{i18n>fldSystemManager}"/>
+                <t:template>
+                    <HBox justifyContent="Center">
+                        <Button icon="sap-icon://person-placeholder"
+                            press="onPAI"
+                            text="{i18n>btnManager}"
+                            app:fcCode="fcManagerPopUp"/>
+                    </HBox>
                 </t:template>
             </t:Column>
 
@@ -271,6 +240,53 @@
                 <Label text="{i18n>fldSystemCerti}"/>
                 <t:template>
                     <Text text="{parts: [{ path: 'management>ATHENTIC_TYPE'}], formatter: '.getCertiText'}" />
+                </t:template>
+            </t:Column>
+
+            <!-- Created Dt : 생성날짜 -->
+            <t:Column sortProperty="createdAt"
+                filterProperty="createdAt"
+                hAlign="Center"
+                width="15rem"
+                autoResizable="true">
+                <Label text="{i18n>fldCreatedAt}"/>
+                <t:template>
+                    <Text text="{management>createdAt}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Created By : 생성자 -->
+            <t:Column sortProperty="createdBy"
+                filterProperty="createdBy"
+                hAlign="Center"
+                width="10rem"
+                autoResizable="true">
+                <Label text="{i18n>fldCreatedBy}"/>
+                <t:template>
+                    <Text text="{management>createdBy}"/>
+                </t:template>
+            </t:Column>
+            <!-- Modifed Dt : 수정날짜 -->
+            <t:Column sortProperty="modifiedAt"
+                filterProperty="modifiedAt"
+                hAlign="Center"
+                width="15rem"
+                autoResizable="true">
+                <Label text="{i18n>fldModifiedAt}"/>
+                <t:template>
+                    <Text text="{management>modifiedAt}"/>
+                </t:template>
+            </t:Column>
+
+            <!-- Modified By : 수정자 -->
+            <t:Column sortProperty="modifiedBy"
+                filterProperty="modifiedBy"
+                hAlign="Center"
+                width="12rem"
+                autoResizable="true">
+                <Label text="{i18n>fldModifiedBy}"/>
+                <t:template>
+                    <Text text="{management>modifiedBy}"/>
                 </t:template>
             </t:Column>
 

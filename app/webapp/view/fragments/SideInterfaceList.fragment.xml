@@ -51,6 +51,22 @@
             </OverflowToolbar>
         </t:extension>
         <t:columns>
+        <!-- Modify -->
+            <t:Column width="4rem"
+                autoResizable="true"
+                sortProperty="DELETED_TF"
+                filterProperty="DELETED_TF"
+                hAlign="Center">
+                <Label text=""
+                    textAlign="Center"
+                    width="100%"/>
+                <t:template>
+                    <Button icon="sap-icon://edit"
+                        text="{fldEdit}"
+                        press="onPAI"
+                        app:fcCode="fcEditInterfaceList"></Button>
+                </t:template>
+            </t:Column>
             <!-- Deleted_TF -->
             <t:Column width="7rem"
                 autoResizable="true"
@@ -494,7 +510,7 @@
                 </t:template>
             </t:Column>
             <!-- Batch List -->
-            <t:Column width="7rem"
+            <t:Column width="6rem"
                 autoResizable="true"
                 hAlign="Center">
                 <Label text="{i18n>fldBatchList}"
@@ -508,7 +524,7 @@
                 </t:template>
             </t:Column>
             <!-- 작성자 -->
-            <t:Column width="7rem"
+            <t:Column width="10rem"
                 autoResizable="true"
                 sortProperty="IF_DESC"
                 filterProperty="IF_DESC"

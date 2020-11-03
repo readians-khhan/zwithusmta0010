@@ -6,9 +6,6 @@
                     <f:content>
 
                         <Label text="{i18n>fldCodeSection}" labelFor="inputTel1" />
-                        <!-- <ComboBox id="AddCodeLiCat01" items="{path: 'management>/SCI_VH_CODE_CAT01_SRV'}" selectionChange="onSelectionChange" required="true">
-                            <core:Item text="{management>CAT01}" key="{management>CAT01}" />
-                        </ComboBox> -->
                         <Input id="inputTel1" type="Tel" placeholder="ex) COMPANY " value="{mainView>/CodeList/Add/cat01}" required="true" showSuggestion="true" suggestionItems="{management>/SCI_VH_CODE_CAT01_SRV}">
                             <suggestionItems>
                                 <core:Item text="{management>CAT01}" />
@@ -18,11 +15,7 @@
                             </layoutData>
                         </Input>
 
-
                         <Label text="{i18n>fldCodeDetailSection}" labelFor="inputTel2" />
-                        <!-- <ComboBox id="AddCodeLiCat02" items="{path: 'management>/SCI_VH_CODE_CAT02_SRV'}" selectionChange="onSelectionChange" required="true">
-                            <core:Item text="{management>CAT02}" key="{management>CAT02}" />
-                        </ComboBox> -->
                         <Input id="inputTel2" type="Tel" placeholder="ex) SUBSIDARY " value="{mainView>/CodeList/Add/cat02}" required="true" showSuggestion="true" suggestionItems="{management>/SCI_VH_CODE_CAT02_SRV}">
                             <suggestionItems>
                                 <core:Item text="{management>CAT02}" />
@@ -33,9 +26,6 @@
                         </Input>
 
                         <Label text="{i18n>fldCodeEtcSection}" labelFor="inputTel3" />
-                        <!-- <ComboBox id="AddCodeLiCat03" items="{path: 'management>/SCI_VH_CODE_CAT03_SRV'}" selectionChange="onSelectionChange">
-                            <core:Item text="{management>CAT03}" key="{management>CAT03}" />
-                        </ComboBox> -->
                         <Input id="inputTel3" type="Tel" placeholder="ex) ETC " value="{mainView>/CodeList/Add/cat03}" required="true" showSuggestion="true" suggestionItems="{management>/SCI_VH_CODE_CAT03_SRV}">
                             <suggestionItems>
                                 <core:Item text="{management>CAT03}" />

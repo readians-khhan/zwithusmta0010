@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:t="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <Dialog id="dialogAddCodeList" resizable="true" draggable="true" stretch="false" busy="{mainView>/busy}" busyIndicatorDelay="0" title="{i18n>tlAddSystemList}" contentWidth="50%">
+    <Dialog id="dialogUpdateCodeList" resizable="true" draggable="true" stretch="false" busy="{mainView>/busy}" busyIndicatorDelay="0" title="{i18n>tlAddSystemList}" contentWidth="50%">
         <content>
             <VBox class="sapUiSmallMargin">
                 <f:SimpleForm id="formUpdateCodeList" editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">

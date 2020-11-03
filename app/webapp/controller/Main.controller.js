@@ -90,6 +90,7 @@ sap.ui.define(
           AddCodeLiCat03: "AddCodeLiCat03",
           formUpdateCodeList: "formUpdateCodeList",
           UpdateCodeList: "UpdateCodeList",
+          SLCodedeleted: "SLCodedeleted",
 
           //-------------------------------------------------------------------------------------------
 
@@ -785,24 +786,24 @@ sap.ui.define(
             .getParent()
             .getParent()
             .getBindingContext("management");
-          
-          
+
+
           // Create Popup
-					if (!self.getControl('dialogRegisterInterfaceList')) {
-						Fragment.load({
-							id: oView.getId(),
-							name: self._h.nameSpace + '.view.popup.UpdateInterface',
-							controller: self
-						}).then(function (oDialog) {
-							oView.addDependent(oDialog);
-							self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
-							oDialog.open();
-						});
-					} else {
-						self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
-						self.getControl('dialogRegisterInterfaceList').open();
+          if (!self.getControl('dialogRegisterInterfaceList')) {
+            Fragment.load({
+              id: oView.getId(),
+              name: self._h.nameSpace + '.view.popup.UpdateInterface',
+              controller: self
+            }).then(function (oDialog) {
+              oView.addDependent(oDialog);
+              self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
+              oDialog.open();
+            });
+          } else {
+            self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
+            self.getControl('dialogRegisterInterfaceList').open();
           }
-          
+
           //this.callPopupFragment("UpdateInterface", oEvent);
         },
 
@@ -928,18 +929,18 @@ sap.ui.define(
             .getCore()
             .byId(
               sViewID +
-                "--" +
-                this.ControlID.CbcInterval +
-                sEventSorceID.match(rRegex)[0]
+              "--" +
+              this.ControlID.CbcInterval +
+              sEventSorceID.match(rRegex)[0]
             );
 
           var oTPToTime = sap.ui
             .getCore()
             .byId(
               sViewID +
-                "--" +
-                this.ControlID.TPToTime +
-                sEventSorceID.match(rRegex)[0]
+              "--" +
+              this.ControlID.TPToTime +
+              sEventSorceID.match(rRegex)[0]
             );
 
           switch (sExec) {
@@ -967,18 +968,18 @@ sap.ui.define(
             .getCore()
             .byId(
               sViewID +
-                "--" +
-                this.ControlID.CbcRecurrecn +
-                sEventSorceID.match(rRegex)[0]
+              "--" +
+              this.ControlID.CbcRecurrecn +
+              sEventSorceID.match(rRegex)[0]
             );
 
           var oDPOnDate = sap.ui
             .getCore()
             .byId(
               sViewID +
-                "--" +
-                this.ControlID.DPOnDate +
-                sEventSorceID.match(rRegex)[0]
+              "--" +
+              this.ControlID.DPOnDate +
+              sEventSorceID.match(rRegex)[0]
             );
 
           switch (sExec) {
@@ -1700,22 +1701,6 @@ sap.ui.define(
             .refresh();
         },
 
-        // 코드 리스트 소팅
-        sortCategories: function (oEvent) {
-          var oView = this.getView();
-          var oTable = oView.byId("row");
-          var oCategoriesColumn = oView.byId("codeCategory");
-
-          oTable.sort(
-            oCategoriesColumn,
-            this._bSortColumnDescending
-              ? SortOrder.Descending
-              : SortOrder.Ascending,
-            /*extend existing sorting*/ true
-          );
-          this._bSortColumnDescending = !this._bSortColumnDescending;
-        },
-
         // 코드 리스트 검색
         fcSearchCode: function (oEvent) {
           var self = this;
@@ -1741,6 +1726,10 @@ sap.ui.define(
           var oSCCategory01 = oSCCat01.getSelectedKeys();
           var oSCCategory02 = oSCCat02.getSelectedKeys();
           var oSCCategory03 = oSCCat03.getSelectedKeys();
+
+          var oDeleted = this.getControl(
+            this.ControlID.SLCodedeleted
+          ).getSelected();
 
           // 명칭 데이터 가져오기 ( Tokens 임포트 필요)
           var oApplCdTokens = _.map(
@@ -1795,6 +1784,14 @@ sap.ui.define(
               field: "CODE",
               op: this.OP.CONTAINS,
               from: oApplCdTokens,
+            });
+          }
+
+          if (!oDeleted) {
+            aCodeNameFilters.push({
+              field: "DELETED_TF",
+              op: this.OP.EQ,
+              from: oDeleted,
             });
           }
 
@@ -1903,6 +1900,7 @@ sap.ui.define(
             function (oData) {
               this.showMessageToast("msgSuccess13", "20rem", []);
               this.closePopupFragment(this.ControlID.AddCodeList);
+              // this._h.management.refresh();
             }.bind(this),
             function (oError) {
               this.resetBindingChanges(oBinding);
@@ -1919,7 +1917,7 @@ sap.ui.define(
 
         // 코드 수정 팝업 나타내기
         fcUpdateCodeList: function (oEvent) {
-          console.log("코드 팝업 ");
+
           this.callPopupFragment(this.ControlID.UpdateCodeList, oEvent);
 
           var oPath = this.getListItemContext(oEvent, "management").sPath;
@@ -1946,7 +1944,7 @@ sap.ui.define(
                 function () {
                   self.setUIChanges(self._h.management, false);
                   self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-                  self.getControl("dialogAddCodeList").close();
+                  self.getControl("dialogUpdateCodeList").close();
                   self._h.management.refresh();
                 },
                 function (oError) {
@@ -1957,14 +1955,14 @@ sap.ui.define(
                 }
               );
           } else {
-            this.getControl("dialogAddCodeList").close();
+            this.getControl("dialogUpdateCodeList").close();
             this.showMessageToast("msgInfo01", "20rem");
+            this._h.management.refresh();
           }
         },
 
         // 코드 수정 팝업 닫기
         fcCancelUpdateCodePopup: function (oEvent) {
-          console.log("코드 수정 팝업 닫기");
           this.oMessageManager.removeAllMessages();
           this.closePopupFragment("UpdateCodeList");
         },
@@ -2024,6 +2022,7 @@ sap.ui.define(
               console.log(oError);
             });
         },
+
 
         //------------------------- Code List End -------------------------------------------
 
@@ -2110,6 +2109,7 @@ sap.ui.define(
               from: oApplNmTokens,
             });
           }
+
           if (!oDeleted) {
             aFilters.push({
               field: "DELETED_TF",
@@ -2136,11 +2136,11 @@ sap.ui.define(
 
         //manager popup open
         fcManagerPopUp: function (oEvent) {
-          this.callPopupFragment(this.ControlID.SystemListManager, oEvent);        
+          this.callPopupFragment(this.ControlID.SystemListManager, oEvent);
           var managerList = this.getListItemContext(oEvent, "management");
           var oPath = this.getListItemContext(oEvent, "management").sPath;
           // var managerList = oEvent.getSource().getBindingContext("MANAGER")
-          
+
           console.log(managerList);
         },
 

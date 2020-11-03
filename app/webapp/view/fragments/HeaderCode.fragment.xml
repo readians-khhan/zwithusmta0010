@@ -41,10 +41,18 @@
                         <f:fields>
                             <MultiInput id="MCCDSoruceCd" showValueHelp="false" showSuggestion="true" suggestionItems="{
                                 path: 'management>/SCI_MST_CODE_SRV',
-                                sorter: { path: 'management>CODE' }
+                                sorter: { path: 'CODE' }
                             }">
-                            <core:Item key="{management>CODE}" text="{management>CODE}" />
+                                <core:Item key="{management>CODE}" text="{management>CODE}" />
                             </MultiInput>
+                        </f:fields>
+                    </f:FormElement>
+                </f:FormContainer>
+                <!-- 삭제 여부  -->
+                <f:FormContainer>
+                    <f:FormElement>
+                        <f:fields>
+                            <CheckBox id="SLCodedeleted" text="{i18n>cbdeleted}" selected="true" />
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>

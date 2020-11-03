@@ -81,7 +81,6 @@
             <t:Column sortProperty="DELETED_TF" filterProperty="DELETED_TF" hAlign="Center" width="7rem">
                 <Label text="{i18n>fldCodeDeleted}" />
                 <t:template>
-                    <!-- <Text text="{management>DELETED_TF}" textAlign="Begin" width="100%" wrapping="false" /> -->
                     <ObjectStatus text="{parts: [{ path: 'management>DELETED_TF'}], formatter: '.getDeletedIfText'}" icon="{parts: [{ path: 'management>DELETED_TF'}], formatter: '.getDeletedIfIcon'}" />
                 </t:template>
             </t:Column>

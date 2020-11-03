@@ -5,37 +5,62 @@
                 <f:SimpleForm editable="true" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
                     <f:content>
 
-                        <Label text="{i18n>fldCodeSection}" />
-                        <ComboBox id="AddCodeLiCat01" items="{path: 'management>/SCI_VH_CODE_CAT01_SRV'}" selectionChange="onSelectionChange" required="true">
+                        <Label text="{i18n>fldCodeSection}" labelFor="inputTel1" />
+                        <!-- <ComboBox id="AddCodeLiCat01" items="{path: 'management>/SCI_VH_CODE_CAT01_SRV'}" selectionChange="onSelectionChange" required="true">
                             <core:Item text="{management>CAT01}" key="{management>CAT01}" />
-                        </ComboBox>
+                        </ComboBox> -->
+                        <Input id="inputTel1" type="Tel" placeholder="ex) COMPANY " value="{mainView>/CodeList/Add/cat01}" required="true" showSuggestion="true" suggestionItems="{management>/SCI_VH_CODE_CAT01_SRV}">
+                            <suggestionItems>
+                                <core:Item text="{management>CAT01}" />
+                            </suggestionItems>
+                            <layoutData>
+                                <l:GridData span="XL2 L3 M4 S4" />
+                            </layoutData>
+                        </Input>
 
-                        <Label text="{i18n>fldCodeDetailSection}" />
-                        <ComboBox id="AddCodeLiCat02" items="{path: 'management>/SCI_VH_CODE_CAT02_SRV'}" selectionChange="onSelectionChange" required="true">
+
+                        <Label text="{i18n>fldCodeDetailSection}" labelFor="inputTel2" />
+                        <!-- <ComboBox id="AddCodeLiCat02" items="{path: 'management>/SCI_VH_CODE_CAT02_SRV'}" selectionChange="onSelectionChange" required="true">
                             <core:Item text="{management>CAT02}" key="{management>CAT02}" />
-                        </ComboBox>
+                        </ComboBox> -->
+                        <Input id="inputTel2" type="Tel" placeholder="ex) SUBSIDARY " value="{mainView>/CodeList/Add/cat02}" required="true" showSuggestion="true" suggestionItems="{management>/SCI_VH_CODE_CAT02_SRV}">
+                            <suggestionItems>
+                                <core:Item text="{management>CAT02}" />
+                            </suggestionItems>
+                            <layoutData>
+                                <l:GridData span="XL2 L3 M4 S4" />
+                            </layoutData>
+                        </Input>
 
-                        <Label text="{i18n>fldCodeEtcSection}" />
-                        <ComboBox id="AddCodeLiCat03" items="{path: 'management>/SCI_VH_CODE_CAT03_SRV'}" selectionChange="onSelectionChange">
+                        <Label text="{i18n>fldCodeEtcSection}" labelFor="inputTel3" />
+                        <!-- <ComboBox id="AddCodeLiCat03" items="{path: 'management>/SCI_VH_CODE_CAT03_SRV'}" selectionChange="onSelectionChange">
                             <core:Item text="{management>CAT03}" key="{management>CAT03}" />
-                        </ComboBox>
-
-                        <Label text="{i18n>fldCodeName}" />
-                        <Input value="{mainView>/CodeList/Add/codeNm}" required="true">
+                        </ComboBox> -->
+                        <Input id="inputTel3" type="Tel" placeholder="ex) ETC " value="{mainView>/CodeList/Add/cat03}" required="true" showSuggestion="true" suggestionItems="{management>/SCI_VH_CODE_CAT03_SRV}">
+                            <suggestionItems>
+                                <core:Item text="{management>CAT03}" />
+                            </suggestionItems>
                             <layoutData>
                                 <l:GridData span="XL2 L3 M4 S4" />
                             </layoutData>
                         </Input>
 
-                        <Label text="{i18n>fldCodeDescription}" />
-                        <Input value="{mainView>/CodeList/Add/description}">
+                        <Label text="{i18n>fldCodeName}" labelFor="inputTel4" />
+                        <Input id="inputTel4" type="Tel" placeholder="ex) SK-GLOBAL" value="{mainView>/CodeList/Add/codeNm}" required="true">
                             <layoutData>
                                 <l:GridData span="XL2 L3 M4 S4" />
                             </layoutData>
                         </Input>
 
-                        <Label text="{i18n>fldCodeDetailDescription}" />
-                        <Input value="{mainView>/CodeList/Add/detailDescription}">
+                        <Label text="{i18n>fldCodeDescription}" labelFor="inputTel5" />
+                        <Input id="inputTel5" type="Tel" placeholder="ex) Global Company " value="{mainView>/CodeList/Add/description}">
+                            <layoutData>
+                                <l:GridData span="XL2 L3 M4 S4" />
+                            </layoutData>
+                        </Input>
+
+                        <Label text="{i18n>fldCodeDetailDescription}" labelFor="inputTel6" />
+                        <Input id="inputTel6" type="Tel" placeholder="ex) Global Company Company 등록" value="{mainView>/CodeList/Add/detailDescription}">
                             <layoutData>
                                 <l:GridData span="XL2 L3 M4 S4" />
                             </layoutData>
@@ -46,19 +71,11 @@
             </VBox>
         </content>
         <buttons>
-            <Button text="{i18n>btnMessage} : {= ${message>/}.length }"
-                press="onPAI"
-                type="Critical"
-                visible="{mainView>/hasError}"
-                app:fcCode="fcMessage" />
+            <Button text="{i18n>btnMessage} : {= ${message>/}.length }" press="onPAI" type="Critical" visible="{mainView>/hasError}" app:fcCode="fcMessage" />
 
-            <Button text="Create" 
-                press="onPAI" 
-                app:fcCode="fcConfirmAddCodePopup" />
+            <Button text="Create" press="onPAI" app:fcCode="fcConfirmAddCodePopup" />
 
-            <Button text="Cancel" 
-                press="onPAI" 
-                app:fcCode="fcCancelAddCodePopup" />
+            <Button text="Cancel" press="onPAI" app:fcCode="fcCancelAddCodePopup" />
 
         </buttons>
     </Dialog>

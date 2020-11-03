@@ -39,7 +39,12 @@
                 <f:FormContainer>
                     <f:FormElement label="{i18n>fldCodeName}">
                         <f:fields>
-                            <MultiInput id="MCCDSoruceCd" showValueHelp="false" />
+                            <MultiInput id="MCCDSoruceCd" showValueHelp="false" showSuggestion="true" suggestionItems="{
+                                path: 'management>/SCI_MST_CODE_SRV',
+                                sorter: { path: 'management>CODE' }
+                            }">
+                            <core:Item key="{management>CODE}" text="{management>CODE}" />
+                            </MultiInput>
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>

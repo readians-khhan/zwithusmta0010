@@ -1829,17 +1829,14 @@ sap.ui.define(
         // 코드 생성 팝업 나타내기
         fcCreateCode: function (oEvent) {
           this._h.mainView.setProperty("/CodeList/Add", {
+            cat01: "",
+            cat02: "",
+            cat03: "",
             codeNm: "",
             description: "",
             detailDescription: "",
           });
-          // 컨트롤
-          var oSCCat01 = this.getControl(this.ControlID.MCCDSoruceCt01);
 
-          // 선택 데이터 가져오기
-          var oSCCategory01 = oSCCat01.getValue();
-
-          console.log(oSCCategory01);
 
           this.callPopupFragment("AddCodeList", oEvent);
         },

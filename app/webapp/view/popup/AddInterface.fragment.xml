@@ -7,7 +7,7 @@
     xmlns:f="sap.ui.layout.form"
     fragmentName="RegisterInterface"
     xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
-    <Dialog id="dialogRegisterInterfaceList"
+    <Dialog id="dialogUpdateInterfaceList"
         resizable="true"
         draggable="true"
         stretch="false"
@@ -355,7 +355,7 @@
                 app:fcCode="fcCreateInterfacePopup" />
             <Button text="Cancel"
                 press="onPAI"
-                app:fcCode="fcCancelEditInterfacePopup" />
+                app:fcCode="fcCancelAddInterfacePopup" />
         </buttons>
     </Dialog>
 </core:FragmentDefinition>

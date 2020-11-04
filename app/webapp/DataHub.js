@@ -30,6 +30,7 @@ sap.ui.define(["sap/ui/base/Object", "sap/ui/model/json/JSONModel"], function (
       mainView: null,
 
       mainViewInitData: {
+        sideExpanded: true,
         busy: false,
         search: "",
         bpSearch: "",

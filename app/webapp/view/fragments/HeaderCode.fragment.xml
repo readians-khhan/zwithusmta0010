@@ -52,7 +52,7 @@
                 <f:FormContainer>
                     <f:FormElement>
                         <f:fields>
-                            <CheckBox id="SLCodedeleted" text="{i18n>cbdeleted}" selected="true" />
+                            <CheckBox id="SLCodedeleted" text="{i18n>cbdeleted}" selected="false" />
                         </f:fields>
                     </f:FormElement>
                 </f:FormContainer>

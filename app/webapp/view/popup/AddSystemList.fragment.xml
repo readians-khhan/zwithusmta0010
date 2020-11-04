@@ -128,8 +128,7 @@
 
                         <!-- 시스템 IP -->
                         <Label text="{i18n>fldSystemIp}" />
-                        <Input type="Number"
-                            value="{mainView>/SystemList/Add/systemIP}"
+                        <Input value="{mainView>/SystemList/Add/systemIP}" 
                             placeholder="Enter IP address"
                             required="true"/>
                         <!-- 시스템 HOST -->

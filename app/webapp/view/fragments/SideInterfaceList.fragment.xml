@@ -17,16 +17,22 @@
             parameters: {
                 $count: true,
                 $$updateGroupId: 'InterfaceDataGroup'
+            },
+            events: {
+                dataReceived : '.onDR_InterfaceList'
             }
         }"
         rowSelectionChange="onPAI"
-        app:fcCode="fcFileSelectionChange">
+        app:fcCode="fcFileSelectionChangeInterfaceList">
         <t:extension>
             <OverflowToolbar>
                 <Title text="{i18n>tlTotalCount} { 
-                    path: 'mainView>/Files/totalCount',
+                    path: 'mainView>/Interface/totalCount',
                     type: 'sap.ui.model.odata.type.Int32'}"
                     wrapping="false" />
+                <Title text=" / {i18n>tlSelectedCount} 
+                    { path: 'mainView>/Interface/selectedCount', 
+                            type: 'sap.ui.model.odata.type.Int32' }" />    
                 <Button type="Transparent"
                     icon="sap-icon://refresh"
                     press="onPAI"
@@ -39,7 +45,7 @@
                 <Button text="{i18n>btnDelete}"
                     icon="sap-icon://delete"
                     type="Reject"
-                    enabled="{= ${mainView>/Files/selectedCount} > 0 ? true : false}"
+                    enabled="{= ${mainView>/Interface/selectedCount} > 0 ? true : false}"
                     press="onPAI"
                     app:fcCode="fcDeleteInterface"/>
                 <Button icon="sap-icon://download"

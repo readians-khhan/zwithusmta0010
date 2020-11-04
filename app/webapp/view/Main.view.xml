@@ -31,6 +31,7 @@
 		<!-- Side Menu -->
 		<tnt:sideContent class="side-navigation">
 			<tnt:SideNavigation id="sideNavigation"
+				expanded="{mainView>/sideExpanded}"
 				selectedKey="subItem3"
 				itemSelect="onPAI"
 				app:fcCode="fcItemSelect">
@@ -38,7 +39,7 @@
 					<!-- 메뉴 버튼 열고 닫기 -->
 					<tnt:NavigationListItem key="menu"
 						text="{i18n>sideExpand}"
-						icon="sap-icon://collapse" />
+						icon="{= ${mainView>/sideExpanded} ? 'sap-icon://collapse' : 'sap-icon://expand' }" />
 					<!-- 인터페이스 리스트 -->
 					<tnt:NavigationListItem key="interfaceList"
 						text="{i18n>SideInterfaceList}"

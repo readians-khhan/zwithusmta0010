@@ -356,7 +356,7 @@
                 app:fcCode="fcCreateInterfacePopup" />
             <Button text="Cancel"
                 press="onPAI"
-                app:fcCode="fcCancelInterfacePopup" />
+                app:fcCode="fcCancelUpdateInterfacePopup" />
         </buttons>
     </Dialog>
 </core:FragmentDefinition>

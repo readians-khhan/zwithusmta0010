@@ -54,6 +54,7 @@
                             <!-- <MultiInput id="MiSystemAppNm" showValueHelp="false" /> -->
                             <MultiInput id="MiSystemAppNm"
                                 showValueHelp="false"
+                                showSuggestion="true" 
                                 suggestionItems="{path: 'management>/SCI_MST_SYSTEMLIST_SRV'}">
                                 <core:Item key="{management>APPL_NM}"
                                     text="{management>APPL_NM}" />

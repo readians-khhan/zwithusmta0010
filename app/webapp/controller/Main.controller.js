@@ -115,7 +115,7 @@ sap.ui.define(
 
           //--- Update Pop Up ---
           UpdateSystemList: "UpdateSystemList",
-          dialogUpdateSystemList: "dialogUpdateSystemList",
+          // dialogUpdateSystemList: "dialogUpdateSystemList",
           formUpdateSystemList: "formUpdateSystemList",
           UpdateSysLiCompanyCd: "UpdateSysLiCompanyCd",
           UpdateSysLiSubdiaryCd: "UpdateSysLiSubdiaryCd",
@@ -190,6 +190,10 @@ sap.ui.define(
         // Data Received Event Handler
         onDR_InterfaceList: function (oEvent) {
           this.showMessageByType(oEvent);
+          this._h.mainView.setProperty(
+            "/Interface/totalCount",
+            oEvent.getSource().getLength()
+          );
         },
 
         onDR_CodeList: function (oEvent) {
@@ -254,6 +258,9 @@ sap.ui.define(
             case "fcCancelInterfacePopup":
               this.fcCancelInterfacePopup(oEvent);
               break;
+            case "fcCancelUpdateInterfacePopup":
+              this.fcCancelUpdateInterfacePopup(oEvent);
+              break;            
             case "fcSearchInterface":
               this.fcSearchInterface(oEvent);
               break;
@@ -278,6 +285,9 @@ sap.ui.define(
             case "fcCreateInterfacePopupElementDelete":
               this.fcCreateInterfacePopupElementDelete(oEvent);
               break;
+            case "fcDeleteInterface":
+              this.fcDeleteInterface(oEvent);
+              break;
             case "fcInterfaceBatchList":
               this.fcInterfaceRefresh(oEvent);
               break;
@@ -290,6 +300,12 @@ sap.ui.define(
             case "fcCancelEditInterfacePopup":
               this.fcCancelEditInterfacePopup(oEvent);
               break;
+            case "fcCancelAddInterfacePopup":
+              this.fcCancelAddInterfacePopup(oEvent);
+              break;   
+            case "fcFileSelectionChangeInterfaceList":
+              this.fcFileSelectionChangeInterfaceList(oEvent);
+              break;                         
 
             // Code List
             case "fcSearchCode":
@@ -343,6 +359,7 @@ sap.ui.define(
             case "fcCloseSystemListManagerPopUp":
               this.fcCloseSystemListManagerPopUp(oEvent);
               break;
+
             //---- Add Popup ----
             case "fcCreateSystemList":
               this.fcCreateSystemList(oEvent);
@@ -394,9 +411,8 @@ sap.ui.define(
 
           switch (oEvent.getParameter("item").getKey()) {
             case "menu":
-              oNavConMain.getProperty("/sideExpanded")
-                ? oNavConMain.setProperty("/sideExpanded", false)
-                : oNavConMain.setProperty("/sideExpanded", true);
+              this._h.mainView.getProperty('/sideExpanded') ? this._h.mainView.setProperty('/sideExpanded', false) : this._h.mainView.setProperty(
+                '/sideExpanded', true);
               break;
             case "interfaceList":
               oNavConMain.to(this.getControl("dp-interface"), "slide");
@@ -772,39 +788,36 @@ sap.ui.define(
 
         //------------------------- Interface List  Start -------------------------------------------
 
-        fcCancelEditInterfacePopup: function (oEvent) {
-          this.closePopupFragment("UpdateInterface");
-        },
-
         fcEditInterfaceList: function (oEvent) {
-          var self = this;
-          var oView = this.getView();
+          console.log("업데이트");
+          // var self = this;
+          // var oView = this.getView();
 
-          // Select context
-          var oContext = oEvent
-            .getSource()
-            .getParent()
-            .getParent()
-            .getBindingContext("management");
+          // // Select context
+          // var oContext = oEvent
+          //   .getSource()
+          //   .getParent()
+          //   .getParent()
+          //   .getBindingContext("management");
 
 
-          // Create Popup
-          if (!self.getControl('dialogRegisterInterfaceList')) {
-            Fragment.load({
-              id: oView.getId(),
-              name: self._h.nameSpace + '.view.popup.UpdateInterface',
-              controller: self
-            }).then(function (oDialog) {
-              oView.addDependent(oDialog);
-              self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
-              oDialog.open();
-            });
-          } else {
-            self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
-            self.getControl('dialogRegisterInterfaceList').open();
-          }
+          // // Create Popup
+          // if (!self.getControl('dialogUpdateInterfaceList')) {
+          //   Fragment.load({
+          //     id: oView.getId(),
+          //     name: self._h.nameSpace + '.view.popup.UpdateInterface',
+          //     controller: self
+          //   }).then(function (oDialog) {
+          //     oView.addDependent(oDialog);
+          //     self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
+          //     oDialog.open();
+          //   });
+          // } else {
+          //   self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
+          //   self.getControl('dialogUpdateInterfaceList').open();
+          // }
 
-          //this.callPopupFragment("UpdateInterface", oEvent);
+          // //this.callPopupFragment("UpdateInterface", oEvent);
         },
 
         fcInitInterfaceCreateData: function (oEvent) {
@@ -848,6 +861,52 @@ sap.ui.define(
           oBatch = _.pull(oBatch, oBatch[Iindex]);
           this._h.mainView.refresh();
         },
+
+        fcDeleteInterface: function (oEvent){
+          var self = this;
+          var oTable = this.getControl(this.ControlID.tabInterfaceList);
+          var oBinding = oTable.getBinding("rows");
+
+          if (!this._h.mainView.getProperty("/Interface/selectedCount")) {
+            this.showMessage(
+              this.MSGTYPE.WARNING,
+              "Error",
+              this.getI18nText("tlDeleteSetting")
+            );
+            return;
+          }
+            this.callPopupConfirm("msgAlert002", "alert", this.MSGBOXICON.WARNING)
+            .then(function (sAction) {
+              if (sAction === "OK") {
+                _.forEach(oTable.getSelectedIndices(), function (iIndex) {
+                  oTable
+                    .getContextByIndex(iIndex)
+                    .setProperty("DELETED_TF", true);
+                });
+
+                self.setMessageType(self.MESSAGE_TYPE.UPDATE);
+
+                self._h.management.submitBatch("InterfaceDataGroup").then(
+                  // Success
+                  function (oData) {
+                    self._h.management.refresh();
+                    oTable.clearSelection();
+                    self.showMessageToast("msgSuccess040", "20rem", []);
+                  },
+                  // Fail
+                  function (oError) {
+                    self.resetBindingChanges(oBinding);
+                    self.showMessageToast("msgError10", "20rem", [
+                      oError.message,
+                    ]);
+                  }
+                );
+              }
+            })
+            .catch(function (oError) {
+              console.log(oError);
+            });
+        },        
 
         fcshowBatchList: function (oEvent) {},
 
@@ -1034,7 +1093,25 @@ sap.ui.define(
         fcCancelInterfacePopup: function (oEvent) {
           this.resetMessageManger();
           this.fcInitInterfaceCreateData();
+          this.oMessageManager.removeAllMessages();
           this.closePopupFragment("AddInterface");
+        },
+        
+        fcCancelAddInterfacePopup: function (oEvent) {
+          this.oMessageManager.removeAllMessages();
+          this.closePopupFragment("AddInterface");
+        },
+        
+        fcCancelUpdateInterfacePopup: function (oEvent) {
+          this.oMessageManager.removeAllMessages();
+          this.closePopupFragment("UpdateInterface");
+        },
+
+        fcFileSelectionChangeInterfaceList: function (oEvent) {
+          this._h.mainView.setProperty(
+            "/Interface/selectedCount",
+            oEvent.getSource().getSelectedIndices().length
+          );
         },
 
         fcCreateIntefaceList: function (oEvent) {
@@ -1933,14 +2010,14 @@ sap.ui.define(
         // 코드 수정 확정
         fcConfirmUpdateCodePopup: function (oEvent) {
           var self = this;
-          this.setUIChanges(this._h.management);
+          this.setUIChanges(this._h.management, true);
 
           console.log(this.checkUIChanges());
 
           if (this.checkUIChanges()) {
             this._h.management
               .submitBatch(this.ControlID.codeListDataGroup)
-              .then(
+              .then(                
                 function () {
                   self.setUIChanges(self._h.management, false);
                   self.setMessageType(self.MESSAGE_TYPE.UPDATE);
@@ -2370,7 +2447,7 @@ sap.ui.define(
 
         fcUpdateSystemListPopup: function (oEvent) {
           var self = this;
-          this.setUIChanges(this._h.management);
+          this.setUIChanges(this._h.management, true);
 
           if (this.checkUIChanges()) {
             this._h.management
@@ -2381,7 +2458,8 @@ sap.ui.define(
                   console.log("success inin");
                   self.setUIChanges(self._h.management, false);
                   self.setMessageType(self.MESSAGE_TYPE.UPDATE);
-                  self.closePopupFragment(self.ControlID.UpdateSystemList);
+                  self.getControl("dialogUpdateSystemList").close();
+                  // self.closePopupFragment(self.ControlID.UpdateSystemList);
                   self._h.management.refresh();
                 },
                 //fail
@@ -2395,7 +2473,8 @@ sap.ui.define(
               );
           } else {
             console.log("else inin");
-            this.closePopupFragment(this.ControlID.UpdateSystemList);
+            this.getControl("dialogUpdateSystemList").close();
+            // this.closePopupFragment(this.ControlID.UpdateSystemList);
             this.showMessageToast("msgInfo01", "20rem");
           }
         },

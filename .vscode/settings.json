@@ -3,5 +3,6 @@
     "**/.gitignore": true,
     "**/.git": true
   },
-  "xmlTools.splitAttributesOnFormat": true
+  "xmlTools.splitAttributesOnFormat": true,
+  "files.watcherExclude": {}
 }

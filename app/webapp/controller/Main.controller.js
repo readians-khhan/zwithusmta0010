@@ -75,6 +75,7 @@ sap.ui.define(
           tabInterfaceList: "tabInterfaceList",
           tabBatchList: "tabBatchList",
           InterfaceDataGroup: "InterfaceDataGroup",
+          UpdateInterface :"UpdateInterface",
 
           //-------------------------------------------------------------------------------------------
           // CODE LIST
@@ -294,8 +295,8 @@ sap.ui.define(
             case "fcshowBatchList":
               this.fcshowBatchList(oEvent);
               break;
-            case "fcEditInterfaceList":
-              this.fcEditInterfaceList(oEvent);
+            case "fcUpdateInterfaceList":
+              this.fcUpdateInterfaceList(oEvent);
               break;
             case "fcCancelEditInterfacePopup":
               this.fcCancelEditInterfacePopup(oEvent);
@@ -501,7 +502,18 @@ sap.ui.define(
               "/CodeList/Add/cat03",
               oEvent.getSource().getSelectedKey()
             );
+          }else if (sId == "UpdateIfLiCompanyCd") {
+            this._h.mainView.setProperty(
+              "/Interface/Update/StatusID",
+              oEvent.getSource().getSelectedKey()
+            );
+          }else if (sId == "UpdateInterLiIfStatus") {
+            this._h.mainView.setProperty(
+              "/Interface/Update/StatusID",
+              oEvent.getSource().getSelectedKey()
+            );
           }
+          
         },
 
         setUIChanges: function (oModel, bHasUIChanges) {
@@ -693,7 +705,7 @@ sap.ui.define(
 
         getInterfaceStatusIcon: function (iStatus) {
           switch (iStatus) {
-            case "사용":
+            case "사용중":
               return "sap-icon://unlocked";
             case "미사용":
               return "sap-icon://locked";
@@ -704,8 +716,8 @@ sap.ui.define(
 
         getInterfaceStatusText: function (iStatus) {
           switch (iStatus) {
-            case "사용":
-              return "사용";
+            case "사용중":
+              return "사용중";
             case "미사용":
               return "미사용";
             default:
@@ -788,36 +800,18 @@ sap.ui.define(
 
         //------------------------- Interface List  Start -------------------------------------------
 
-        fcEditInterfaceList: function (oEvent) {
+        fcUpdateInterfaceList: function (oEvent) {
           console.log("업데이트");
-          // var self = this;
-          // var oView = this.getView();
+          this.callPopupFragment(this.ControlID.UpdateInterface, oEvent);
 
-          // // Select context
-          // var oContext = oEvent
-          //   .getSource()
-          //   .getParent()
-          //   .getParent()
-          //   .getBindingContext("management");
+          var oPath = this.getListItemContext(oEvent, "management").sPath;
+          var oD = this.getListItemContext(oEvent, "management");
+          console.log(oD);
 
-
-          // // Create Popup
-          // if (!self.getControl('dialogUpdateInterfaceList')) {
-          //   Fragment.load({
-          //     id: oView.getId(),
-          //     name: self._h.nameSpace + '.view.popup.UpdateInterface',
-          //     controller: self
-          //   }).then(function (oDialog) {
-          //     oView.addDependent(oDialog);
-          //     self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
-          //     oDialog.open();
-          //   });
-          // } else {
-          //   self.getControl('SFupdateInterface').setBindingContext(oContext, 'management');
-          //   self.getControl('dialogUpdateInterfaceList').open();
-          // }
-
-          // //this.callPopupFragment("UpdateInterface", oEvent);
+          this.fragments["UpdateInterface"].bindElement({
+            path: oPath,
+            model: "management",
+          });
         },
 
         fcInitInterfaceCreateData: function (oEvent) {
@@ -2010,7 +2004,7 @@ sap.ui.define(
         // 코드 수정 확정
         fcConfirmUpdateCodePopup: function (oEvent) {
           var self = this;
-          this.setUIChanges(this._h.management, true);
+          self.setUIChanges(this._h.management);
 
           console.log(this.checkUIChanges());
 
@@ -2021,6 +2015,7 @@ sap.ui.define(
                 function () {
                   self.setUIChanges(self._h.management, false);
                   self.setMessageType(self.MESSAGE_TYPE.UPDATE);
+                  self.showMessageToast("msgSuccess100", "20rem");
                   self.getControl("dialogUpdateCodeList").close();
                   self._h.management.refresh();
                 },
@@ -2447,7 +2442,7 @@ sap.ui.define(
 
         fcUpdateSystemListPopup: function (oEvent) {
           var self = this;
-          this.setUIChanges(this._h.management, true);
+          this.setUIChanges(this._h.management);
 
           if (this.checkUIChanges()) {
             this._h.management

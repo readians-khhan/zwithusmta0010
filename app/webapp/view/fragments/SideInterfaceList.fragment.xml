@@ -70,7 +70,7 @@
                     <Button icon="sap-icon://edit"
                         text="{fldEdit}"
                         press="onPAI"
-                        app:fcCode="fcEditInterfaceList"></Button>
+                        app:fcCode="fcUpdateInterfaceList"></Button>
                 </t:template>
             </t:Column>
             <!-- Deleted_TF -->

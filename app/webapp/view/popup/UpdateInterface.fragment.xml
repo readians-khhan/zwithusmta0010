@@ -36,12 +36,12 @@
                     <f:content>
                         <!--Interface Status-->
                         <Label text="{i18n>fldStatus}" />
-                        <ComboBox selectedKey="{mainView>/Interface/Update/StatusID}"
-                            items="{path: 'management>/SCI_VH_CODE_IFSTATUS_SRV', sorter: {path: 'DESC01'}}"
-                            change="onPAI"
-                            app:fcCode="fcCheckCHOnlyInputKey">
-                            <core:Item text="{management>DESC01}"
-                                key="{management>ID}"/>
+                        <ComboBox id="UpdateInterLiIfStatus"
+                            items="{path: 'management>/SCI_VH_CODE_IFSTATUS_SRV'}"
+                            selectedKey="{path: 'management>STATUS_CD_ID', mode : 'OneWay'}"                            
+                            selectionChange="onSelectionChange">
+                            <core:Item text="{management>DESC01}" 
+                                key="{management>ID}" />
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -49,7 +49,7 @@
 
                         <!--Interface Name -->
                         <Label text="{i18n>fldInterfaceName}" />
-                        <Input value="{mainView>/Interface/Update/Name}"
+                        <Input value="{management>IF_NM}"
                             required="true">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
@@ -58,7 +58,7 @@
 
                         <!--Interface Description   -->
                         <Label text="{i18n>fldInterfaceDesc}" />
-                        <Input value="{mainView>/Interface/Update/Description}"
+                        <Input value="{management>IF_DESC}"
                             required="true">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
@@ -67,7 +67,7 @@
 
                         <!--SCI Package -->
                         <Label text="{i18n>fldSCIPackage}" />
-                        <Input value="{mainView>/Interface/Update/Package}"
+                        <Input value="{management>PAKCAGE_NM}"
                             required="true">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
@@ -76,7 +76,7 @@
 
                         <!--SCI Integration Flow Name-->
                         <Label text="{i18n>fldSCIif}" />
-                        <Input value="{mainView>/Interface/Update/IFName}"
+                        <Input value="{management>PI_NM}"
                             required="true">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
@@ -85,7 +85,7 @@
 
                         <!--Interface As-Is ID-->
                         <Label text="{i18n>fldAsIsID}" />
-                        <Input value="{mainView>/Interface/Update/AsIsID}">
+                        <Input value="{management>IF_ASIS}">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -93,7 +93,7 @@
 
                         <!--Interface As-Is Name -->
                         <Label text="{i18n>fldAsIsName}" />
-                        <Input value="{mainView>/Interface/Update/AsIsName}">
+                        <Input value="{management>IF_ASIS_NM}">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -101,7 +101,7 @@
 
                         <!--Interface As-Is Description-->
                         <Label text="{i18n>fldAsIsDesc}" />
-                        <Input value="{mainView>/Interface/Update/AsIsDescription}">
+                        <Input value="{management>IF_ASIS_DESC}">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -114,8 +114,8 @@
                             valueHelpOnly="true"
                             valueHelpRequest="onValueHelp"
                             app:vhCode="fcVHSSystem">
-                            <core:Item key="{mainView>/Interface/Update/SourceSystemID}"
-                                text="{mainView>/Interface/Update/SourceSystemDESC}"/>
+                            <core:Item key="{management>TG_IFTYPE_CD_ID}"
+                                text="{management>TG_SYS_COMAPANY_CODE}"/>
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
                             </layoutData>
@@ -126,7 +126,7 @@
                         <ComboBox id="CSSType"
                             selectionChange="onPAI"
                             app:fcCode="fcChangeSystem"
-                            selectedKey="{mainView>/Interface/Update/SourceSystemTypeID}"
+                            selectedKey="{path: 'management>SC_IFTYPE_CD_ID', mode : 'OneWay'}"
                             items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV', sorter: {path: 'DESC01'}}"
                             change="fcCheckCHOnlyInputKey">
                             <core:Item text="{management>DESC01}"
@@ -155,7 +155,7 @@
                         <ComboBox id="CTSType"
                             selectionChange="onPAI"
                             app:fcCode="fcChangeSystem"
-                            selectedKey="{mainView>/Interface/Update/TargetSystemTypeID}"
+                            selectedKey="{path: 'management>TG_IFTYPE_CD_ID', mode : 'OneWay'}"
                             items="{path: 'management>/SCI_VH_CODE_IFPROTOCOL_SRV', sorter: {path: 'DESC01'}}"
                             change="fcCheckCHOnlyInputKey">
                             <core:Item text="{management>DESC01}"
@@ -168,7 +168,7 @@
                         <!--RFC Name -->
                         <Label text="{i18n>fldRFCName}" />
                         <Input id="IRFC"
-                            value="{mainView>/Interface/Update/RFCName}"
+                            value="{management>RFC_NM}"
                             enabled="false">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
@@ -178,7 +178,7 @@
                         <!--Enterprise Service Name -->
                         <Label text="{i18n>fldESName}" />
                         <Input id="IES"
-                            value="{mainView>/Interface/Update/ESName}"
+                            value="{management>ENTERPRSIESERVICE_NM}"
                             enabled="false">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
@@ -188,7 +188,7 @@
                         <!--Web Service Name -->
                         <Label text="{i18n>fldWSName}" />
                         <Input id="IWS"
-                            value="{mainView>/Interface/Update/WSName}"
+                            value="{management>WEBSERVICE_NM}"
                             enabled="false">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
@@ -198,7 +198,7 @@
                         <!--Web Binding Name -->
                         <Label text="{i18n>fldWSBName}" />
                         <Input id="IWSB"
-                            value="{mainView>/Interface/Update/WSBName}"
+                            value="{management>WEBBINDING_NM}"
                             enabled="false">
                             <layoutData>
                                 <l:GridData span="XL10 L10 M10 S10" />
@@ -209,7 +209,7 @@
                         <Label text="{i18n>fldBatch}" />
                         <ComboBox showSecondaryValues="true"
                             items="{path: 'management>/SCI_VH_CODE_IFEXECUTION_SRV', sorter: {path: 'DESC01'}}"
-                            selectedKey="{mainView>/Interface/Update/typeID}"
+                            selectedKey="{path: 'management>EXECUTION_CD_ID', mode : 'OneWay'}"
                             selectionChange="onPAI"
                             app:fcCode="fcChangeBatch"
                             change="fcCheckCHOnlyInputKey">

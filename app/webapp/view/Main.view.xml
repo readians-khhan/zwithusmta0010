@@ -40,12 +40,12 @@
 					<tnt:NavigationListItem key="menu"
 						text="{i18n>sideExpand}"
 						icon="{= ${mainView>/sideExpanded} ? 'sap-icon://collapse' : 'sap-icon://expand' }" />
+					<!-- 모니터링 차트 -->
+					<tnt:NavigationListItem key="monitoringChart" text="{i18n>SideMonioringChart}" icon="sap-icon://sys-monitor"></tnt:NavigationListItem>
 					<!-- 인터페이스 리스트 -->
 					<tnt:NavigationListItem key="interfaceList"
 						text="{i18n>SideInterfaceList}"
-						icon="sap-icon://overview-chart"></tnt:NavigationListItem>
-					<!-- 모니터링 차트 -->
-					<!--				<tnt:NavigationListItem key="monitoringChart" text="{i18n>SideMonioringChart}" icon="sap-icon://overview-chart"></tnt:NavigationListItem>					-->
+						icon="sap-icon://overview-chart"></tnt:NavigationListItem>					
 					<!-- 모니터링 테이블 -->
 					<!--				<tnt:NavigationListItem key="monitoringTable" text="{i18n>SideMonitoringTable}" icon="sap-icon://overview-chart"></tnt:NavigationListItem>					-->
 				</tnt:NavigationList>
@@ -112,29 +112,52 @@
 				</f:DynamicPage>
 
 				<!-- 모니터링 차트 -->
-				<!--			<f:DynamicPage id="dp-monitoringChart" class="sapUiNoContentPadding">
+				<f:DynamicPage id="dp-MonitoringChart"
+					class="sapUiNoContentPadding"
+					fitContent="true"
+					headerExpanded="true"
+					showFooter="true">
 					<f:title>
 						<f:DynamicPageTitle backgroundDesign="Transparent">
 							<f:heading>
 								<Title text="{i18n>mcMonitoringChartTitle}" />
 							</f:heading>
 							<f:actions>
-								<Button text="{i18n>btnSearch}" width="5rem" type="Accept" />
+								<Button text="{i18n>btnSearch}"
+									width="5rem"
+									type="Accept"
+									press="onPAI"
+									app:fcCode="fcSearchMonitoringChart" />
 							</f:actions>
 						</f:DynamicPageTitle>
 					</f:title>
 					<f:header>
 						<f:DynamicPageHeader pinnable="false">
 							<f:content>
-								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderFile" type="XML"/>
+								<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.HeaderMonitoringChart"
+									type="XML"/>
 							</f:content>
 						</f:DynamicPageHeader>
 					</f:header>
 					<f:content>
-						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideFiles" type="XML" />
-					</f:content>					
+						<core:Fragment fragmentName="withus.sci.management.SCIManagement.view.fragments.SideMonitoringChart"
+							type="XML" />
+					</f:content>
+					<f:footer>
+						<OverflowToolbar>
+							<Button icon="sap-icon://alert"
+								text="{i18n>btnMessage} : {= ${message>/}.length }"
+								visible="true"
+								type="Critical"
+								enabled="{= ${message>/}.length === 0 ? false : true }"
+								press="onPAI"
+								app:fcCode="fcMessage"/>
+							<ToolbarSpacer/>
+						</OverflowToolbar>
+					</f:footer>
 				</f:DynamicPage>
--->
+
+
 				<!-- 모니터링 테이블 -->
 				<!--			<f:DynamicPage id="dp-monitoringTable" class="sapUiNoContentPadding">
 					<f:title>

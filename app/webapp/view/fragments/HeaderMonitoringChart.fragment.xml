@@ -1,0 +1,107 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:t="sap.ui.table" xmlns:core="sap.ui.core" xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <Panel class="sapUiNoContentPadding" backgroundDesign="Transparent">
+        <content>
+            <l:FixFlex class="fixFlexVertical">
+                <l:fixContent>
+                    <IconTabBar 						
+                    stretchContentHeight="ture"
+                    backgroundDesign="Translucent"
+                    expandable="false"
+                    expanded="false">
+                        <items>
+                            <IconTabFilter showAll="true"
+                                count="{mainView>/CodeList/totalCount}"
+                                text="{i18n>iconAll}"
+                                key="T" />
+                            <IconTabFilter icon="sap-icon://complete"
+                                iconColor="Positive"
+                                count="{mainView>/CodeList/totalCount}"
+                                text="{i18n>iconCompleted}"
+                                key="D" />
+                            <IconTabFilter icon="sap-icon://sys-cancel-2"
+                                iconColor="Negative"
+                                count="{mainView>/statusCount/request}"
+                                text="{i18n>iconCancelled}"
+                                key="R" />
+                            <IconTabFilter icon="sap-icon://reset"
+                                iconColor="Critical"
+                                count="{mainView>/statusCount/reject}"
+                                text="{i18n>iconRetry}"
+                                key="J" />
+                            <IconTabFilter icon="sap-icon://step"
+                                iconColor="Neutral"
+                                count="{mainView>/statusCount/approval}"
+                                text="{i18n>iconProcessing}"
+                                key="A" />
+                            <IconTabFilter icon="sap-icon://alert"
+                                iconColor="Critical"
+                                count="{mainView>/statusCount/cancel}"
+                                text="{i18n>iconEscalated}"
+                                key="C" />
+                            <IconTabFilter icon="sap-icon://cancel"
+                                iconColor="Critical"
+                                count="{mainView>/statusCount/cancel}"
+                                text="{i18n>iconCancelled}"
+                                key="C" />                 
+                            <IconTabFilter icon="sap-icon://disconnected"
+                                iconColor="Critical"
+                                count="{mainView>/statusCount/cancel}"
+                                text="{i18n>iconDiscarded}"
+                                key="C" />                        
+                        </items>                    
+                    </IconTabBar>
+                </l:fixContent>
+            </l:FixFlex>
+            <f:Form editable="true" width="100%">
+                <f:layout>
+                    <f:ResponsiveGridLayout labelSpanXL="12" labelSpanL="12" labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="4" columnsL="4" columnsM="2" singleContainerFullSize="true" />
+                </f:layout>
+                <f:formContainers>
+                    <!-- 발생일 -->
+                    <f:FormContainer>
+                        <f:FormElement label="{i18n>fldCodeSection}">
+                            <f:fields>
+                                <MultiComboBox items="{path: 'management>/SCI_VH_CODE_CAT01_SRV'}">
+                                    <core:Item text="{management>CAT01}" key="{management>CAT01}" />
+                                </MultiComboBox>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:FormContainer>
+                    <!-- 상세구분 -->
+                    <f:FormContainer>
+                        <f:FormElement label="{i18n>fldCodeDetailSection}">
+                            <f:fields>
+                                <MultiComboBox items="{path: 'management>/SCI_VH_CODE_CAT02_SRV'}">
+                                    <core:Item text="{management>CAT02}" key="{management>CAT02}" />
+                                </MultiComboBox>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:FormContainer>
+                    <!-- 회사 -->
+                    <f:FormContainer>
+                        <f:FormElement label="{i18n>fldCodeEtcSection}">
+                            <f:fields>
+                                <MultiComboBox items="{path: 'management>/SCI_VH_CODE_CAT03_SRV'}">
+                                    <core:Item text="{management>CAT03}" key="{management>CAT03}" />
+                                </MultiComboBox>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:FormContainer>
+                    <!-- 프로그램명 -->
+                    <f:FormContainer>
+                        <f:FormElement label="{i18n>fldCodeName}">
+                            <f:fields>
+                                <MultiInput showValueHelp="false" showSuggestion="true" suggestionItems="{
+                                    path: 'management>/SCI_MST_CODE_SRV',
+                                    sorter: { path: 'CODE' }
+                                }">
+                                    <core:Item key="{management>CODE}" text="{management>CODE}" />
+                                </MultiInput>
+                            </f:fields>
+                        </f:FormElement>
+                    </f:FormContainer>
+                </f:formContainers>
+            </f:Form>
+        </content>    
+    </Panel>
+</core:FragmentDefinition>

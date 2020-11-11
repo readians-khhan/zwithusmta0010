@@ -418,6 +418,9 @@ sap.ui.define(
             case "interfaceList":
               oNavConMain.to(this.getControl("dp-interface"), "slide");
               break;
+            case "monitoringChart":
+              oNavConMain.to(this.getControl("dp-MonitoringChart"), "slide");
+              break;
             case "codeList":
               oNavConMain.to(this.getControl("dp-code"), "slide");
               break;
